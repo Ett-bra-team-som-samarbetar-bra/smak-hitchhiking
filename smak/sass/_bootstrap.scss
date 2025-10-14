@@ -5,12 +5,16 @@ $navbar-dark-color: rgba(white, .8) !default;
 $navbar-dark-hover-color: rgba(white, .9) !default;
 $enable-negative-margins: true;
 
+// Black
+// White
+$primary: #016D85; // Main button
+$secondary: #696969; // Sec text color 
+$body-bg: #F3F2F8; // Secondary bk color
 
-/* $primary: rgb(255, 255, 255);
-$light: gray;
-$danger: #DC3545; 
+$light: #C3C3C3;
+$danger: #DC3545;
 $warning: #FB6944;
-$success: green; */
+$success: green;
 
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
@@ -21,4 +25,20 @@ $success: green; */
   margin: 0;
   padding: 0;
   font-family: "consolas, Noto Sans", sans-serif;
+}
+
+#root {
+  display: flex;
+  height: 100vh;
+  height: 100svh;
+  flex-direction: column;
+
+  main {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+.text-grow {
+  transform: scale(1.2);
 }
