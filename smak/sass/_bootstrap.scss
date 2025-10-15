@@ -36,6 +36,13 @@ $success: green;
   main {
     flex: 1;
     overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  main::-webkit-scrollbar {
+    width: 0;
+    height: 0;
   }
 }
 
