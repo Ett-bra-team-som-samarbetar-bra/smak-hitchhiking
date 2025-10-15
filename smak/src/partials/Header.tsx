@@ -1,5 +1,5 @@
-import { Col, Row } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
+
 
 export default function Header() {
   const path = "/settings";
@@ -7,32 +7,21 @@ export default function Header() {
   const isActive = (path: string) => pathName === path;
 
   return (
-    <header className="bg-white w-100">
+    <header className="header bg-white border-bottom">
+      <div className="header-logo d-flex align-items-center gap-2 justify-content-center mb-0">
+        <i className="bi bi-house-door-fill" />
+        <h2 className=" mb-0">SMÅK</h2>
+      </div>
 
-      {/* <Row className="m-0">
-
-        <Col xs={2} className="" />
-
-        <Col xs={8} className="">
-
-        </Col>
-
-
-        <Col xs={2}>
-          <NavLink
-            to={path}
-
-            className={`
-            ${isActive(path) ? "text-black text-grow" : "text-secondary"} 
-            text-decoration-none d-flex flex-column justify-content-center nav-link-set-width pe-3`}>
-
-            <i className={`bi bi-gear-fill text-center  nav-icon-size`} />
-
-          </NavLink>
-        </Col>
-
-
-      </Row > */}
-    </header >
+      <NavLink
+        to={path}
+        className={`
+          header-icon
+          ${isActive(path) ? "text-black text-grow" : "text-secondary"}
+        `}
+      >
+        <i className="bi bi-gear-fill nav-icon-size" />
+      </NavLink>
+    </header>
   );
 }
