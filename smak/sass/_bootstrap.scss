@@ -13,7 +13,7 @@ $body-bg: #F3F2F8; // Secondary bk color
 
 $light: #C3C3C3;
 $danger: #DC3545;
-$warning: #FB6944;
+$warning: #F48D60;
 $success: green;
 
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
@@ -48,4 +48,8 @@ $success: green;
 
 .text-grow {
   transform: scale(1.1);
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
