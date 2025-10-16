@@ -8,7 +8,7 @@ export default function Footer() {
     "/drive",
     "/",
     "/history",
-    "/contact"
+    "/coming-trips",
   ];
 
   /* if pågående resa todo
