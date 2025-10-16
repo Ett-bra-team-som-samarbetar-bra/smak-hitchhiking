@@ -6,6 +6,7 @@ import HistoryPage from "./pages/history/HistoryPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import TripsCurrentPage from "./pages/trips-current/TripsCurrentPage";
 import SettingsPage from "./pages/settings/StartPage";
+import ComingTripsPage from "./pages/trips-coming/ComingTripsPage";
 
 interface Route {
   element: JSX.Element;
@@ -31,8 +32,14 @@ const routes: Route[] = [
   {
     element: <StartPage />,
     path: "/",
-    menuLabel: "Start",
+    menuLabel: "Sök",
     icon: "geo-alt-fill "
+  },
+  {
+    element: <ComingTripsPage />,
+    path: "/coming-trips",
+    menuLabel: "Bokade",
+    icon: "calendar-check-fill"
   },
   {
     element: <HistoryPage />,
@@ -44,20 +51,19 @@ const routes: Route[] = [
     element: <TripsCurrentPage />,
     path: "/trips-current",
     menuLabel: "Pågående",
-    icon: "car-front" // todo
+    icon: "car-front"
   },
   {
     element: <ContactPage />,
-    path: "/contact",
-    menuLabel: "Kontakter",
+    path: "/contacts",
     icon: "people-fill"
   },
   {
     element: <SettingsPage />,
     path: "/settings",
-    menuLabel: "bläh",
     icon: "gear"
   },
+
 ];
 
 export default routes;

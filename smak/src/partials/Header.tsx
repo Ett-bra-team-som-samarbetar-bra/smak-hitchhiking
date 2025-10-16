@@ -1,38 +1,34 @@
-import { Col, Row } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 
 export default function Header() {
-  const path = "/settings";
+  const settingspath = "/settings";
+  const contactsPath = "/contacts";
   const pathName = useLocation().pathname;
   const isActive = (path: string) => pathName === path;
 
   return (
-    <header className="bg-white w-100">
+    <header className="header bg-white border-bottom d-flex align-items-center justify-content-between px-3 py-1">
 
-      {/* <Row className="m-0">
+      <NavLink
+        to={contactsPath}
+        className={`
+          ${isActive(contactsPath) ? "text-black text-grow" : "text-secondary"}
+        `}>
+        <i className="bi bi-people-fill nav-icon-size" />
+      </NavLink>
 
-        <Col xs={2} className="" />
+      <div className="header-div d-flex align-items-center gap-1 justify-content-center mb-0">
+        <i className="header-icon" />
+        <h2 className=" mb-0">Småk</h2>
+      </div>
 
-        <Col xs={8} className="">
-
-        </Col>
-
-
-        <Col xs={2}>
-          <NavLink
-            to={path}
-
-            className={`
-            ${isActive(path) ? "text-black text-grow" : "text-secondary"} 
-            text-decoration-none d-flex flex-column justify-content-center nav-link-set-width pe-3`}>
-
-            <i className={`bi bi-gear-fill text-center  nav-icon-size`} />
-
-          </NavLink>
-        </Col>
-
-
-      </Row > */}
-    </header >
+      <NavLink
+        to={settingspath}
+        className={`
+          ${isActive(settingspath) ? "text-black text-grow" : "text-secondary"}
+        `}>
+        <i className="bi bi-gear-fill nav-icon-size" />
+      </NavLink>
+    </header>
   );
 }
