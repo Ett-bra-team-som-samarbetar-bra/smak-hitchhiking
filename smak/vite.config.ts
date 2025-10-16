@@ -14,8 +14,8 @@ export default defineConfig({
       manifest: {
         name: 'Småk',
         short_name: 'Småk',
-        theme_color: '#016D85',
-        background_color: '#F3F2F8',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',        
         start_url: '/',
