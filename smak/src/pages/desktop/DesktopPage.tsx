@@ -1,6 +1,40 @@
+import { useEffect, useState } from "react"
 import { Button, Col, Container, Row } from "react-bootstrap"
 
 export default function DesktopPage() {
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+    }
+
+    const handleAppInstalled = () => {
+      setDeferredPrompt(null)
+    }
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+    window.addEventListener('appinstalled', handleAppInstalled)
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', handleAppInstalled)
+    }
+  }, [])
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) {
+      alert('För att installera appen, använd webbläsarens meny och välj "Installera app"')
+      return
+    }
+
+    deferredPrompt.prompt()
+    const { outcome } = await deferredPrompt.userChoice
+    if (outcome === 'accepted') { }
+
+    setDeferredPrompt(null)
+  }
+
   return (
     <div>
       <header className="bg-white py-3">
@@ -35,7 +69,9 @@ export default function DesktopPage() {
                 </ul>
               </div>
 
-              <Button className="btn btn-primary btn-lg px-4 rounded-5 shadow-sm">
+              <Button
+                onClick={handleInstallClick}
+                className="btn btn-primary btn-lg px-4 rounded-5 shadow-sm">
                 <i className="bi bi-download me-2"></i>
                 Ladda ner appen
               </Button>
