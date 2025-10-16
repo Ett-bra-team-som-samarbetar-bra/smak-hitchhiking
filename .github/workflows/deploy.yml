@@ -15,16 +15,18 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20  # or your project's Node version
+          node-version: 20
 
       - name: Install dependencies
+        working-directory: smak
         run: npm ci
 
       - name: Build project
+        working-directory: smak
         run: npm run build
 
       - name: Deploy build to Nginx
         run: |
           sudo rm -rf /var/www/newproject/*
-          sudo cp -r dist/* /var/www/newproject/
+          sudo cp -r smak/dist/* /var/www/newproject/
           sudo systemctl reload nginx
