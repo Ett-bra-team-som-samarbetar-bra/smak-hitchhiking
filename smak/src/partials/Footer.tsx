@@ -24,7 +24,7 @@ export default function Footer() {
   return (
     <footer className="bg-white">
       <Row className="m-0 pb-3">
-        <Col className="d-flex align-items-center justify-content-between py-3">
+        <Col className="d-flex align-items-center justify-content-between pt-2 pb-3 mb-2">
           {routes
             .filter(route => route.menuLabel && allowedPaths.includes(route.path))
             .map((route, i) => (

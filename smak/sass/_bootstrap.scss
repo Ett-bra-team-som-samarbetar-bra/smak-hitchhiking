@@ -32,6 +32,7 @@ $success: green;
   height: 100vh;
   height: 100svh;
   flex-direction: column;
+  overscroll-behavior: none;
 
   main {
     flex: 1;
@@ -44,10 +45,6 @@ $success: green;
     width: 0;
     height: 0;
   }
-}
-
-body {
-  overscroll-behavior-y: contain;
 }
 
 .text-grow {
