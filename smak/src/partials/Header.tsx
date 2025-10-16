@@ -7,8 +7,7 @@ export default function Header() {
   const isActive = (path: string) => pathName === path;
 
   return (
-    <header className="header bg-white border-bottom d-flex align-items-center justify-content-between px-3 py-1">
-
+    <header className="header bg-white border-bottom d-flex align-items-center justify-content-between px-3 py-3">
       <NavLink
         to={contactsPath}
         className={`
@@ -19,7 +18,7 @@ export default function Header() {
 
       <div className="header-div d-flex align-items-center gap-1 justify-content-center mb-0">
         <i className="header-icon" />
-        <h2 className=" mb-0">Småk</h2>
+        <h2 className="mb-0">Småk</h2>
       </div>
 
       <NavLink

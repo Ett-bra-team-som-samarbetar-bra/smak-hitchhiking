@@ -46,6 +46,10 @@ $success: green;
   }
 }
 
+body {
+  overscroll-behavior-y: contain;
+}
+
 .text-grow {
   transform: scale(1.1);
 }
