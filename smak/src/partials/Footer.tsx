@@ -23,7 +23,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-white">
-      <Row className="m-0">
+      <Row className="m-0 pb-3">
         <Col className="d-flex align-items-center justify-content-between py-3">
           {routes
             .filter(route => route.menuLabel && allowedPaths.includes(route.path))

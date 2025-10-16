@@ -39,7 +39,7 @@ export default function DesktopPage() {
     <div>
       <header className="bg-white py-3">
         <Container>
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
             <img src="assets/Logo.png" alt="Logo" className="desktop-logo" />
             <h2 className="mb-0 text-black fw-bold py-1">Småk</h2>
           </div>
@@ -52,7 +52,7 @@ export default function DesktopPage() {
         <Container className="py-5">
           <Row className="align-items-center text-center text-md-start">
             <Col md={6}>
-              <h1 className="display-4 fw-bold mb-3">
+              <h1 className="display-4 fw-bold">
                 Samåk med <span className="text-primary">Småk</span>
               </h1>
 
@@ -71,7 +71,7 @@ export default function DesktopPage() {
 
               <Button
                 onClick={handleInstallClick}
-                className="btn btn-primary btn-lg px-4 rounded-5 shadow-sm">
+                className="btn btn-primary btn-lg px-4 rounded-5 shadow-sm mt-2">
                 <i className="bi bi-download me-2"></i>
                 Ladda ner appen
               </Button>
@@ -97,7 +97,7 @@ export default function DesktopPage() {
 
       <footer className="bg-white text-black pt-4">
         <Container>
-          <Row className="pt-3">
+          <Row className="pt-3 pt-md-3">
             <Col md={4} className="text-center pt-2">
               <h5 className=" fw-bold">Småk</h5>
               <p className="text-secondary mb-0">
@@ -105,16 +105,16 @@ export default function DesktopPage() {
               </p>
             </Col>
 
-            <Col md={4} className="pt-3">
+            <Col md={4} className="pt-5 pt-md-3">
               <h6 className="fw-bold text-center">Följ Oss</h6>
               <div className="d-flex gap-3 justify-content-center">
-                <i className="cursor-pointer text-secondary bi bi-facebook fs-4"></i>
-                <i className="cursor-pointer text-secondary bi bi-twitter fs-4"></i>
-                <i className="cursor-pointer text-secondary bi bi-instagram fs-4"></i>
+                <a href="#"><i className="cursor-pointer text-secondary bi bi-facebook fs-4"></i></a>
+                <a href="#"><i className="cursor-pointer text-secondary bi bi-twitter fs-4"></i></a>
+                <a href="#"><i className="cursor-pointer text-secondary bi bi-instagram fs-4"></i></a>
               </div>
             </Col>
 
-            <Col md={4} className="text-center pt-3">
+            <Col md={4} className="text-center pt-5 pt-md-3">
               <h6 className="fw-bold">Support</h6>
               <ul className="list-unstyled">
                 <li><a href="#" className="text-secondary text-decoration-none">Kontakta oss</a></li>
@@ -131,6 +131,6 @@ export default function DesktopPage() {
           </div>
         </Container>
       </footer>
-    </div>
+    </div >
   )
 }
