@@ -27,6 +27,6 @@ jobs:
 
       - name: Deploy build to Nginx
         run: |
-          sudo rm -rf /var/www/småk/*
-          sudo cp -r smak/dist/* /var/www/småk/
+          sudo rm -rf /var/www/smak/*
+          sudo cp -r smak/dist/* /var/www/smak/
           sudo systemctl reload nginx
