@@ -6,7 +6,7 @@ export default function DesktopPage() {
       <header className="bg-white py-3">
         <Container>
           <div className="d-flex align-items-center gap-2">
-            <img src="../public/assets/Logo.png" alt="Logo" className="desktop-logo" />
+            <img src="assets/Logo.png" alt="Logo" className="desktop-logo" />
             <h2 className="mb-0 text-black fw-bold py-1">Småk</h2>
           </div>
         </Container>
@@ -45,11 +45,11 @@ export default function DesktopPage() {
 
             <Col md={6} className="text-center mt-5 mt-md-0 p-0 position-relative">
               <img
-                src="../public/images/app-screenshot.png"
+                src="images/app-screenshot.png"
                 alt="App"
                 className="desktop-img shadow-sm" />
               <img
-                src="../public/images/desktop-purple-circle.png"
+                src="images/desktop-purple-circle.png"
                 alt="background decoration"
                 className="desktop-img-background" />
             </Col>

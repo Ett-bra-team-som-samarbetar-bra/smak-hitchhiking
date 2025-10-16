@@ -10,20 +10,26 @@ export default function App() {
   useLocation();
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isPwa, setIsPwa] = useState(false);
 
   useEffect(() => {
-    const checkIsDesktop = () => {
-      setIsDesktop(window.innerWidth >= config.widthBreakpointDesktop);
+    const checkPwaStatus = () => {
+      const isPwaMode = window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as any).standalone === true;
+      setIsPwa(isPwaMode);
     };
-    checkIsDesktop();
-    window.addEventListener('resize', checkIsDesktop);
 
-    return () => window.removeEventListener('resize', checkIsDesktop);
+    checkPwaStatus();
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    mediaQuery.addEventListener('change', checkPwaStatus);
+
+    return () => {
+      mediaQuery.removeEventListener('change', checkPwaStatus);
+    };
   }, []);
 
   return <>
-    {isDesktop
+    {!isPwa && config.dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView
       ? (<DesktopPage />)
       : (<>
         <Header />

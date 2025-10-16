@@ -1,5 +1,6 @@
 const config = {
-    widthBreakpointDesktop: 900, // px
+    // Debug
+    dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView: true, // true = hide Desktop
 };
 
 export default config;

@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
       manifest: {
-        name: 'småk hitchhiking',
-        short_name: 'småk',
+        name: 'Småk',
+        short_name: 'Småk',
         theme_color: '#016D85',
         background_color: '#F3F2F8',
         display: 'standalone',
