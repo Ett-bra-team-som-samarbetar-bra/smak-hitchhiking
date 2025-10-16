@@ -1,21 +1,9 @@
 // todo
-
-.header {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-}
-
-.header-logo {
-    font-size: 1.5rem;
-}
-
 .header-icon {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    text-decoration: none;
+  background-image: url('../public/assets/Logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
 }

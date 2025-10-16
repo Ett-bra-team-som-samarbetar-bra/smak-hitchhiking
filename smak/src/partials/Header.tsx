@@ -1,22 +1,31 @@
 import { NavLink, useLocation } from "react-router-dom";
 
 export default function Header() {
-  const path = "/settings";
+  const settingspath = "/settings";
+  const contactsPath = "/contacts";
   const pathName = useLocation().pathname;
   const isActive = (path: string) => pathName === path;
 
   return (
-    <header className="header bg-white border-bottom">
-      <div className="header-logo d-flex align-items-center gap-2 justify-content-center mb-0">
-        <i className="bi bi-house-door-fill" />
+    <header className="header bg-white border-bottom d-flex align-items-center justify-content-between px-3 py-1">
+
+      <NavLink
+        to={contactsPath}
+        className={`
+          ${isActive(contactsPath) ? "text-black text-grow" : "text-secondary"}
+        `}>
+        <i className="bi bi-people-fill nav-icon-size" />
+      </NavLink>
+
+      <div className="header-div d-flex align-items-center gap-1 justify-content-center mb-0">
+        <i className="header-icon" />
         <h2 className=" mb-0">Småk</h2>
       </div>
 
       <NavLink
-        to={path}
+        to={settingspath}
         className={`
-          header-icon
-          ${isActive(path) ? "text-black text-grow" : "text-secondary"}
+          ${isActive(settingspath) ? "text-black text-grow" : "text-secondary"}
         `}>
         <i className="bi bi-gear-fill nav-icon-size" />
       </NavLink>
