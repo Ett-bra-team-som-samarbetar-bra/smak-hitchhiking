@@ -7,7 +7,7 @@ export default function Header() {
   const isActive = (path: string) => pathName === path;
 
   return (
-    <header className="header bg-white border-bottom d-flex align-items-center justify-content-between px-3 py-3">
+    <header className="header bg-white border-bottom d-flex align-items-center justify-content-between px-3 py-2">
       <NavLink
         to={contactsPath}
         className={`
