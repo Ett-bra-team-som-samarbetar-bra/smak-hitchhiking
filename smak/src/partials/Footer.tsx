@@ -22,9 +22,9 @@ export default function Footer() {
   const isActive = (path: string) => pathName === path;
 
   return (
-    <footer className="bg-danger">
+    <footer className="bg-white">
       <Row className="m-0 pb-3">
-        <Col className="d-flex align-items-center justify-content-between pt-2 pb-3 mb-2">
+        <Col className="d-flex align-items-center justify-content-between pt-2 pb-3">
           {routes
             .filter(route => route.menuLabel && allowedPaths.includes(route.path))
             .map((route, i) => (
