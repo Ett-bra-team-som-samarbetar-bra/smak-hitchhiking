@@ -22,7 +22,7 @@ export default function Footer() {
   const isActive = (path: string) => pathName === path;
 
   return (
-    <footer className="bg-white">
+    <footer className="bg-danger">
       <Row className="m-0 pb-3">
         <Col className="d-flex align-items-center justify-content-between pt-2 pb-3 mb-2">
           {routes
