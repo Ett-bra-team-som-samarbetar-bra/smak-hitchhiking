@@ -14,11 +14,14 @@ export default defineConfig({
       manifest: {
         name: 'Småk',
         short_name: 'Småk',
+        description: 'Småk är en mobil applikation som gör liftande säkrare och enklare för alla',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',        
         start_url: '/',
+        lang: 'sv',
+        categories: ['travel', 'social'],
         icons: [
           {
             src: '/assets/Logo4.png',
