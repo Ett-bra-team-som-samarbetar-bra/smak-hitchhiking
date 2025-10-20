@@ -1,0 +1,48 @@
+.profile-image-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.profile-image {
+    border-radius: 50%;
+    height: 14rem;
+    width: 14rem;
+    object-fit: cover;
+}
+
+.card-div {
+    margin-top: 10rem;
+}
+
+.profile-card {
+    padding-top: 8rem;
+}
+
+.add-icon,
+.edit-icon {
+    position: absolute;
+    bottom: 0.6rem;
+    right: 0.6rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #000;
+}
+
+.edit-icon i {
+    font-size: 1.2rem;
+    color: #000;
+}
+
+.add-icon i {
+    font-size: 1.6rem;
+    color: #000;
+}
