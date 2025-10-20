@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type User from "../interfaces/User";
-import { AuthContext } from "./Authcontext";
-import type { AuthContextType } from "./Authcontext";
+import { AuthContext } from "./AuthContext";
+import type { AuthContextType } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 
 interface AuthProviderProps {
