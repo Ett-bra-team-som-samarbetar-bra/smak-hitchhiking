@@ -24,7 +24,7 @@ export default function DesktopPage() {
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
-      alert('För att installera appen, använd webbläsarens meny och välj "Installera app"')
+      alert('För att installera appen, använd webbläsarens meny och välj "Installera app"') // todo modal for prompting ios 
       return
     }
 
@@ -60,8 +60,8 @@ export default function DesktopPage() {
                 Småk är en mobil applikation som gör liftande säkrare och enklare för alla.
               </p>
 
-              <div className="mb-4">
-                <ul className="list-unstyled">
+              <div className="mb-4 d-flex justify-content-center justify-content-md-start">
+                <ul className="list-unstyled text-start w-auto">
                   <li className="mb-2 "><i className="bi bi-check-circle-fill text-primary me-2"></i>Hitta din resa enkelt</li>
                   <li className="mb-2 "><i className="bi bi-check-circle-fill text-primary me-2"></i>Säkra och verifierade förare</li>
                   <li className="mb-2 "><i className="bi bi-check-circle-fill text-primary me-2"></i>Hitta likasinnade resenärer</li>
