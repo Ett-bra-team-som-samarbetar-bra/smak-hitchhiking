@@ -1,8 +1,52 @@
+import SmakButton from "../../components/SmakButton";
+import SmakCard from "../../components/SmakCard";
+import CarCard from "./CarCard";
+import ProfileCard from "./ProfileCard";
 
 export default function ProfilePage() {
+  const mockUser = {
+    firstName: "Harold",
+    lastName: "H. Pain",
+    profileImage: "/images/harold.png",
+    trips: 40,
+    rating: "5",
+    activeYears: "1.4 ",
+    preferences: ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"],
+  };
+
+  const mockCars = [
+    {
+      model: "Audi A3",
+      licensePlate: "KEK 057",
+      seats: 4,
+    },
+    {
+      model: "Volvo V60",
+      licensePlate: "FBI 007",
+      seats: 4,
+    }
+  ];
+
+  const isOwnProfile = true;
+
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column h-100">
-      <h1>Profile</h1>
-    </div>
-  )
+    <>
+      <SmakCard className="card-div">
+        <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} />
+      </SmakCard>
+      <h2 className="my-3">Fordon:</h2>
+
+      {mockCars.length === 0 ? (
+        <p className="text-muted">Inga fordon tillagda</p>
+      ) : (
+        mockCars.map((car, index) => (
+          <CarCard key={index} car={car} isOwnProfile={isOwnProfile} />
+        ))
+      )}
+      {isOwnProfile && <SmakButton className="my-3" onClick={() => console.log("Add vehicle clicked")}>
+        Lägg till fordon
+      </SmakButton>
+      }
+    </>
+  );
 }
