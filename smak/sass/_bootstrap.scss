@@ -10,10 +10,11 @@ $enable-negative-margins: true;
 $primary: #016D85; // Main button
 $secondary: #696969; // Sec text color 
 $body-bg: #F3F2F8; // Secondary bk color
-$light: #ffffff; // white 
+$light: #ffffff; // White 
+$info: #b4b4b4; // Divider color
 
 $danger: #DC3545;
-$warning: #F48D60;
+$warning: #F48D60; // Logo color
 $success: green;
 
 @import '../node_modules/bootstrap/scss/bootstrap.scss';

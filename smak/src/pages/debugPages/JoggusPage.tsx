@@ -5,6 +5,7 @@ import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SubmitButton from "../../components/SubmitButton";
 import SmakCard from "../../components/SmakCard";
 import DividerLine from "../../components/DividerLine";
+import TripCard from "../../components/trip/TripCardSmall";
 
 export default function JoggusPage() {
 
@@ -19,13 +20,15 @@ export default function JoggusPage() {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column p-4">
+    <div className="d-flex justify-content-center align-items-center flex-column">
       <h1>Joggus - IV</h1>
       <p>Component showcase</p>
 
-      <DividerLine className="mb-4" />
 
-      <SmakCard className="mb-2">
+      <DividerLine className="mb-4" variant="info" />
+
+
+      <SmakCard className="mb-2 p-3">
         <SubmitButton
           className="my-3"
           color="primary"
@@ -34,11 +37,13 @@ export default function JoggusPage() {
         </SubmitButton>
       </SmakCard>
 
+
       <InputFormEmail
         className="my-3"
         setFormProp={setFormProp}
         label="E-postadress"
         placeholder="Ange din e-postadress" />
+
 
       <InputFormText
         className="mb-3"
@@ -46,7 +51,8 @@ export default function JoggusPage() {
         label="Text Ba"
         placeholder="Text Ba" />
 
-      <SmakCard className="">
+
+      <SmakCard className="p-3">
         <InputFormPassword
           className="mb-3"
           setFormProp={setFormProp}
@@ -62,18 +68,21 @@ export default function JoggusPage() {
       </SmakCard>
 
 
+      <TripCard
+        firstName="Lena"
+        lastName="Handen"
+        startTime="15:00"
+        endTime="19:30"
+        startCity="Stockholm"
+        endCity="Malmö"
+        rating={4}
+        distance={420} />
+
+      <TripCard />
 
 
 
-      <SmakCard className="my-4">
 
-        ttesetsete<br></br>
-        ttesetsete<br></br>
-        ttesetsete<br></br>
-
-
-
-      </SmakCard>
 
 
 
