@@ -7,9 +7,9 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import TripsCurrentPage from "./pages/trips-current/TripsCurrentPage";
 import SettingsPage from "./pages/settings/StartPage";
 import ComingTripsPage from "./pages/trips-coming/ComingTripsPage";
-import JoggusPage from "./pages/debug/JoggusPage";
-import KalvPage from "./pages/debug/KalvPage";
-import TungisPage from "./pages/debug/TungisPage";
+import JoggusPage from "./pages/debugPages/JoggusPage";
+import KalvPage from "./pages/debugPages/KalvPage";
+import TungisPage from "./pages/debugPages/TungisPage";
 import NotFoundPage from "./pages/notFound/ContactPage";
 
 interface Route {
