@@ -10,14 +10,15 @@ $enable-negative-margins: true;
 $primary: #016D85; // Main button
 $secondary: #696969; // Sec text color 
 $body-bg: #F3F2F8; // Secondary bk color
+$light: #ffffff; // white 
 
-$light: #C3C3C3;
 $danger: #DC3545;
 $warning: #F48D60;
 $success: green;
 
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+
 
 // Globals
 * {
@@ -53,4 +54,13 @@ $success: green;
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.placeholder-text::placeholder {
+  color: var(--bs-secondary) !important;
+  opacity: 0.8;
+}
+
+.shadow {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
 }

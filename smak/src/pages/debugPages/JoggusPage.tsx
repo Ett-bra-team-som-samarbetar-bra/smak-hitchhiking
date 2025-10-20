@@ -3,6 +3,8 @@ import InputFormEmail from "../../components/inputForms/InputFormEmail";
 import InputFormText from "../../components/inputForms/InputFormText";
 import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SubmitButton from "../../components/SubmitButton";
+import SmakCard from "../../components/SmakCard";
+import DividerLine from "../../components/DividerLine";
 
 export default function JoggusPage() {
 
@@ -17,39 +19,61 @@ export default function JoggusPage() {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column h-100">
-      <h1>JoggusPage</h1>
+    <div className="d-flex justify-content-center align-items-center flex-column p-4">
+      <h1>Joggus - IV</h1>
+      <p>Component showcase</p>
 
-      <SubmitButton
-        className="mb-1"
-        isLoading={true}>
-        Hitta Resa
-      </SubmitButton>
+      <DividerLine className="mb-4" />
+
+      <SmakCard className="mb-2">
+        <SubmitButton
+          className="my-3"
+          color="primary"
+          isLoading={true}>
+          Hitta Resa
+        </SubmitButton>
+      </SmakCard>
 
       <InputFormEmail
-        className="mb-1"
+        className="my-3"
         setFormProp={setFormProp}
         label="E-postadress"
         placeholder="Ange din e-postadress" />
 
       <InputFormText
-        className="mb-1"
+        className="mb-3"
         setFormProp={setFormProp}
         label="Text Ba"
         placeholder="Text Ba" />
 
-      <InputFormPassword
-        className="mb-1"
-        setFormProp={setFormProp}
-        label="Password"
-        placeholder="Password" />
+      <SmakCard className="">
+        <InputFormPassword
+          className="mb-3"
+          setFormProp={setFormProp}
+          label="Password"
+          placeholder="Password" />
 
-      <InputFormText
-        className="mb-1"
-        setFormProp={setFormProp}
-        label="Text area"
-        placeholder="Text area"
-        isTextArea={true} />
+        <InputFormText
+          className="mb-3"
+          setFormProp={setFormProp}
+          label="Text area"
+          placeholder="Text area"
+          isTextArea={true} />
+      </SmakCard>
+
+
+
+
+
+      <SmakCard className="my-4">
+
+        ttesetsete<br></br>
+        ttesetsete<br></br>
+        ttesetsete<br></br>
+
+
+
+      </SmakCard>
 
 
 

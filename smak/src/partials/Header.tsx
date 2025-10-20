@@ -30,7 +30,7 @@ export default function Header() {
         <NavLink
           key={route.path}
           to={route.path}>
-          <i className={`bi bi-${route.icon} text-center nav-icon-size text-black`} />
+          <i className={`bi bi-${route.icon} text-center nav-icon-size text-danger`} />
         </NavLink>
       ))}
 
