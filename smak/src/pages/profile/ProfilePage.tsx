@@ -28,11 +28,12 @@ export default function ProfilePage() {
   ];
 
   const isOwnProfile = true;
+  const isAlreadyFriend = false;
 
   return (
     <>
       <SmakCard className="card-div">
-        <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} />
+        <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} />
       </SmakCard>
       <h2 className="my-3">Fordon:</h2>
 

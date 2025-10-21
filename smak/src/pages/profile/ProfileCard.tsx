@@ -1,6 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 
-export default function ProfileCard({ user, isOwnProfile = true, }: {
+export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend = false }: {
     user: {
         firstName: string;
         lastName: string;
@@ -11,22 +11,32 @@ export default function ProfileCard({ user, isOwnProfile = true, }: {
         preferences: string[];
     }
     isOwnProfile?: boolean;
+    isAlreadyFriend?: boolean;
 }) {
     return (
-      
-        <Card className="mt-5 w-100 text-center bg-white border-0 profile-card px-5 pb-5 ">
+
+        <Card className="mt-5 w-100 text-center bg-white border-0 profile-card px-5 pb-5">
             <div className="profile-image-container">
                 <img src={user.profileImage} alt="Profile" className="profile-image" />
 
-                {isOwnProfile ? (
-                    <Button 
-                    className="bi bi-pencil-fill edit-icon d-flex justify-content-center align-items-center border-0 shadow bg-white rounded-circle text-black"
-                    onClick={() => console.log("Edit")} />
-                    
-                ) : (
-                    <Button className="bi bi-person-add add-icon d-flex justify-content-center align-items-center border-0 shadow bg-white rounded-circle text-black"
-                    onClick={() => console.log("Add friend")} />
-                )}
+                <Button
+                    className={`${isOwnProfile
+                        ? "bi bi-pencil-fill edit-icon"
+                        : isAlreadyFriend
+                            ? "bi bi-trash-fill add-icon"
+                            : "bi bi-person-add add-icon"
+                        } d-flex justify-content-center align-items-center border-0 shadow bg-white rounded-circle text-black`}
+                    onClick={() => {
+                        if (isOwnProfile) {
+                            console.log("Edit profile clicked");
+                        } else if (isAlreadyFriend) {
+                            console.log("Remove friend clicked");
+                        } else {
+                            console.log("Add friend clicked");
+                        }
+                    }}
+                />
+
             </div>
 
             <h2>{user.firstName} {user.lastName}</h2>
@@ -34,17 +44,17 @@ export default function ProfileCard({ user, isOwnProfile = true, }: {
             <div className="d-flex justify-content-between mt-2 mb-4">
                 <div className="text-center">
                     <p className="mb-1 fw-bold">{user.trips}</p>
-                    <p className="mb-0 text-black-50">Trips</p>
+                    <p className="mb-0 text-black-50">Rutter</p>
                 </div>
 
                 <div className="text-center">
                     <p className="mb-1 fw-bold">{user.rating}/5</p>
-                    <p className="mb-0 text-black-50">Rating</p>
+                    <p className="mb-0 text-black-50">Betyg</p>
                 </div>
 
                 <div className="text-center">
                     <p className="mb-1 fw-bold">{user.activeYears}</p>
-                    <p className="mb-0 text-black-50">Active</p>
+                    <p className="mb-0 text-black-50">År</p>
                 </div>
             </div>
 
