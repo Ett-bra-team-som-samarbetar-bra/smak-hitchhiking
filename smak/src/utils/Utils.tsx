@@ -6,7 +6,7 @@ export function renderRatingStars(rating: number): React.ReactElement[] {
     stars.push(
       <i
         key={i}
-        className={`bi ${i <= rating ? 'bi-star-fill' : 'bi-star'} text-warning`}
+        className={`bi fs-6 ${i <= rating ? 'bi-star-fill' : 'bi-star'} text-warning`}
       />
     );
   }
