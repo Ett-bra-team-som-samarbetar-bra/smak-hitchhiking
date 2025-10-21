@@ -11,3 +11,36 @@
   width: 1px;
   height: 2.8rem;
 }
+
+.trip-card-map-image {
+  max-height: 240px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.trip-card-profil-image-container {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.trip-card-profil-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.trip-card-time-width {
+  max-width: 58px !important;
+}
+
+.trip-card-line-width {
+  max-width: 30px !important;
+}
+
+.medium-font-size {
+  font-size: 0.9rem;
+}
+
+.small-font-size {
+  font-size: 0.8rem;
+}

@@ -13,10 +13,13 @@ interface TripCardProps {
   endTime?: string;
   rating?: number;
   distance?: number;
+  date?: string;
+  vehicleInfo?: string;
+  numOfSeats?: string;
   className?: string;
 }
 
-export default function TripCardSmall({
+export default function TripCardBig({
   firstName = "Okänd",
   lastName = "användare",
   startCity = "Okänd stad",
@@ -25,14 +28,32 @@ export default function TripCardSmall({
   endTime = "00:00",
   rating = 0,
   distance = 0,
+  date = "?",
+  vehicleInfo = "Okänd bil",
+  numOfSeats = "?",
   className = "",
 }: TripCardProps) {
   const userName = `${firstName} ${lastName}`;
 
   return (
     <SmakCard className={`${className} p-3 pb-0 `}>
-      <Row className="trip-card-small-height">
-        <Col xs={9}>
+
+      <div className="position-relative pb-5">
+        <img
+          src="/images/development/placeholder-map.png"
+          className="w-100 trip-card-map-image rounded-2"
+          alt="Ruttkarta" />
+        <div className="position-absolute trip-card-profil-image-container">
+          <img
+            src="/images/development/user2.png"
+            alt="Profil"
+            className="rounded-2 trip-card-profil-image rounded-circle" />
+        </div>
+        <h3 className="text-primary fw-bold fs-2 position-absolute mt-3">{date}</h3>
+      </div>
+
+      <Row className="trip-card-small-height py-2">
+        <Col xs={8} className="pt-2">
           <Row className="h-100">
             <Col className="d-flex trip-card-time-width">
               <div>
@@ -58,29 +79,21 @@ export default function TripCardSmall({
           </Row>
         </Col>
 
-        <Col xs={3} className="d-flex justify-content-end align-items-start">
-          <p className="text-primary fw-bold">{distance}km</p>
+        <Col xs={4} className="d-flex align-items-center flex-column">
+          <div className="text-primary text-center m-0 fw-semibold medium-font-size">{userName}</div>
+          <div className="d-flex small-font-size">
+            {renderRatingStars(rating)}
+          </div>
+          <p className="text-primary fw-semibold  medium-font-size">{distance}km</p>
         </Col>
       </Row>
 
       <DividerLine variant="info" />
 
-      <Row className="py-3 align-items-center">
-        <Col xs={12} className="d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center gap-3">
-            <img
-              src="/images/development/user2.png" // TODO 
-              alt="Profil"
-              className="rounded-circle"
-              width="38"
-              height="38"
-              style={{ objectFit: 'cover' }} />
-            <p className="text-primary mb-0 fw-semibold">{userName}</p>
-          </div>
-
-          <div className="d-flex gap-1">
-            {renderRatingStars(rating)}
-          </div>
+      <Row className="py-2">
+        <Col className="d-flex align-items-center">
+          <i className="bi bi-car-front-fill me-2 text-black"></i>
+          <span className="text-black fw-semibold">{vehicleInfo}<span className="text-secondary fw-normal"> - {numOfSeats} säten</span></span>
         </Col>
       </Row>
     </SmakCard >

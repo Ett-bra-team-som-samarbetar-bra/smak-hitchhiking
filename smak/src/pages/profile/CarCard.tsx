@@ -15,7 +15,7 @@ export default function CarCard({ car, isOwnProfile = true }: {
             <div className="d-flex justify-content-between gap-3 align-items-center">
 
                 <div className="d-flex align-items-center gap-3">
-                    <i className="bi bi-car-front fs-1 text-black"></i>
+                    <i className="bi bi-car-front-fill fs-1 text-black"></i>
 
                     <div className="d-flex flex-column align-items-start">
                         <p className="m-0  fs-5 text-black">{car.model}</p>
@@ -30,7 +30,7 @@ export default function CarCard({ car, isOwnProfile = true }: {
                         }`}
                     onClick={() => console.log("Edit car")}
                 />
-    
+
             </div>
         </SmakCard>
 

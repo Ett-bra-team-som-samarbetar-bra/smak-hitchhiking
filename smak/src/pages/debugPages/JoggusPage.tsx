@@ -5,7 +5,8 @@ import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SubmitButton from "../../components/SubmitButton";
 import SmakCard from "../../components/SmakCard";
 import DividerLine from "../../components/DividerLine";
-import TripCard from "../../components/trip/TripCardSmall";
+import TripCardSmall from "../../components/trip/TripCardSmall";
+import TripCardBig from "../../components/trip/TripCardBig";
 
 export default function JoggusPage() {
 
@@ -67,8 +68,10 @@ export default function JoggusPage() {
           isTextArea={true} />
       </SmakCard>
 
+      <TripCardSmall className="mt-3" />
 
-      <TripCard
+      <TripCardSmall
+        className="mt-3"
         firstName="Lena"
         lastName="Handen"
         startTime="15:00"
@@ -78,12 +81,19 @@ export default function JoggusPage() {
         rating={4}
         distance={420} />
 
-      <TripCard />
-
-
-
-
-
+      <TripCardBig
+        className="mt-3"
+        firstName="Lena"
+        lastName="Handen"
+        startTime="15:00"
+        endTime="19:30"
+        startCity="Stockholm"
+        endCity="Malmö"
+        rating={4}
+        distance={420}
+        date="13/03 25"
+        vehicleInfo="Keken"
+        numOfSeats="42" />
 
 
 
