@@ -25,23 +25,38 @@ export default function TripCard({
   rating = 0,
   distance = 0
 }: TripCardProps) {
-
-
   const userName = `${firstName} ${lastName}`;
-
 
   return (
     <SmakCard className="my-4 p-3 pb-0">
       <Row className="trip-card-small-height">
+        <Col xs={9}>
+          <Row className="h-100">
+            <Col xs={2} className="d-flex">
+              <div>
+                <p className="fw-bold text-primary">{startTime}</p>
+                <p className="fw-bold text-primary">{endTime}</p>
+              </div>
+            </Col>
 
+            <Col xs={1} className="d-flex justify-content-center">
+              <div className="d-flex flex-column align-items-center">
+                <div className="bg-primary rounded-circle trip-card-circle" ></div>
+                <div className="bg-black trip-card-line"></div>
+                <div className="bg-primary rounded-circle trip-card-circle"></div>
+              </div>
+            </Col>
 
-        <Col xs={8} className="">
-          {startTime} - {startCity} <br></br>
-          {endTime} - {endCity}
+            <Col xs={9} className="d-flex ps-0">
+              <div>
+                <p className="fw-bold text-primary">{startCity}</p>
+                <p className="fw-bold text-primary">{endCity}</p>
+              </div>
+            </Col>
+          </Row>
         </Col>
 
-
-        <Col xs={4} className="d-flex justify-content-end align-items-start">
+        <Col xs={3} className="d-flex justify-content-end align-items-start">
           <p className="text-primary fw-bold">{distance}km</p>
         </Col>
       </Row>

@@ -1,5 +1,4 @@
 import SmakButton from "../../components/SmakButton";
-import SmakCard from "../../components/SmakCard";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 
@@ -32,9 +31,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      <SmakCard className="card-div">
-        <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} />
-      </SmakCard>
+      <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} />
       <h2 className="my-3">Fordon:</h2>
 
       {mockCars.length === 0 ? (
