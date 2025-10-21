@@ -22,16 +22,15 @@ export default function CarCard({ car, isOwnProfile = true }: {
                         <p className="m-0 text-black-50 small">{car.licensePlate} - {car.seats} säten</p>
                     </div>
                 </div>
-                {isOwnProfile ? (
-                    <Button
-                        className="bi bi-pencil-fill fs-4 text-black rounded-circle  bg-white border-0"
-                        onClick={() => console.log("Edit car")}
-                    />
-                ) : (
-                    <Button className="bi bi-info-circle fs-1 text-black rounded-circle  bg-white border-0"
-                        onClick={() => console.log("View car details")}
-                    ></Button>
-                )}
+
+                <Button
+                    className={`${isOwnProfile
+                        ? "bi bi-pencil-fill fs-4 text-black rounded-circle  bg-white border-0"
+                        : "bi bi-info-circle fs-4 text-black rounded-circle  bg-white border-0"
+                        }`}
+                    onClick={() => console.log("Edit car")}
+                />
+    
             </div>
         </SmakCard>
 

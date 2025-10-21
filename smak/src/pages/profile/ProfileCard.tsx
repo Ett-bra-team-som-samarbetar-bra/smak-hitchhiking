@@ -1,4 +1,5 @@
-import { Button, Card } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import SmakCard from "../../components/SmakCard";
 
 export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend = false }: {
     user: {
@@ -15,15 +16,15 @@ export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend
 }) {
     return (
 
-        <Card className="mt-5 w-100 text-center bg-white border-0 profile-card px-5 pb-5">
+        <SmakCard className="card-div text-center profile-card px-5 pb-5 position-relative">
             <div className="profile-image-container">
-                <img src={user.profileImage} alt="Profile" className="profile-image" />
+                <img src={user.profileImage} alt="Profile" className="profile-image shadow" />
 
                 <Button
                     className={`${isOwnProfile
                         ? "bi bi-pencil-fill edit-icon"
                         : isAlreadyFriend
-                            ? "bi bi-trash-fill add-icon"
+                            ? "bi bi-trash add-icon"
                             : "bi bi-person-add add-icon"
                         } d-flex justify-content-center align-items-center border-0 shadow bg-white rounded-circle text-black`}
                     onClick={() => {
@@ -77,6 +78,6 @@ export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend
                     </>
                 )}
             </div>
-        </Card>
+        </SmakCard>
     );
 }
