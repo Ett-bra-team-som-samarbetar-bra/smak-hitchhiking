@@ -1,5 +1,4 @@
 import SmakButton from "../../components/SmakButton";
-import SmakCard from "../../components/SmakCard";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 
@@ -28,25 +27,26 @@ export default function ProfilePage() {
   ];
 
   const isOwnProfile = true;
+  const isAlreadyFriend = false;
 
   return (
     <>
-      <SmakCard className="card-div">
-        <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} />
-      </SmakCard>
-      <h2 className="my-3">Fordon:</h2>
+      <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} />
+      <div className="d-flex flex-column gap-3">
+        <h2 className="m-0">Fordon</h2>
 
-      {mockCars.length === 0 ? (
-        <p className="text-muted">Inga fordon tillagda</p>
-      ) : (
-        mockCars.map((car, index) => (
-          <CarCard key={index} car={car} isOwnProfile={isOwnProfile} />
-        ))
-      )}
-      {isOwnProfile && <SmakButton className="my-3" onClick={() => console.log("Add vehicle clicked")}>
-        Lägg till fordon
-      </SmakButton>
-      }
+        {mockCars.length === 0 ? (
+          <p className="text-muted">Inga fordon tillagda</p>
+        ) : (
+          mockCars.map((car, index) => (
+            <CarCard key={index} car={car} isOwnProfile={isOwnProfile} />
+          ))
+        )}
+        {isOwnProfile && <SmakButton className="my-2" onClick={() => console.log("Add vehicle clicked")}>
+          Lägg till fordon
+        </SmakButton>
+        }
+      </div>
     </>
   );
 }
