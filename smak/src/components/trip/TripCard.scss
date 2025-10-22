@@ -2,6 +2,14 @@
   min-height: 5rem;
 }
 
+.trip-card-large-height {
+  min-height: 5rem;
+
+  @media (max-width: 400px) {
+    margin-top: 34px !important;
+  }
+}
+
 .trip-card-circle {
   width: 9px;
   height: 9px;
@@ -13,7 +21,7 @@
 }
 
 .trip-card-map-image {
-  max-height: 240px;
+  height: 240px;
   object-fit: cover;
   object-position: center;
 }

@@ -34,6 +34,7 @@ export default function TripCardBig({
   className = "",
 }: TripCardProps) {
   const userName = `${firstName} ${lastName}`;
+  //const isBookableTrip = true;
 
   return (
     <SmakCard className={`${className} pb-0`}>
@@ -61,7 +62,7 @@ export default function TripCardBig({
         <h3 className="text-primary fw-bold fs-2 position-absolute mt-3">{date}</h3>
       </div>
 
-      <Row className="trip-card-small-height py-2">
+      <Row className="trip-card-large-height py-2">
         <Col xs={10} className="pt-2">
           <Row className="h-100">
             <Col className="d-flex trip-card-time-width">
