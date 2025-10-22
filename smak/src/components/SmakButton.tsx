@@ -11,7 +11,7 @@ interface SmakButtonProps {
 export default function SmakButton({ onClick, children, className = "", color = "primary" }: SmakButtonProps) {
     return (
         <Button
-            type="submit"
+            type="button"
             className={`${className} btn btn-${color} py-2 rounded-5 w-100 shadow`}
             onClick={onClick}
         >

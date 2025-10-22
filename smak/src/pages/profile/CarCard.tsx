@@ -1,6 +1,5 @@
-
-import { Button } from "react-bootstrap";
 import SmakCard from "../../components/SmakCard";
+import IconButton from "../../components/IconButton";
 
 export default function CarCard({ car, isOwnProfile = true }: {
     car: {
@@ -23,12 +22,11 @@ export default function CarCard({ car, isOwnProfile = true }: {
                     </div>
                 </div>
 
-                <Button
-                    className={`${isOwnProfile
-                        ? "bi bi-pencil-fill fs-4 text-black rounded-circle  bg-white border-0"
-                        : "bi bi-info-circle fs-4 text-black rounded-circle  bg-white border-0"
-                        }`}
+                <IconButton
+                    icon={isOwnProfile ? "bi-pencil-fill" : "bi-info-circle"}
                     onClick={() => console.log("Edit car")}
+                    variant="flat" 
+                    className="p-2"
                 />
 
             </div>
