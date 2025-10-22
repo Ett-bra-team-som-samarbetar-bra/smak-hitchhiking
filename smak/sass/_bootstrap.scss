@@ -49,6 +49,15 @@ $success: green;
   }
 }
 
+.whole-app-horizontal-width {
+  max-width: 800px;
+}
+
+.whole-app-horizontal-padding {
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+}
+
 .text-grow {
   transform: scale(1.1);
 }

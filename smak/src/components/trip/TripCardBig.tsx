@@ -33,8 +33,9 @@ export default function TripCardBig({
   numOfSeats = "?",
   className = "",
 }: TripCardProps) {
+
   const userName = `${firstName} ${lastName}`;
-  //const isBookableTrip = true;
+  const isBookableTrip = true;
 
   return (
     <SmakCard className={`${className} pb-0`}>
@@ -63,7 +64,7 @@ export default function TripCardBig({
       </div>
 
       <Row className="trip-card-large-height py-2">
-        <Col xs={10} className="pt-2">
+        <Col className="pt-2">
           <Row className="h-100">
             <Col className="d-flex trip-card-time-width">
               <div>
@@ -95,12 +96,12 @@ export default function TripCardBig({
       <Row
         className="py-2 cursor-pointer"
         onClick={() => console.log("Car pressed")}>
-        <Col xs={11} className="d-flex align-items-center">
+        <Col xs={10} className="d-flex align-items-center">
           <i className="bi bi-car-front-fill me-2 text-black"></i>
           <span className="text-black fw-semibold">{vehicleInfo}<span className="text-secondary fw-normal"> - {numOfSeats} säten</span></span>
         </Col>
 
-        <Col xs={1} className="d-flex justify-content-end align-items-center">
+        <Col xs={2} className="d-flex justify-content-end align-items-center">
           <i className="bi bi-info-circle fs-6 text-secondary"></i>
         </Col>
       </Row>

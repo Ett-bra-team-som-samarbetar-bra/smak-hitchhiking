@@ -27,7 +27,8 @@ export default function JoggusPage() {
     firstName: "Jocke",
     lastName: "Kek",
     profileImage: "/images/development/user2.png",
-    description: "En trevlig person som gillar långa resor och god mat."
+    description: "En trevlig kille som gillar långa promenader på stranden och att koda hela natten.",
+    rating: 4,
   };
 
 
@@ -111,7 +112,7 @@ export default function JoggusPage() {
         user={user}
         className=""
         isAddedToTrip={true}
-        isDriver={false} />
+        isDriver={true} />
 
 
 

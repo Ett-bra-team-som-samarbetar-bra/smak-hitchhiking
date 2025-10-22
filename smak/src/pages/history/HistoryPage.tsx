@@ -8,8 +8,8 @@ export default function HistoryPage() {
 
       <TripCardSmall
         className=""
-        firstName="Lena"
-        lastName="Handen"
+        firstName="Iron"
+        lastName="Boy"
         userImage="/images/development/user2.png"
         startTime="15:00"
         endTime="19:30"
@@ -21,7 +21,7 @@ export default function HistoryPage() {
       <TripCardSmall
         className=""
         firstName="Jocke"
-        lastName="Kek"
+        lastName="Bjers"
         userImage="/images/development/user2.png"
         startTime="12:00"
         endTime="12:15"
@@ -31,18 +31,6 @@ export default function HistoryPage() {
         distance={3} />
 
       <h2 className="m-0">Resor 08/12</h2>
-
-      <TripCardSmall
-        className=""
-        firstName="Jocke"
-        lastName="Kek"
-        userImage="/images/development/user2.png"
-        startTime="12:00"
-        endTime="12:15"
-        startCity="Världens bar"
-        endCity="Haga"
-        rating={1}
-        distance={3} />
 
       <TripCardBig
         className=""
@@ -55,8 +43,8 @@ export default function HistoryPage() {
         rating={3}
         distance={420}
         date="13/03 25"
-        vehicleInfo="Keken"
-        numOfSeats="42" />
+        vehicleInfo="Audi A3"
+        numOfSeats="4" />
 
       <TripCardSmall
         className=""
