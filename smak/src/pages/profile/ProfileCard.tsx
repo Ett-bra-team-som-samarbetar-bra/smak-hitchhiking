@@ -56,7 +56,7 @@ export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend
         </div>
       </div>
 
-      <div className="d-inline-flex flex-row align-items-center justify-content-center gap-2g my-2 border-bottom border-black">
+      <div className="d-inline-flex flex-row align-items-center justify-content-center gap-2 my-2 border-bottom border-black w-100">
         <i className="bi bi-rocket-takeoff-fill"></i>
         <p className="my-2">Jag gillar</p>
       </div>
