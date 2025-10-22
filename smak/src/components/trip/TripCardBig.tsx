@@ -35,7 +35,7 @@ export default function TripCardBig({
 }: TripCardProps) {
 
   const userName = `${firstName} ${lastName}`;
-  const isBookableTrip = true;
+  //const isBookableTrip = true;
 
   return (
     <SmakCard className={`${className} pb-0`}>
