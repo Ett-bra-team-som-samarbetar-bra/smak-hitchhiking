@@ -1,5 +1,6 @@
-import { Button } from "react-bootstrap";
+
 import SmakCard from "../../components/SmakCard";
+import IconButton from "../../components/IconButton";
 
 export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend = false }: {
     user: {
@@ -20,23 +21,22 @@ export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend
             <div className="profile-image-container">
                 <img src={user.profileImage} alt="Profile" className="profile-image shadow" />
 
-                <Button
-                    className={`${isOwnProfile
-                        ? "bi bi-pencil-fill edit-icon"
-                        : isAlreadyFriend
-                            ? "bi bi-trash add-icon"
-                            : "bi bi-person-add add-icon"
-                        } d-flex justify-content-center align-items-center border-0 shadow bg-white rounded-circle text-black`}
+                <IconButton
+                    icon={
+                        isOwnProfile
+                            ? "bi-pencil-fill"
+                            : isAlreadyFriend
+                                ? "bi-trash"
+                                : "bi-person-add"
+                    }
                     onClick={() => {
-                        if (isOwnProfile) {
-                            console.log("Edit profile clicked");
-                        } else if (isAlreadyFriend) {
-                            console.log("Remove friend clicked");
-                        } else {
-                            console.log("Add friend clicked");
-                        }
+                        if (isOwnProfile) console.log("Edit profile");
+                        else if (isAlreadyFriend) console.log("Remove friend");
+                        else console.log("Add friend");
                     }}
+                    className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
                 />
+
 
             </div>
 

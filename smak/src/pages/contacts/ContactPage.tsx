@@ -26,19 +26,16 @@ const mockUsers = [
     description: "Älskar kaffe och choklad!", 
   },
 
-
 ];
-const isDriver = false;
-const isAddedToTrip = false;
+
 export default function ContactPage() {
   return (
     <>
       <h2 className="py-3">Dina Kontakter</h2>
 
       {mockUsers.map((user, index) => (
-        <SmakContact key={index} user={user} isDriver={isDriver} isAddedToTrip={isAddedToTrip} />
+        <SmakContact key={index} user={user} />
       ))}
-
     </>
   )
 }

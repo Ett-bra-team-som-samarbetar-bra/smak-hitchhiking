@@ -1,5 +1,6 @@
+import IconButton from "./IconButton";
 import SmakCard from "./SmakCard";
-import { Button, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 export default function SmakContact({ user, isDriver = false, isAddedToTrip = false }: {
     user: {
         firstName: string;
@@ -7,8 +8,8 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
         profileImage: string;
         description: string;
     }
-    isDriver: boolean;
-    isAddedToTrip: boolean;
+    isDriver?: boolean;
+    isAddedToTrip?: boolean;
 }) {
     return (
         <SmakCard className="mb-3 p-2">
@@ -36,19 +37,22 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
                 <Col className="d-flex align-items-center justify-content-end gap-2 flex-grow-0 p-3">
                     {isDriver && !isAddedToTrip && (
                         <>
-                            <Button
-                                className="bi bi-x-square-fill bg-white text-black border-0 p-0 fs-4"
+                            <IconButton
+                                icon="bi-x-square-fill"
+                                variant="flat"
                                 onClick={() => console.log("Denied request")}
                             />
-                            <Button
-                                className="bi bi-check-square-fill bg-white text-black border-0 p-0 fs-4"
+                            <IconButton
+                                icon="bi-check-square-fill"
+                                variant="flat"
                                 onClick={() => console.log("Accepted request")}
                             />
                         </>
                     )}
                     {isAddedToTrip && (
-                        <Button
-                            className="bi bi-trash bg-white text-black border-0 fs-4"
+                        <IconButton
+                            icon="bi-trash"
+                            variant="flat"
                             onClick={() => console.log("Removed from trip")}
                         />
                     )}
