@@ -31,11 +31,12 @@ export default function App() {
   return <>
     {!isPwa && !config.dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView
       ? (<DesktopPage />)
-      : (<>
-        <Header />
-        <Main />
-        <Footer />
-      </>
+      : (
+        <>
+          <Header />
+          <Main />
+          <Footer />
+        </>
       )}
   </>;
 };
