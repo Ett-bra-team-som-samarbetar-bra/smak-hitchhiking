@@ -11,31 +11,31 @@ const mockUsers = [
     firstName: "Kent",
     lastName: "Stark",
     profileImage: "/images/harold.png",
-    description: "Jag kör bil!", 
+    description: "Jag kör bil!",
   },
   {
     firstName: "Lorem",
     lastName: "Ipsumsson",
     profileImage: "/images/harold.png",
-    description: "Jag har 2 rottweilers som skäller 24/7!", 
+    description: "Jag har 2 rottweilers som skäller 24/7!",
   },
   {
     firstName: "Mitsubishi",
     lastName: "Svärd",
     profileImage: "/images/harold.png",
-    description: "Älskar kaffe och choklad!", 
+    description: "Älskar kaffe och choklad!",
   },
 
 ];
 
 export default function ContactPage() {
   return (
-    <>
-      <h2 className="py-3">Dina Kontakter</h2>
+    <div className="d-flex flex-column gap-3">
+      <h2 className="m-0">Dina Kontakter</h2>
 
       {mockUsers.map((user, index) => (
         <SmakContact key={index} user={user} />
       ))}
-    </>
+    </div>
   )
 }

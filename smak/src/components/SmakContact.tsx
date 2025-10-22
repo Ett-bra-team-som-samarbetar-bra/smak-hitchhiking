@@ -1,25 +1,29 @@
 import IconButton from "./IconButton";
 import SmakCard from "./SmakCard";
 import { Col, Row } from "react-bootstrap";
-export default function SmakContact({ user, isDriver = false, isAddedToTrip = false }: {
+
+export default function SmakContact({ user, isDriver = false, isAddedToTrip = false, className = "" }: {
     user: {
         firstName: string;
         lastName: string;
         profileImage: string;
         description: string;
     }
+    className?: string;
     isDriver?: boolean;
     isAddedToTrip?: boolean;
 }) {
     return (
-        <SmakCard className="mb-3 p-2">
-            <Row >
+        <SmakCard className={`${className}`}>
+            <Row
+                className="cursor-pointer"
+                onClick={() => console.log("User pressed")}>
 
                 <Col className="col-auto">
                     <img
                         src={user.profileImage}
                         alt="Profile"
-                        className="shadow"
+                        className=""
                         style={{
                             width: "80px",
                             height: "80px",
@@ -30,7 +34,7 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
                 </Col>
 
                 <Col className="d-flex flex-column justify-content-start py-1 flex-grow-1">
-                    <h4 className="m-0 mb-1">{user.firstName} {user.lastName}</h4>
+                    <h4 className="m-0 mb-1 text-primary fw-bold">{user.firstName} {user.lastName}</h4>
                     <p className="m-0 text-black-50 small">{user.description}</p>
                 </Col>
 
@@ -58,6 +62,6 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
                     )}
                 </Col>
             </Row>
-        </SmakCard>
+        </SmakCard >
     );
 }

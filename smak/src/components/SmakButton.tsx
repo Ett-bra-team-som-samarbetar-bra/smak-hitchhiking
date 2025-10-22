@@ -5,7 +5,7 @@ interface SmakButtonProps {
     onClick?: () => void;
     children?: React.ReactNode;
     className?: string;
-    color?: string; 
+    color?: string;
 }
 
 export default function SmakButton({ onClick, children, className = "", color = "primary" }: SmakButtonProps) {

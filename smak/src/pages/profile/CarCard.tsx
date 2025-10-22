@@ -10,7 +10,7 @@ export default function CarCard({ car, isOwnProfile = true }: {
     isOwnProfile?: boolean;
 }) {
     return (
-        <SmakCard className="mb-3 p-3">
+        <SmakCard>
             <div className="d-flex justify-content-between gap-3 align-items-center">
 
                 <div className="d-flex align-items-center gap-3">
@@ -25,7 +25,7 @@ export default function CarCard({ car, isOwnProfile = true }: {
                 <IconButton
                     icon={isOwnProfile ? "bi-pencil-fill" : "bi-info-circle"}
                     onClick={() => console.log("Edit car")}
-                    variant="flat" 
+                    variant="flat"
                     className="p-2"
                 />
 

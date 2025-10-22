@@ -1,83 +1,80 @@
-
-import SmakCard from "../../components/SmakCard";
 import IconButton from "../../components/IconButton";
 
 export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend = false }: {
-    user: {
-        firstName: string;
-        lastName: string;
-        profileImage: string;
-        trips: number;
-        rating: string;
-        activeYears: string;
-        preferences: string[];
-    }
-    isOwnProfile?: boolean;
-    isAlreadyFriend?: boolean;
+  user: {
+    firstName: string;
+    lastName: string;
+    profileImage: string;
+    trips: number;
+    rating: string;
+    activeYears: string;
+    preferences: string[];
+  }
+  isOwnProfile?: boolean;
+  isAlreadyFriend?: boolean;
 }) {
-    return (
+  return (
+    <div className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-5 position-relative`}>
+      <div className="profile-image-container">
+        <img src={user.profileImage} alt="Profile" className="profile-image shadow" />
 
-        <SmakCard className="card-div text-center profile-card px-5 pb-5 position-relative">
-            <div className="profile-image-container">
-                <img src={user.profileImage} alt="Profile" className="profile-image shadow" />
-
-                <IconButton
-                    icon={
-                        isOwnProfile
-                            ? "bi-pencil-fill"
-                            : isAlreadyFriend
-                                ? "bi-trash"
-                                : "bi-person-add"
-                    }
-                    onClick={() => {
-                        if (isOwnProfile) console.log("Edit profile");
-                        else if (isAlreadyFriend) console.log("Remove friend");
-                        else console.log("Add friend");
-                    }}
-                    className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
-                />
+        <IconButton
+          icon={
+            isOwnProfile
+              ? "bi-pencil-fill"
+              : isAlreadyFriend
+                ? "bi-trash"
+                : "bi-person-add"
+          }
+          onClick={() => {
+            if (isOwnProfile) console.log("Edit profile");
+            else if (isAlreadyFriend) console.log("Remove friend");
+            else console.log("Add friend");
+          }}
+          className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
+        />
 
 
+      </div>
+
+      <h2>{user.firstName} {user.lastName}</h2>
+
+      <div className="d-flex justify-content-between mt-2 mb-4">
+        <div className="text-center">
+          <p className="mb-1 fw-bold">{user.trips}</p>
+          <p className="mb-0 text-black-50">Rutter</p>
+        </div>
+
+        <div className="text-center">
+          <p className="mb-1 fw-bold">{user.rating}/5</p>
+          <p className="mb-0 text-black-50">Betyg</p>
+        </div>
+
+        <div className="text-center">
+          <p className="mb-1 fw-bold">{user.activeYears}</p>
+          <p className="mb-0 text-black-50">År</p>
+        </div>
+      </div>
+
+      <div className="d-inline-flex flex-row align-items-center justify-content-center gap-2g my-2 border-bottom border-black">
+        <i className="bi bi-rocket-takeoff-fill"></i>
+        <p className="my-2">Jag gillar</p>
+      </div>
+
+      <div className="d-flex flex-column mt-2">
+        {user.preferences.length > 0 && (
+          <>
+            <div className="d-flex justify-content-between gap-2">
+              <p>{user.preferences[0]}</p>
+              <p>{user.preferences[1]}</p>
             </div>
-
-            <h2>{user.firstName} {user.lastName}</h2>
-
-            <div className="d-flex justify-content-between mt-2 mb-4">
-                <div className="text-center">
-                    <p className="mb-1 fw-bold">{user.trips}</p>
-                    <p className="mb-0 text-black-50">Rutter</p>
-                </div>
-
-                <div className="text-center">
-                    <p className="mb-1 fw-bold">{user.rating}/5</p>
-                    <p className="mb-0 text-black-50">Betyg</p>
-                </div>
-
-                <div className="text-center">
-                    <p className="mb-1 fw-bold">{user.activeYears}</p>
-                    <p className="mb-0 text-black-50">År</p>
-                </div>
+            <div className="d-flex justify-content-between gap-2">
+              <p>{user.preferences[2]}</p>
+              <p>{user.preferences[3]}</p>
             </div>
-
-            <div className="d-inline-flex flex-row align-items-center justify-content-center gap-2g my-2 border-bottom border-black">
-                <i className="bi bi-rocket-takeoff-fill"></i>
-                <p className="my-2">Jag gillar</p>
-            </div>
-
-            <div className="d-flex flex-column mt-2">
-                {user.preferences.length > 0 && (
-                    <>
-                        <div className="d-flex justify-content-between gap-2">
-                            <p>{user.preferences[0]}</p>
-                            <p>{user.preferences[1]}</p>
-                        </div>
-                        <div className="d-flex justify-content-between gap-2">
-                            <p>{user.preferences[2]}</p>
-                            <p>{user.preferences[3]}</p>
-                        </div>
-                    </>
-                )}
-            </div>
-        </SmakCard>
-    );
+          </>
+        )}
+      </div>
+    </div>
+  );
 }

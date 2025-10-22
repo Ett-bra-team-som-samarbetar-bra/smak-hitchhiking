@@ -7,6 +7,9 @@ import SmakCard from "../../components/SmakCard";
 import DividerLine from "../../components/DividerLine";
 import TripCardSmall from "../../components/trip/TripCardSmall";
 import TripCardBig from "../../components/trip/TripCardBig";
+import IconButton from "../../components/IconButton";
+import SmakButton from "../../components/SmakButton";
+import SmakContact from "../../components/SmakContact";
 
 export default function JoggusPage() {
 
@@ -20,24 +23,36 @@ export default function JoggusPage() {
     setPayload({ ...payload, [name]: value.trim() });
   }
 
+  const user = {
+    firstName: "Jocke",
+    lastName: "Kek",
+    profileImage: "/images/development/user2.png",
+    description: "En trevlig person som gillar långa resor och god mat."
+  };
+
+
+
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column">
+    <div className="d-flex justify-content-center align-items-center flex-column gap-3">
       <h1>Joggus - IV</h1>
       <p>Component showcase</p>
 
-
       <DividerLine className="mb-4" variant="info" />
 
-
-      <SmakCard className="mb-2 p-3">
+      <SmakCard className="">
         <SubmitButton
           className="my-3"
           color="primary"
-          isLoading={true}>
-          Hitta Resa
+          isLoading={false}>
+          submit button
         </SubmitButton>
-      </SmakCard>
 
+        <SmakButton >
+          onClick button
+        </SmakButton >
+
+        <IconButton icon={"bi-check-circle-fill"} className="mt-3" />
+      </SmakCard>
 
       <InputFormEmail
         className="my-3"
@@ -45,15 +60,13 @@ export default function JoggusPage() {
         label="E-postadress"
         placeholder="Ange din e-postadress" />
 
-
       <InputFormText
         className="mb-3"
         setFormProp={setFormProp}
         label="Text Ba"
         placeholder="Text Ba" />
 
-
-      <SmakCard className="p-3">
+      <SmakCard>
         <InputFormPassword
           className="mb-3"
           setFormProp={setFormProp}
@@ -68,12 +81,11 @@ export default function JoggusPage() {
           isTextArea={true} />
       </SmakCard>
 
-      <TripCardSmall className="mt-3" />
-
       <TripCardSmall
-        className="mt-3"
+        className=""
         firstName="Lena"
         lastName="Handen"
+        userImage="/images/development/user2.png"
         startTime="15:00"
         endTime="19:30"
         startCity="Stockholm"
@@ -82,7 +94,7 @@ export default function JoggusPage() {
         distance={420} />
 
       <TripCardBig
-        className="mt-3"
+        className=""
         firstName="Lena"
         lastName="Handen"
         startTime="15:00"
@@ -94,6 +106,13 @@ export default function JoggusPage() {
         date="13/03 25"
         vehicleInfo="Keken"
         numOfSeats="42" />
+
+      <SmakContact
+        user={user}
+        className=""
+        isAddedToTrip={true}
+        isDriver={false} />
+
 
 
 
