@@ -56,8 +56,13 @@ export default function GeocodeInput({
         placeholder={placeholder}
         value={query}
         onChange={(e) => {
-          setQuery(e.target.value);
+          const newValue = e.target.value;
+          setQuery(newValue);
           setShowSuggestions(true);
+
+          if (newValue.trim() === "") {
+            onChange(null);
+          }
         }}
         onFocus={() => setShowSuggestions(true)}
         onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
