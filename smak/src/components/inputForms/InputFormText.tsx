@@ -9,6 +9,7 @@ interface InputFormTextProps {
   value?: string;
   isTextArea?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 export default function InputFormText({
@@ -19,7 +20,9 @@ export default function InputFormText({
   typeName = "name",
   value = "",
   isTextArea = false,
-  className = ""
+  className = "",
+  disabled = false
+
 }: InputFormTextProps) {
 
   return <>
@@ -36,7 +39,9 @@ export default function InputFormText({
           minLength={2}
           as={isTextArea ? "textarea" : "input"}
           required
-          defaultValue={value} />
+          defaultValue={value} 
+          disabled={disabled}
+          />
       </Form.Label>
     </Form.Group>
   </>
