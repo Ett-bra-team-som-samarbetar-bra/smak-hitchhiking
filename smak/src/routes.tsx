@@ -5,12 +5,12 @@ import DrivePage from "./pages/drive/DrivePage";
 import HistoryPage from "./pages/history/HistoryPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import TripsCurrentPage from "./pages/trips-current/TripsCurrentPage";
-import SettingsPage from "./pages/settings/StartPage";
+import SettingsPage from "./pages/settings/settings";
 import ComingTripsPage from "./pages/trips-coming/ComingTripsPage";
 import JoggusPage from "./pages/debugPages/JoggusPage";
 import KalvPage from "./pages/debugPages/KalvPage";
 import TungisPage from "./pages/debugPages/TungisPage";
-import NotFoundPage from "./pages/notFound/ContactPage";
+import NotFoundPage from "./pages/notFound/NotFound";
 
 interface Route {
   element: JSX.Element;

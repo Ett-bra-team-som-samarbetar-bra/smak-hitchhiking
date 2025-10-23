@@ -1,5 +1,13 @@
 .trip-card-small-height {
-  min-height: 6rem;
+  min-height: 5rem;
+}
+
+.trip-card-large-height {
+  min-height: 5rem;
+
+  @media (max-width: 400px) {
+    margin-top: 30px !important;
+  }
 }
 
 .trip-card-circle {
@@ -10,4 +18,37 @@
 .trip-card-line {
   width: 1px;
   height: 2.8rem;
+}
+
+.trip-card-map-image {
+  height: 240px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.trip-card-profil-image-container {
+  top: 10rem;
+  right: 1rem;
+}
+
+.trip-card-profil-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.trip-card-time-width {
+  max-width: 58px !important;
+}
+
+.trip-card-line-width {
+  max-width: 30px !important;
+}
+
+.medium-font-size {
+  font-size: 0.9rem;
+}
+
+.small-font-size {
+  font-size: 0.8rem;
 }
