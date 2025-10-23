@@ -11,14 +11,14 @@ const mockUsers = [
   {
     firstName: "Kent",
     lastName: "Stark",
-    profileImage: "/images/harold.png",
+    profileImage: "images/development/user2.png",
     description: "En äventyrlig själ som alltid är redo för nästa resa.",
     rating: 4,
   },
   {
     firstName: "Lorem",
     lastName: "Ipsumsson",
-    profileImage: "/images/harold.png",
+    profileImage: "images/development/user2.png",
     description: "En resglad person som älskar att upptäcka nya platser och kulturer.",
     rating: 2,
   },

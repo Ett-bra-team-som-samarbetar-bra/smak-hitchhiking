@@ -7,9 +7,10 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 interface DynamicMapProps {
   from: { name: string; coordinates: [number, number] } | null;
   to: { name: string; coordinates: [number, number] } | null;
+  className?: string;
 }
 
-export default function DynamicMap({ from, to }: DynamicMapProps) {
+export default function DynamicMap({ from, to, className = "" }: DynamicMapProps) {
   const [route, setRoute] = useState<any>(null);
   const mapRef = useRef<MapRef>(null);
 
@@ -61,7 +62,9 @@ export default function DynamicMap({ from, to }: DynamicMapProps) {
   }, [from, to]);
 
   return (
-    <div style={{ width: "100%", height: "400px" }}>
+    <div className={`${className} dynamic-map-container`}>
+
+
       <Map
         ref={mapRef} // startvärde Världens bar
         initialViewState={{

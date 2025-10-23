@@ -15,19 +15,26 @@ export default function StartPage() {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column py-3 h-50">
-      <h1>Start Page</h1>
+    <div className="d-flex flex-column">
+
       <form
         onSubmit={handleSubmit}
-        className="d-flex flex-column align-items-center"
-      >
+        className="d-flex flex-column align-items-center">
         <GeocodeInput value={from} onChange={setFrom} placeholder="From" />
         <GeocodeInput value={to} onChange={setTo} placeholder="To" />
         <button type="submit" className="btn btn-primary">
           Hitta resor
         </button>
       </form>
-      <DynamicMap from={from} to={to}></DynamicMap>
+
+
+      <DynamicMap
+        className="d-flex flex-grow-1"
+        from={from}
+        to={to}
+      >
+
+      </DynamicMap>
     </div>
   );
 }

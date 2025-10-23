@@ -2,6 +2,8 @@ import TripCardBig from "../../components/trip/TripCardBig";
 import TripCardSmall from "../../components/trip/TripCardSmall";
 
 export default function HistoryPage() {
+
+
   return (
     <div className="d-flex flex-column gap-3">
       <h2 className="m-0">Resor 07/12</h2>
@@ -16,7 +18,8 @@ export default function HistoryPage() {
         startCity="Stockholm"
         endCity="Malmö"
         rating={2}
-        distance={420} />
+        distance={420}
+        onSmallTripCardClick={() => console.log("small card clicked")} />
 
       <TripCardSmall
         className=""
@@ -35,16 +38,20 @@ export default function HistoryPage() {
       <TripCardBig
         className=""
         firstName="Lena"
-        lastName="Handen"
+        lastName="Axelsson"
         startTime="15:00"
         endTime="19:30"
-        startCity="Stockholm"
+        startCity="Skummeslövsstrand"
         endCity="Malmö"
         rating={3}
         distance={420}
         date="13/03 25"
         vehicleInfo="Audi A3"
-        numOfSeats="4" />
+        numOfSeats="4"
+        cardButtonType="book"
+        onUserClick={() => console.log("user clicked")}
+        onCarClick={() => console.log("car clicked")}
+        onButtonClick={() => console.log("button clicked")} />
 
       <TripCardSmall
         className=""

@@ -85,7 +85,7 @@ export default function JoggusPage() {
       <TripCardSmall
         className=""
         firstName="Lena"
-        lastName="Handen"
+        lastName="Jansson"
         userImage="/images/development/user2.png"
         startTime="15:00"
         endTime="19:30"
@@ -97,7 +97,7 @@ export default function JoggusPage() {
       <TripCardBig
         className=""
         firstName="Lena"
-        lastName="Handen"
+        lastName="kekek"
         startTime="15:00"
         endTime="19:30"
         startCity="Stockholm"

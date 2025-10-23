@@ -5,8 +5,20 @@
 .trip-card-large-height {
   min-height: 5rem;
 
-  @media (max-width: 400px) {
+  @media (max-width: 425px) {
     margin-top: 30px !important;
+  }
+}
+
+#trip-card-button-mobile-hide {
+  @media (max-width: 425px) {
+    display: none;
+  }
+}
+
+#trip-card-button-desktop-hide {
+  @media (min-width: 426px) {
+    display: none;
   }
 }
 
@@ -51,4 +63,8 @@
 
 .small-font-size {
   font-size: 0.8rem;
+}
+
+.trip-card-button-width {
+  width: 100px;
 }

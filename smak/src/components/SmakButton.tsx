@@ -12,7 +12,7 @@ export default function SmakButton({ onClick, children, className = "", color = 
     return (
         <Button
             type="button"
-            className={`${className} btn btn-${color} py-2 rounded-5 w-100 shadow`}
+            className={`${className} btn btn-${color} py-2 rounded-5 w-100`}
             onClick={onClick}
         >
             {children}

@@ -1,6 +1,6 @@
 const config = {
     // Debug
-    dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView: false,   // true = hide desktop page
+    dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView: true,   // true = hide desktop page
     showDebugPages: true,                                           // true = show debug pages in header
 };
 
