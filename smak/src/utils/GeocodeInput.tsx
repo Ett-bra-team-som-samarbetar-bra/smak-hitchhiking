@@ -28,7 +28,7 @@ export default function GeocodeInput({
       const res = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
           query
-        )}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&limit=5`
+        )}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&limit=2&country=SE`
       );
       const data = await res.json();
       setSuggestions(data.features || []);
