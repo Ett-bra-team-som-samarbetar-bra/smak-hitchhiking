@@ -14,29 +14,33 @@ export default function App() {
 
   useEffect(() => {
     const checkPwaStatus = () => {
-      const isPwaMode = window.matchMedia('(display-mode: standalone)').matches ||
+      const isPwaMode =
+        window.matchMedia("(display-mode: standalone)").matches ||
         (window.navigator as any).standalone === true;
       setIsPwa(isPwaMode);
     };
 
     checkPwaStatus();
-    const mediaQuery = window.matchMedia('(display-mode: standalone)');
-    mediaQuery.addEventListener('change', checkPwaStatus);
+    const mediaQuery = window.matchMedia("(display-mode: standalone)");
+    mediaQuery.addEventListener("change", checkPwaStatus);
 
     return () => {
-      mediaQuery.removeEventListener('change', checkPwaStatus);
+      mediaQuery.removeEventListener("change", checkPwaStatus);
     };
   }, []);
 
-  return <>
-    {!isPwa && !config.dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView
-      ? (<DesktopPage />)
-      : (
+  return (
+    <>
+      {!isPwa &&
+      !config.dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView ? (
+        <DesktopPage />
+      ) : (
         <>
           <Header />
           <Main />
           <Footer />
         </>
       )}
-  </>;
-};
+    </>
+  );
+}
