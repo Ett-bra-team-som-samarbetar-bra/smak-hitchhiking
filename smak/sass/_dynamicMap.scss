@@ -1,3 +1,19 @@
 .dynamic-map-container {
-  height: 1000px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 60px);
+  box-sizing: border-box;
+  clip-path: inset(0 0 60px 0);
+  z-index: 0;
+}
+
+.ontop-content {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
 }

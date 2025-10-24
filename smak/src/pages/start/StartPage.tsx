@@ -2,6 +2,7 @@ import { useState } from "react";
 import DynamicMap from "../../partials/DynamicMap";
 import GeocodeInput from "../../utils/GeocodeInput";
 import type GeocodeSelection from "../../interfaces/GeocodeSelection";
+import TripCardSmall from "../../components/trip/TripCardSmall";
 
 export default function StartPage() {
   const [from, setFrom] = useState<GeocodeSelection | null>(null);
@@ -15,9 +16,36 @@ export default function StartPage() {
   };
 
   return (
-    <div className="d-flex flex-column">
+    <div className="position-relative h-100 overflow-hidden">
+      <div className="dynamic-map-container">
+        <DynamicMap
+          className=""
+          from={from}
+          to={to} />
+      </div>
 
-      <form
+      <div className="ontop-content w-100 d-flex">
+
+
+        <TripCardSmall
+          className="mx-3"
+          firstName="Some"
+          lastName="Bottons"
+          userImage="/images/development/user2.png"
+          startTime="Botton"
+          endTime="Botton"
+          startCity="Botton"
+          endCity="Botton"
+          rating={2}
+          distance={420}
+          onSmallTripCardClick={() => console.log("small card clicked")} />
+      </div>
+
+
+
+
+
+      {/* <form
         onSubmit={handleSubmit}
         className="d-flex flex-column align-items-center">
         <GeocodeInput value={from} onChange={setFrom} placeholder="From" />
@@ -25,16 +53,18 @@ export default function StartPage() {
         <button type="submit" className="btn btn-primary">
           Hitta resor
         </button>
-      </form>
+      </form> */}
 
 
-      <DynamicMap
+
+
+
+
+      {/* <DynamicMap
         className="d-flex flex-grow-1"
         from={from}
-        to={to}
-      >
-
-      </DynamicMap>
+        to={to}>
+      </DynamicMap> */}
     </div>
   );
 }

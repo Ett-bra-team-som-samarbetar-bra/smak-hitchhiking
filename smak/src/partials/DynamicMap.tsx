@@ -24,7 +24,6 @@ export default function DynamicMap({ from, to, className = "" }: DynamicMapProps
       try {
         const [fromLongitude, fromLatitude] = from?.coordinates;
         const [toLongitude, toLatitude] = to?.coordinates;
-
         const routeUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${fromLongitude},${fromLatitude};${toLongitude},${toLatitude}?geometries=geojson&overview=full&access_token=${MAPBOX_TOKEN}`;
         const res = await fetch(routeUrl);
         const data = await res.json();
@@ -62,9 +61,7 @@ export default function DynamicMap({ from, to, className = "" }: DynamicMapProps
   }, [from, to]);
 
   return (
-    <div className={`${className} dynamic-map-container`}>
-
-
+    <div className={`${className} w-100 h-100`}>
       <Map
         ref={mapRef} // startvärde Världens bar
         initialViewState={{
