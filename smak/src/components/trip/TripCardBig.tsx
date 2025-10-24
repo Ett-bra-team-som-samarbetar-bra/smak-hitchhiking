@@ -5,6 +5,7 @@ import SmakCard from "../SmakCard";
 import DividerLine from "../DividerLine";
 import TripCardButton from "./TripCardButton";
 import "../../components/trip/TripCard.scss";
+import StaticMap from "../../partials/StaticMap";
 
 export default function TripCardBig(props: TripCardProps) {
   const {
@@ -24,45 +25,59 @@ export default function TripCardBig(props: TripCardProps) {
     cardButtonType = "none",
     onUserClick,
     onCarClick,
-    onButtonClick
+    onButtonClick,
   } = props;
 
   const userName = `${firstName} ${lastName}`;
-  const buttonText = cardButtonType === "book" ? "Boka" : cardButtonType === "cancel" ? "Avboka" : "";
+  const buttonText =
+    cardButtonType === "book"
+      ? "Boka"
+      : cardButtonType === "cancel"
+      ? "Avboka"
+      : "";
 
   return (
     <SmakCard className={`${className} pb-0`}>
       <div className="position-relative pb-5">
-        <img
+        {/* <img
           src={"/images/development/placeholder-map.png"}
           className="w-100 trip-card-map-image rounded-2"
-          alt="Ruttkarta" />
+          alt="Ruttkarta"
+        /> */}
+        <StaticMap from={startCity} to={endCity} />
 
         <div className="position-absolute trip-card-profil-image-container">
           <img
             onClick={onUserClick}
             src={userImage}
             alt="Profil"
-            className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer" />
+            className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer"
+          />
 
           <div className="position-relative d-flex align-items-center flex-column mt-2">
-            <div className="text-primary text-center m-0 fw-semibold medium-font-size">{userName}</div>
+            <div className="text-primary text-center m-0 fw-semibold medium-font-size">
+              {userName}
+            </div>
             <div className="d-flex small-font-size">
               {renderRatingStars(rating)}
             </div>
-            <p className="text-primary fw-semibold medium-font-size mb-1">{distance}km</p>
+            <p className="text-primary fw-semibold medium-font-size mb-1">
+              {distance}km
+            </p>
 
             <div id="trip-card-button-mobile-hide" className="mt-2">
-              {cardButtonType !== "none" &&
+              {cardButtonType !== "none" && (
                 <TripCardButton
                   label={buttonText}
-                  onClick={onButtonClick}>
-                </TripCardButton>
-              }
+                  onClick={onButtonClick}
+                ></TripCardButton>
+              )}
             </div>
           </div>
         </div>
-        <h3 className="text-primary fw-bold fs-2 position-absolute mt-3">{date}</h3>
+        <h3 className="text-primary fw-bold fs-2 position-absolute mt-3">
+          {date}
+        </h3>
       </div>
 
       <Row className="trip-card-large-height pt-2 ">
@@ -77,7 +92,7 @@ export default function TripCardBig(props: TripCardProps) {
 
             <Col className="d-flex justify-content-center trip-card-line-width">
               <div className="d-flex flex-column align-items-center">
-                <div className="bg-primary rounded-circle trip-card-circle" ></div>
+                <div className="bg-primary rounded-circle trip-card-circle"></div>
                 <div className="bg-black trip-card-line"></div>
                 <div className="bg-primary rounded-circle trip-card-circle"></div>
               </div>
@@ -95,32 +110,36 @@ export default function TripCardBig(props: TripCardProps) {
 
       <div
         id="trip-card-button-desktop-hide"
-        className="mb-2 trip-card-button-width w-100">
+        className="mb-2 trip-card-button-width w-100"
+      >
         <div className="d-flex justify-content-end me-3">
-          {cardButtonType !== "none" &&
-
+          {cardButtonType !== "none" && (
             <TripCardButton
               label={buttonText}
-              onClick={onButtonClick}>
-            </TripCardButton>
-          }
+              onClick={onButtonClick}
+            ></TripCardButton>
+          )}
         </div>
       </div>
 
       <DividerLine variant="info" />
 
-      <Row
-        className="py-2 cursor-pointer"
-        onClick={onCarClick}>
+      <Row className="py-2 cursor-pointer" onClick={onCarClick}>
         <Col xs={10} className="d-flex align-items-center">
           <i className="bi bi-car-front-fill me-2 text-black"></i>
-          <span className="text-black fw-semibold">{vehicleInfo}<span className="text-secondary fw-normal"> - {numOfSeats} säten</span></span>
+          <span className="text-black fw-semibold">
+            {vehicleInfo}
+            <span className="text-secondary fw-normal">
+              {" "}
+              - {numOfSeats} säten
+            </span>
+          </span>
         </Col>
 
         <Col xs={2} className="d-flex justify-content-end align-items-center">
           <i className="bi bi-info-circle fs-6 text-secondary"></i>
         </Col>
       </Row>
-    </SmakCard >
+    </SmakCard>
   );
 }
