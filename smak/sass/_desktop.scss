@@ -16,3 +16,9 @@
   transform: translate(-50%, -50%);
   z-index: 1;
 }
+
+@media (min-width: 1200px) {
+  .desktop-min-vh-100 {
+    min-height: 100vh !important;
+  }
+}
