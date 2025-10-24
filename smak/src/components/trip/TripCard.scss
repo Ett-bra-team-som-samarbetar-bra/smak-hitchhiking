@@ -33,7 +33,7 @@
 }
 
 .trip-card-map-image {
-  height: 240px;
+  max-height: 240px;
   object-fit: cover;
   object-position: center;
 }

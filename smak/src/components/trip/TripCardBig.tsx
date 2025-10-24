@@ -4,8 +4,8 @@ import type TripCardProps from "../../interfaces/TripCardProps";
 import SmakCard from "../SmakCard";
 import DividerLine from "../DividerLine";
 import TripCardButton from "./TripCardButton";
+import StaticMap from "./StaticMap";
 import "../../components/trip/TripCard.scss";
-import StaticMap from "../../partials/StaticMap";
 
 export default function TripCardBig(props: TripCardProps) {
   const {
@@ -23,9 +23,9 @@ export default function TripCardBig(props: TripCardProps) {
     numOfSeats = "?",
     className = "",
     cardButtonType = "none",
+    onButtonClick,
     onUserClick,
     onCarClick,
-    onButtonClick,
   } = props;
 
   const userName = `${firstName} ${lastName}`;
@@ -33,26 +33,23 @@ export default function TripCardBig(props: TripCardProps) {
     cardButtonType === "book"
       ? "Boka"
       : cardButtonType === "cancel"
-      ? "Avboka"
-      : "";
+        ? "Avboka"
+        : "";
 
   return (
     <SmakCard className={`${className} pb-0`}>
       <div className="position-relative pb-5">
-        {/* <img
-          src={"/images/development/placeholder-map.png"}
-          className="w-100 trip-card-map-image rounded-2"
-          alt="Ruttkarta"
-        /> */}
-        <StaticMap from={startCity} to={endCity} />
+
+        <div className="trip-card-map-image rounded-2 bg-danger overflow-hidden">
+          <StaticMap from={startCity} to={endCity} />
+        </div>
 
         <div className="position-absolute trip-card-profil-image-container">
           <img
             onClick={onUserClick}
             src={userImage}
             alt="Profil"
-            className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer"
-          />
+            className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer" />
 
           <div className="position-relative d-flex align-items-center flex-column mt-2">
             <div className="text-primary text-center m-0 fw-semibold medium-font-size">

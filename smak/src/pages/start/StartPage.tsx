@@ -4,11 +4,14 @@ import type GeocodeSelection from "../../interfaces/GeocodeSelection";
 import DynamicMap from "../../partials/DynamicMap";
 import SubmitButton from "../../components/SubmitButton";
 import GeocodeInput from "../../utils/GeocodeInput";
+import { useNavigate } from "react-router-dom";
 
 export default function StartPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [shouldCenterOnFrom, setShouldCenterOnFrom] = useState(false);
   const [from, setFrom] = useState<GeocodeSelection | null>(null);
   const [to, setTo] = useState<GeocodeSelection | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,10 +23,10 @@ export default function StartPage() {
 
     setIsLoading(true);
 
-    // Todo
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       console.log("success");
+      navigate("/trips-found"); // Todo
     } catch (error) {
       console.error("Submit error:", error);
     } finally {
@@ -31,12 +34,18 @@ export default function StartPage() {
     }
   };
 
+  const handleCenterSelf = () => {
+    setShouldCenterOnFrom(true);
+    setTimeout(() => setShouldCenterOnFrom(false), 100);
+  };
+
   return (
     <div className="position-relative h-100 overflow-hidden">
       <div className="dynamic-map-container">
         <DynamicMap
           from={from}
-          to={to} />
+          to={to}
+          centerOnFrom={shouldCenterOnFrom} />
       </div>
 
       <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
@@ -47,14 +56,14 @@ export default function StartPage() {
             <Button
               type="button"
               className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center"
-              onClick={() => console.log("Center self ba")}
+              onClick={handleCenterSelf}
               style={{ width: "38px", height: "38px" }}>
               <i className="bi bi-cursor-fill text-black fs-5 dynamic-map-center-icon"></i>
             </Button>
           </div>
 
           {/* Swap icon */}
-          <div className="d-flex justify-content-center dynamic-map-swap-container">
+          {/* <div className="d-flex justify-content-center dynamic-map-swap-container">
             <Button
               type="button"
               className="btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
@@ -62,7 +71,7 @@ export default function StartPage() {
               style={{ width: "38px", height: "38px" }}>
               <i className="bi bi-arrow-down-up text-black fs-5 dynamic-map-swap-icon"></i>
             </Button>
-          </div>
+          </div> */}
 
           <form onSubmit={handleSubmit}>
             <GeocodeInput
@@ -81,7 +90,7 @@ export default function StartPage() {
               <button
                 type="button"
                 className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
-                onClick={() => console.log("Open calendar clicked")}>
+                onClick={() => console.log("Open calenderrrr clicked")}>
                 Avgång
               </button>
             </div>
@@ -97,18 +106,3 @@ export default function StartPage() {
     </div >
   );
 }
-
-
-
-
-
-
-{/* <form
-    onSubmit={handleSubmit}
-    className="d-flex flex-column align-items-center">
-    <GeocodeInput value={from} onChange={setFrom} placeholder="From" />
-    <GeocodeInput value={to} onChange={setTo} placeholder="To" />
-    <button type="submit" className="btn btn-primary">
-      Hitta resor
-    </button>
-  </form> */}

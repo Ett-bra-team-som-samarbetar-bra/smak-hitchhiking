@@ -11,6 +11,7 @@ import JoggusPage from "./pages/debugPages/JoggusPage";
 import KalvPage from "./pages/debugPages/KalvPage";
 import TungisPage from "./pages/debugPages/TungisPage";
 import NotFoundPage from "./pages/notFound/NotFound";
+import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
 
 interface Route {
   element: JSX.Element;
@@ -56,6 +57,10 @@ const routes: Route[] = [
     path: "/trips-current",
     menuLabel: "Pågående",
     icon: "car-front"
+  },
+  {
+    element: <TripsFoundPage />,
+    path: "/trips-found",
   },
   {
     element: <ContactPage />,

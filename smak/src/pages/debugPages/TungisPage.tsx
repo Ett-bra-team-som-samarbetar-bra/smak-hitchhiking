@@ -1,4 +1,4 @@
-import StaticMap from "../../partials/StaticMap";
+import StaticMap from "../../components/trip/StaticMap";
 const from = "Stockholm";
 const to = "Linköping";
 

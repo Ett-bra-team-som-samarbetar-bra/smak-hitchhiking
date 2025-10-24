@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useCoordinates from "../hooks/useCoordinates";
+import useCoordinates from "../../hooks/useCoordinates";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -36,8 +36,8 @@ export default function StaticMap({ from, to }: StaticMapProps) {
       {imageUrl ? (
         <img
           src={imageUrl}
-          alt="Static Map"
-          className="w-100 trip-card-map-image rounded-2"
+          alt="Karta"
+          className="w-100"
         ></img>
       ) : (
         <p> loading.....</p>

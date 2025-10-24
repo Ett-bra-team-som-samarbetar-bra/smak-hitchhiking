@@ -14,7 +14,7 @@ export default function SubmitButton({ isLoading, children, className = "", colo
       type="submit"
       className={`${className} btn btn-${color} py-2 rounded-5 w-100 shadow`}
       disabled={isLoading}
-      style={{ opacity: isLoading ? 0.9 : 1 }}>
+      style={{ opacity: isLoading ? 0.96 : 1 }}>
       {
         isLoading ? (
           <>

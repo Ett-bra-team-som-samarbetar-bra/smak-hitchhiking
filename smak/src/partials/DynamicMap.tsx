@@ -10,11 +10,38 @@ interface DynamicMapProps {
   from: { name: string; coordinates: [number, number] } | null;
   to: { name: string; coordinates: [number, number] } | null;
   className?: string;
+  centerOnFrom?: boolean;
 }
 
-export default function DynamicMap({ from, to, className = "" }: DynamicMapProps) {
+export default function DynamicMap({ from, to, className = "", centerOnFrom = false }: DynamicMapProps) {
   const [route, setRoute] = useState<any>(null);
   const mapRef = useRef<MapRef>(null);
+
+  // Center on "from" location when triggered by button
+  useEffect(() => {
+    if (centerOnFrom && mapRef.current) {
+      if (from && to) {
+        const coords = [from.coordinates, to.coordinates];
+        const longitudes = coords.map(c => c[0]);
+        const latitudes = coords.map(c => c[1]);
+        const bounds: [[number, number], [number, number]] = [
+          [Math.min(...longitudes), Math.min(...latitudes)],
+          [Math.max(...longitudes), Math.max(...latitudes)],
+        ];
+        mapRef.current?.fitBounds(bounds, { duration: 1000, padding: 100 });
+      } else if (from) {
+        mapRef.current.flyTo({ center: from.coordinates, zoom: 10, duration: 1000 });
+      } else if (to) {
+        mapRef.current.flyTo({ center: to.coordinates, zoom: 10, duration: 1000 });
+      } else {
+        mapRef.current.flyTo({
+          center: [16.18071635577292, 58.589806397406655],
+          zoom: 9,
+          duration: 1000
+        });
+      }
+    }
+  }, [centerOnFrom, from, to]);
 
   useEffect(() => {
     if (!from || !to) {
@@ -45,7 +72,7 @@ export default function DynamicMap({ from, to, className = "" }: DynamicMapProps
           [Math.min(...longitudes), Math.min(...latitudes)],
           [Math.max(...longitudes), Math.max(...latitudes)],
         ];
-        mapRef.current?.fitBounds(bounds, { padding: 60, duration: 1000 });
+        mapRef.current?.fitBounds(bounds, { padding: 100, duration: 1000 });
       } catch (err) {
         console.error("Error fetching route:", err);
       }

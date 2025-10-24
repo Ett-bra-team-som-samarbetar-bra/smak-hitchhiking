@@ -7,7 +7,7 @@ export default function HistoryPage() {
   const allTrips = getAllTrips();
 
   const sortedTrips = [...allTrips].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
   const today = new Date();
