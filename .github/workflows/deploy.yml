@@ -2,7 +2,7 @@ name: Deploy to Raspberry Pi
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-deploy:
@@ -23,6 +23,8 @@ jobs:
 
       - name: Build project
         working-directory: smak
+        env:
+          VITE_MAPBOX_TOKEN: $({secrets.VITE_MAPBOX_TOKEN})
         run: npm run build
 
       - name: Deploy build to Nginx
