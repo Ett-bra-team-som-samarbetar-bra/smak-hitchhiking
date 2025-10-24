@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Map, { Source, Layer, Marker, type MapRef } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
+import config from "../config/Config";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -67,7 +68,7 @@ export default function DynamicMap({ from, to, className = "" }: DynamicMapProps
         initialViewState={{
           longitude: 16.18071635577292,
           latitude: 58.589806397406655,
-          zoom: 8,
+          zoom: config.initialMapZoomLevel,
         }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         mapboxAccessToken={MAPBOX_TOKEN}
