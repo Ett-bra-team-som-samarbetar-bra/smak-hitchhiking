@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Map, { Source, Layer, Marker, type MapRef } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import config from "../config/Config";
+import MapMarker from "../components/MapMarker";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
@@ -72,21 +73,16 @@ export default function DynamicMap({ from, to, className = "" }: DynamicMapProps
         }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         mapboxAccessToken={MAPBOX_TOKEN}
-      >
+        pitchWithRotate={false}
+        touchPitch={false}
+        dragRotate={false}>
+
         {from && (
           <Marker
             longitude={from.coordinates[0]}
             latitude={from.coordinates[1]}
-          >
-            <div
-              className="bg-success rounded-circle"
-              style={{
-                width: "16px",
-                height: "16px",
-                border: "2px solid white",
-              }}
-              title={from.name}
-            />
+            anchor="bottom">
+            <MapMarker />
           </Marker>
         )}
 
@@ -94,17 +90,8 @@ export default function DynamicMap({ from, to, className = "" }: DynamicMapProps
           <Marker
             longitude={to.coordinates[0]}
             latitude={to.coordinates[1]}
-            anchor="bottom"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="26"
-              height="26"
-              fill="#FF4136"
-            >
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" />
-            </svg>
+            anchor="bottom">
+            <MapMarker />
           </Marker>
         )}
 
@@ -114,7 +101,7 @@ export default function DynamicMap({ from, to, className = "" }: DynamicMapProps
               id="route-line"
               type="line"
               paint={{
-                "line-color": "#007cbf",
+                "line-color": "#016D85",
                 "line-width": 4,
               }}
             />

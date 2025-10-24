@@ -49,10 +49,11 @@ export default function GeocodeInput({
   };
 
   return (
-    <div className="position-relative mb-3">
+    <div className="position-relative mb-1" >
+      <i className={`bi bi-geo-alt-fill dynamic-map-input-icons fs-5`} />
       <input
         type="text"
-        className="form-control"
+        className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline"
         placeholder={placeholder}
         value={query}
         onChange={(e) => {
@@ -65,29 +66,28 @@ export default function GeocodeInput({
           }
         }}
         onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-      />
+        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)} />
 
       {showSuggestions && suggestions.length > 0 && (
         <ul
-          className="list-group position-absolute w-100 mt-1 shadow-sm"
+          className="list-group position-absolute w-100 mt-1 rounded-4"
           style={{
             zIndex: 1050,
-            maxHeight: "200px",
+            maxHeight: "300px",
             overflowY: "auto",
-          }}
-        >
+          }}>
+
           {suggestions.map((s) => (
             <li
               key={s.id}
-              className="list-group-item list-group-item-action"
-              onMouseDown={() => handleSelect(s)}
-            >
+              className="list-group-item list-group-item-action bg-white cursor-pointer dynamic-map-city-dropdown"
+              onMouseDown={() => handleSelect(s)}>
               {s.place_name}
             </li>
           ))}
         </ul>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
