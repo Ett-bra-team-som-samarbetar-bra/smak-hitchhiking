@@ -2,7 +2,7 @@ import SmakCard from "../../components/SmakCard";
 import IconButton from "../../components/IconButton";
 
 interface CarCardProps {
-    car: { model: string; licensePlate: string; seats: number };
+    car: { model: string; licensePlate: string; seats: number; brand: string; color: string; };
     isOwnProfile?: boolean;
     onEdit?: () => void;
 }
@@ -18,7 +18,7 @@ export default function CarCard({
                 <div className="d-flex align-items-center gap-3">
                     <i className="bi bi-car-front-fill fs-1 text-black"></i>
                     <div className="d-flex flex-column align-items-start">
-                        <p className="m-0 fs-5 text-black">{car.model}</p>
+                        <p className="m-0 fs-5 text-black">{car.brand} {car.model}</p>
                         <p className="m-0 text-black-50 small">{car.licensePlate} - {car.seats} säten</p>
                     </div>
                 </div>
