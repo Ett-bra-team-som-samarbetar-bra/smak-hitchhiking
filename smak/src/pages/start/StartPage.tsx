@@ -1,22 +1,19 @@
 import { useState } from "react";
 import DynamicMap from "../../partials/DynamicMap";
-import GeocodeInput from "../../utils/GeocodeInput";
 import type GeocodeSelection from "../../interfaces/GeocodeSelection";
-import TripCardSmall from "../../components/trip/TripCardSmall";
 import SubmitButton from "../../components/SubmitButton";
-import SmakButton from "../../components/SmakButton";
 import { Button } from "react-bootstrap";
 
 export default function StartPage() {
   const [from, setFrom] = useState<GeocodeSelection | null>(null);
   const [to, setTo] = useState<GeocodeSelection | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /* const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!from || !to) {
       console.log("Selected route:", from, "->", to);
     }
-  };
+  }; */
 
   return (
     <div className="position-relative h-100 overflow-hidden">
@@ -29,6 +26,16 @@ export default function StartPage() {
       <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
         <div className="d-flex flex-column mb-4">
 
+          {/* Center self icon */}
+          <div className="position-relative d-flex justify-content-end mb-3">
+            <Button
+              type="button"
+              className="btn btn-light rounded-circle shadow d-flex justify-content-center"
+              onClick={() => console.log("Center self ba")}
+              style={{ width: "38px", height: "38px" }}>
+              <i className="bi bi-cursor-fill text-black fs-6"></i>
+            </Button>
+          </div>
 
           {/* Till */}
           <div className="position-relative mb-1">
@@ -43,7 +50,7 @@ export default function StartPage() {
           <div className="d-flex justify-content-center dynamic-map-swap-container">
             <Button
               type="button"
-              className="btn btn-light rounded-circle p-2 shadow d-flex align-items-center justify-content-center"
+              className="btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
               onClick={() => console.log("Swap locations ba")}
               style={{ width: "38px", height: "38px" }}>
               <i className="bi bi-arrow-down-up text-black fs-6"></i>
@@ -55,7 +62,7 @@ export default function StartPage() {
             <i className="bi bi-geo-alt-fill dynamic-map-input-icons fs-5" />
             <input
               type="text"
-              className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field"
+              className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline"
               placeholder="Från" />
           </div>
 
@@ -64,7 +71,7 @@ export default function StartPage() {
             <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
             <button
               type="button"
-              className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start"
+              className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
               onClick={() => console.log("Open calendar clicked")}>
               Avgång
             </button>

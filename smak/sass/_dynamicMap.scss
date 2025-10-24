@@ -12,7 +12,7 @@
 
 .dynamic-map-ontop-content {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   left: 0;
   right: 0;
   z-index: 1;
@@ -35,7 +35,7 @@
   position: absolute;
   display: flex;
   width: 100%;
-  top: 42px;
+  bottom: 116px;
   left: 30%;
   transform: translateY(-50%);
   z-index: 42;
