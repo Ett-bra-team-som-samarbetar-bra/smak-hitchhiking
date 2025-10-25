@@ -106,7 +106,8 @@ export default function JoggusPage() {
         distance={420}
         date="13/03 25"
         vehicleInfo="Keken"
-        numOfSeats="42" />
+        numOfSeats="42"
+        cardButtonType="book" />
 
       <SmakContact
         user={user}

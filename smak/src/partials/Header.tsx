@@ -1,8 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
+import config from "../config/Config";
 
 export default function Header() {
-  const settingspath = "/settings";
-  const contactsPath = "/contacts";
   const pathName = useLocation().pathname;
   const isActive = (path: string) => pathName === path;
 
@@ -10,14 +9,16 @@ export default function Header() {
     <header className="header bg-white border-bottom d-flex justify-content-center">
       <div className="whole-app-horizontal-width d-flex align-items-center justify-content-between px-3 py-2 w-100">
 
-        {/* Contacts */}
-        <NavLink
-          to={contactsPath}
-          className={`
-          ${isActive(contactsPath) ? "text-black text-grow" : "text-secondary"}
-        `}>
-          <i className="bi bi-people-fill nav-icon-size" />
-        </NavLink>
+        {/* Debug or Hidden spacer */}
+        {config.showDebugPages ? (
+          <NavLink
+            to={"/debug"}
+            className="text-danger">
+            <i className="bi bi-gear-fill nav-icon-size" />
+          </NavLink>
+        ) : (
+          <i className="bi-people-fill nav-icon-size" style={{ visibility: "hidden" }} />
+        )}
 
         {/* Logo */}
         <div className="header-div d-flex align-items-center gap-1 justify-content-center mb-0">
@@ -25,13 +26,11 @@ export default function Header() {
           <h2 className="mb-0">Småk</h2>
         </div>
 
-        {/* Settings */}
+        {/* Contacts */}
         <NavLink
-          to={settingspath}
-          className={`
-          ${isActive(settingspath) ? "text-black text-grow" : "text-secondary"}
-        `}>
-          <i className="bi bi-gear-fill nav-icon-size" />
+          to={"/contacts"}
+          className={`${isActive("/contacts") ? "text-primary text-grow" : "text-secondary"}`}>
+          <i className="bi bi-people-fill nav-icon-size" />
         </NavLink>
       </div>
     </header>

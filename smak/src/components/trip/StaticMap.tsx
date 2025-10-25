@@ -6,9 +6,12 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 interface StaticMapProps {
   from: string;
   to: string;
+  width: string;
+  height: string;
+  className?: string;
 }
 
-export default function StaticMap({ from, to }: StaticMapProps) {
+export default function StaticMap({ from, to, width, height, className = "" }: StaticMapProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const fromCoords = useCoordinates(from);
   const toCoords = useCoordinates(to);
@@ -17,7 +20,7 @@ export default function StaticMap({ from, to }: StaticMapProps) {
     if (!fromCoords || !toCoords) return;
     const fetchMap = async () => {
       const resMap = await fetch(
-        `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+016d85(${fromCoords}),pin-s+016d85(${toCoords})/auto/600x300?padding=100&access_token=${MAPBOX_TOKEN}`
+        `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s+016d85(${fromCoords}),pin-s+016d85(${toCoords})/auto/${width}x${height}?padding=100&access_token=${MAPBOX_TOKEN}`
       );
       const blob = await resMap.blob();
       const url = URL.createObjectURL(blob);
@@ -37,7 +40,7 @@ export default function StaticMap({ from, to }: StaticMapProps) {
         <img
           src={imageUrl}
           alt="Karta"
-          className="w-100"
+          className={`${className}`}
         ></img>
       ) : (
         <p> loading.....</p>

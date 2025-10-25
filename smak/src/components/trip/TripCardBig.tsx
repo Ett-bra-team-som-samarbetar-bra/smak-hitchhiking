@@ -39,10 +39,12 @@ export default function TripCardBig(props: TripCardProps) {
   return (
     <SmakCard className={`${className} pb-0`}>
       <div className="position-relative pb-5">
-
-        <div className="trip-card-map-image rounded-2 bg-danger overflow-hidden">
-          <StaticMap from={startCity} to={endCity} />
-        </div>
+        <StaticMap
+          from={startCity}
+          to={endCity}
+          width="740"
+          height="400"
+          className="trip-card-map-image w-100" />
 
         <div className="position-absolute trip-card-profil-image-container">
           <img
@@ -107,8 +109,7 @@ export default function TripCardBig(props: TripCardProps) {
 
       <div
         id="trip-card-button-desktop-hide"
-        className="mb-2 trip-card-button-width w-100"
-      >
+        className="mb-2 trip-card-button-width w-100">
         <div className="d-flex justify-content-end me-3">
           {cardButtonType !== "none" && (
             <TripCardButton

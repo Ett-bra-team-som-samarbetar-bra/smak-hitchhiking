@@ -17,6 +17,9 @@
 }
 
 #trip-card-button-desktop-hide {
+  margin-top: -8px;
+  padding-bottom: 6px;
+
   @media (min-width: 426px) {
     display: none;
   }
@@ -33,13 +36,16 @@
 }
 
 .trip-card-map-image {
-  max-height: 240px;
+  height: 244px;
   object-fit: cover;
   object-position: center;
+  clip-path: inset(20px 0 20px 0);
+  margin-top: -20px;
+  margin-bottom: -20px;
 }
 
 .trip-card-profil-image-container {
-  top: 10rem;
+  top: 126px;
   right: 1rem;
 }
 

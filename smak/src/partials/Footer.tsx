@@ -32,11 +32,10 @@ export default function Footer() {
                 <NavLink
                   to={route.path}
                   key={i}
-                  className={`
-                ${isActive(route.path) ? "text-black text-grow" : "text-secondary"} 
-                text-decoration-none d-flex flex-column justify-content-center nav-link-set-width`}>
+                  className={`${isActive(route.path) ? "text-primary text-grow" : "text-secondary"} 
+                            text-decoration-none d-flex flex-column justify-content-center nav-link-set-width`}>
                   <i className={`bi bi-${route.icon} text-center nav-icon-size`} />
-                  <p className="text-center nav-link-size m-0" key={i}>
+                  <p className={`text-center nav-link-size m-0`} key={i}>
                     {route.menuLabel}
                   </p>
                 </NavLink>
