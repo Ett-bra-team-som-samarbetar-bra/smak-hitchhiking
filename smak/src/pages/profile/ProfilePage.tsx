@@ -3,36 +3,20 @@ import SmakButton from "../../components/SmakButton";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
+import { useLocation, useParams } from "react-router-dom";
+import { getMockUser, getMockCars } from "../../utils/MockData";
 
 export default function ProfilePage() {
-  const mockUser = {
-    firstName: "Harold",
-    lastName: "H. Pain",
-    profileImage: "/images/harold.png",
-    trips: 40,
-    rating: "5",
-    activeYears: "1.4 ",
-    preferences: ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"],
-  };
+  const { userId } = useParams();
+  const location = useLocation();
+  const passedUser = location.state?.user;
 
-  const mockCars = [
-    {
-      brand: "Audi",
-      model: "A3",
-      licensePlate: "KEK 057",
-      color: "vit",
-      seats: 4,
-    },
-    {
-      brand: "Volvo",
-      model: "V60",
-      licensePlate: "FBI 007",
-      color: "svart",
-      seats: 4,
-    }
-  ];
+  const isOwnProfile = !userId;
 
-  const isOwnProfile = true;
+  const displayUser = passedUser ? {
+    ...passedUser,
+  } : getMockUser();
+
   const isAlreadyFriend = false;
 
   const [showCarModal, setShowCarModal] = useState(false);
@@ -58,14 +42,14 @@ export default function ProfilePage() {
 
   return (
     <>
-      <ProfileCard user={mockUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} />
+      <ProfileCard user={displayUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} />
       <div className="d-flex flex-column gap-3">
         <h2 className="m-0">Fordon</h2>
 
-        {mockCars.length === 0 ? (
+        {getMockCars().length === 0 ? (
           <p className="text-muted">Inga fordon tillagda</p>
         ) : (
-          mockCars.map((car, index) => (
+          getMockCars().map((car, index) => (
             <CarCard
               key={index}
               car={car}
