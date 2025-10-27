@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import AuthProvider from "./context/AuthProvider";
 import Main from "./partials/Main";
 import Header from "./partials/Header";
 import Footer from "./partials/Footer";
@@ -31,16 +32,18 @@ export default function App() {
 
   return (
     <>
-      {!isPwa &&
-      !config.dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView ? (
-        <DesktopPage />
-      ) : (
-        <>
-          <Header />
-          <Main />
-          <Footer />
-        </>
-      )}
+      <AuthProvider>
+        {!isPwa &&
+        !config.dontShowDesktopPageWhenMakingTheAppOnlyShowMobileView ? (
+          <DesktopPage />
+        ) : (
+          <>
+            <Header />
+            <Main />
+            <Footer />
+          </>
+        )}
+      </AuthProvider>
     </>
   );
 }

@@ -6,40 +6,75 @@ import type { AuthContextType } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 
 interface AuthProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        refreshUser().finally(() => setLoading(false));
-    }, []);
+  useEffect(() => {
+    refreshUser().finally(() => setLoading(false));
+  }, []);
 
-    const login = () => {
-        // Implement login logic here
-    }
+  const login = async (usernameOrEmail: string, password: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          usernameOrEmail: usernameOrEmail,
+          password: password,
+        }),
+        credentials: "include",
+      });
 
-    const logout = () => {
+      if (!response.ok) {
         setUser(null);
-        navigate("/login");
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Login failed:", error);
+      setUser(null);
     }
+  };
 
-    const refreshUser = async () => {
-        // Implement user refresh logic here
-        }
+  const logout = async () => {
+    await fetch(`${BASE_URL}api/OrchardCore.Users.Account/LogOff`, {
+      method: "POST",
+      credentials: "include",
+    });
+    setUser(null);
+    navigate("/login");
+  };
 
-    const value: AuthContextType = {
-        user,
-        loading,
-        login,
-        logout,
-        refreshUser }
+  const refreshUser = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}api/auth/login`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-        return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+      if (!response.ok) {
+        setUser(null);
+        return;
+      }
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      setUser(null);
+      console.error("Failed to refresh user:", error);
+    }
+  };
 
-}
+  const value: AuthContextType = { user, loading, login, logout, refreshUser };
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
 
 export default AuthProvider;

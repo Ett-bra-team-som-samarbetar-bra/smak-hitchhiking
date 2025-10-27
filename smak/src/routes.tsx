@@ -12,6 +12,7 @@ import TungisPage from "./pages/debugPages/TungisPage";
 import NotFoundPage from "./pages/notFound/NotFound";
 import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
 import DebugPagePage from "./pages/debugPages/debugPage";
+import LoginPage from "./pages/login/LoginPage";
 
 interface Route {
   element: JSX.Element;
@@ -26,37 +27,37 @@ const routes: Route[] = [
     element: <ProfilePage />,
     path: "/profile",
     menuLabel: "Profil",
-    icon: "person-fill-check"
+    icon: "person-fill-check",
   },
   {
     element: <DrivePage />,
     path: "/drive",
     menuLabel: "Kör",
-    icon: "car-front-fill"
+    icon: "car-front-fill",
   },
   {
     element: <StartPage />,
     path: "/",
     menuLabel: "Sök",
-    icon: "geo-alt-fill "
+    icon: "geo-alt-fill ",
   },
   {
     element: <ComingTripsPage />,
     path: "/coming-trips",
     menuLabel: "Bokade",
-    icon: "calendar-check-fill"
+    icon: "calendar-check-fill",
   },
   {
     element: <HistoryPage />,
     path: "/history",
     menuLabel: "Historik",
-    icon: "clock-fill"
+    icon: "clock-fill",
   },
   {
     element: <TripsCurrentPage />,
     path: "/trips-current",
     menuLabel: "Pågående",
-    icon: "car-front"
+    icon: "car-front",
   },
   {
     element: <TripsFoundPage />,
@@ -65,34 +66,40 @@ const routes: Route[] = [
   {
     element: <ContactPage />,
     path: "/contacts",
-    icon: "people-fill"
+    icon: "people-fill",
+  },
+  {
+    element: <LoginPage />,
+    path: "/login",
+    menuLabel: "Login",
+    icon: "femboy",
   },
   {
     element: <NotFoundPage />,
-    path: "*"
+    path: "*",
   },
 
   // ############ Debug ############
   {
     element: <DebugPagePage />,
     path: "/debug",
-    icon: "gear"
+    icon: "gear",
   },
   {
     element: <JoggusPage />,
     path: "/joggus",
-    icon: "apple-music"
+    icon: "apple-music",
   },
   {
     element: <KalvPage />,
     path: "/kalv",
-    icon: "android"
+    icon: "android",
   },
   {
     element: <TungisPage />,
     path: "/tungis",
-    icon: "tux"
-  }
+    icon: "tux",
+  },
 ];
 
 export default routes;
