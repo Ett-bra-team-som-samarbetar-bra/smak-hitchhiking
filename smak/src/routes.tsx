@@ -13,6 +13,7 @@ import NotFoundPage from "./pages/notFound/NotFound";
 import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
 import DebugPagePage from "./pages/debugPages/debugPage";
 import LoginPage from "./pages/login/LoginPage";
+import PaymentPage from "./pages/payment/PaymentPage";
 
 interface Route {
   element: JSX.Element;
@@ -73,6 +74,11 @@ const routes: Route[] = [
     path: "/login",
     menuLabel: "Login",
     icon: "femboy",
+  },
+  {
+    element: <PaymentPage />,
+    path: "/payment",
+    icon: "stripe",
   },
   {
     element: <NotFoundPage />,
