@@ -3,7 +3,7 @@ import IconButton from "./IconButton";
 import SmakCard from "./SmakCard";
 import { Col, Row } from "react-bootstrap";
 
-export default function SmakContact({ user, isDriver = false, isAddedToTrip = false, className = "" }: {
+export default function SmakContact({ user, isDriver = false, isAddedToTrip = false, className = "", onClick }: {
   user: {
     firstName: string;
     lastName: string;
@@ -14,12 +14,13 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
   className?: string;
   isDriver?: boolean;
   isAddedToTrip?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <SmakCard className={`${className}`}>
       <Row
         className="cursor-pointer"
-        onClick={() => console.log("User pressed")}>
+        onClick={onClick}>
 
         <Col className="col-auto d-flex align-items-center">
           <img

@@ -31,6 +31,10 @@ const routes: Route[] = [
     icon: "person-fill-check",
   },
   {
+    element: <ProfilePage />,
+    path: "/profile/:userId",
+  },
+  {
     element: <DrivePage />,
     path: "/drive",
     menuLabel: "Kör",

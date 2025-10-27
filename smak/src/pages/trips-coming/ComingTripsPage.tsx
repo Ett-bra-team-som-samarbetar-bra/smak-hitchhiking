@@ -1,4 +1,5 @@
-import { getAllTrips, getTripDateTime, groupTripsByDate } from "../../utils/DateUtils";
+import { getTripDateTime, groupTripsByDate } from "../../utils/DateUtils";
+import { getAllTrips } from "../../utils/MockData";
 import { TripGroupList } from "../../components/TripListRender";
 
 export default function ComingTripsPage() {
