@@ -80,3 +80,8 @@ $success: green;
     box-shadow: none !important;
   }
 }
+
+.non-interactive {
+  pointer-events: none;
+  user-select: none;
+}

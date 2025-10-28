@@ -110,7 +110,11 @@ export default function DynamicMap({
         mapboxAccessToken={MAPBOX_TOKEN}
         pitchWithRotate={false}
         touchPitch={false}
-        dragRotate={false}>
+        dragRotate={false}
+        scrollZoom={!isLoginPage}
+        doubleClickZoom={!isLoginPage}
+        boxZoom={!isLoginPage}
+        keyboard={!isLoginPage}>
 
         {from && (
           <Marker

@@ -77,7 +77,8 @@ export default function Start({ from, setFrom, to, setTo, onCenterSelf }: StartP
 
           <SubmitButton
             isLoading={isLoading}
-            className="mt-4">
+            className="mt-4"
+            color={"primary"}>
             Hitta Resa
           </SubmitButton>
         </form>

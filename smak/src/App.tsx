@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 import AuthProvider from "./context/AuthProvider";
 import Main from "./partials/Main";
@@ -8,11 +7,12 @@ import Footer from "./partials/Footer";
 import DesktopPage from "./pages/desktop/DesktopPage";
 import config from "./config/Config";
 
-export default function App() {
+function AppContent() {
   const { user } = useAuth();
   const [isPwa, setIsPwa] = useState(false);
+  const [showHeaderFooter, setShowHeaderFooter] = useState(false);
+  const isLoggedIn = !!user;
 
-  useLocation();
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
   useEffect(() => {
@@ -32,6 +32,15 @@ export default function App() {
     };
   }, []);
 
+  // Header/footer animation
+  useEffect(() => {
+    if (isLoggedIn) {
+      setTimeout(() => setShowHeaderFooter(true), config.headerFooterAnimationDelay);
+    } else {
+      setShowHeaderFooter(false);
+    }
+  }, [isLoggedIn]);
+
   // Desktop landing page
   if (!isPwa && !config.hideDesktopPage) {
     return <DesktopPage />
@@ -39,10 +48,22 @@ export default function App() {
 
   // PWA
   return (
-    <AuthProvider>
-      <Header />
+    <>
+      <div className={`header-container ${showHeaderFooter ? 'header-visible' : 'header-hidden'}`}>
+        {isLoggedIn && <Header />}
+      </div>
       <Main />
-      <Footer />
+      <div className={`footer-container ${showHeaderFooter ? 'footer-visible' : 'footer-hidden'}`}>
+        {isLoggedIn && <Footer />}
+      </div>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
     </AuthProvider>
   );
 }

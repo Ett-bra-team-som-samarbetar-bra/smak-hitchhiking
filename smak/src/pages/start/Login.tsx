@@ -1,9 +1,40 @@
+import { Button, Row } from "react-bootstrap";
 
+interface LoginProps {
+  onLogin: () => void;
+}
 
-export default function Login() {
+export default function Login({ onLogin }: LoginProps) {
+  // todo
+  const handleLogin = async () => {
+    console.log("login");
+    onLogin();
+  };
+
+  const handleRegister = async () => {
+    console.log("register");
+  };
+
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column h-100">
-      <h1>Login</h1>
-    </div>
+    <>
+      <Row className="dynamic-map-ontop-header non-interactive">
+        <h1 className="text-white text-center"> Småk blabla</h1>
+        <p className="text-white text-center">No zoom on map cool only rotate yes</p>
+      </Row>
+
+      <Row className="dynamic-map-ontop-content px-3 d-flex flex-column">
+        <Button
+          className="btn btn-light mb-3 rounded-5 py-2"
+          onClick={handleRegister}>
+          Registera ba
+        </Button>
+
+        <Button
+          className="btn btn-primary rounded-5 py-2"
+          onClick={handleLogin}>
+          Logga in ba
+        </Button>
+      </Row >
+    </>
   )
 }

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
-import type User from "../interfaces/User";
-import { AuthContext } from "./AuthContext";
-import type { AuthContextType } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
+import type { ReactNode } from "react";
+import type { AuthContextType } from "./AuthContext";
+import type User from "../interfaces/User";
+import config from "../config/Config";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -11,16 +12,34 @@ interface AuthProviderProps {
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+const fakeUser: User = {
+  id: 42,
+  username: "Dev User",
+  email: "dev@example.com",
+};
+
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (config.fakeUserLoggedIn) {
+      setUser(fakeUser);
+      setLoading(false);
+      console.log("Using fake user, skipping refresh.");
+      return;
+    }
+
     refreshUser().finally(() => setLoading(false));
   }, []);
 
   const login = async (usernameOrEmail: string, password: string) => {
+    if (config.fakeUserEnabled) {
+      setUser(fakeUser);
+      return;
+    }
+
     try {
       const response = await fetch(`/api/auth/login`, {
         method: "POST",
@@ -46,6 +65,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = async () => {
+    if (config.fakeUserEnabled) {
+      setUser(null);
+      return;
+    }
+
     await fetch(`/api/auth/login`, {
       method: "DELETE",
       credentials: "include",
@@ -55,6 +79,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const refreshUser = async () => {
+    if (config.fakeUserEnabled) {
+      return;
+    }
+
     try {
       const response = await fetch(`api/auth/login`, {
         method: "GET",
