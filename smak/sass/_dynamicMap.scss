@@ -90,3 +90,28 @@
   padding-top: 10px;
   padding-bottom: 10px
 }
+
+.hide-watermarks {
+  position: fixed;
+  bottom: 0px;
+  z-index: 1;
+}
+
+.left-watermark {
+  left: 0;
+  height: 30px;
+  width: 110px;
+  background-color: #2E4C6B;
+}
+
+.right-watermark {
+  right: 0;
+  height: 20px;
+  width: 290px;
+  background-color: #2E4C6B;
+
+  @media (max-width: 640px) {
+    height: 40px;
+    width: 50px;
+  }
+}

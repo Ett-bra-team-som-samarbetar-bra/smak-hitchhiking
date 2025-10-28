@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { Row } from "react-bootstrap";
 import type GeocodeSelection from "../../interfaces/GeocodeSelection";
 import DynamicMap from "../../partials/DynamicMap";
 import Start from "./Start";
 import Login from "./Login";
-import { useAuth } from "../../hooks/useAuth";
 import config from "../../config/Config";
 
 export default function StartPage() {
@@ -12,6 +13,7 @@ export default function StartPage() {
   const [from, setFrom] = useState<GeocodeSelection | null>(null);
   const [to, setTo] = useState<GeocodeSelection | null>(null);
   const [showStart, setShowStart] = useState(false);
+  const [triggerMapZoom, setTriggerMapZoom] = useState(false);
   const isLoggedIn = !!user;
 
   const handleCenterMap = () => {
@@ -23,12 +25,15 @@ export default function StartPage() {
     await login("", "");
   };
 
-  // Trigger Start component animation
+  // Trigger animations when user logs in
   useEffect(() => {
     if (isLoggedIn) {
+      setTriggerMapZoom(true);
       setTimeout(() => setShowStart(true), config.StartComponentAnimationDelay);
+      setTimeout(() => setTriggerMapZoom(false), config.MapZoomDuration);
     } else {
       setShowStart(false);
+      setTriggerMapZoom(false);
     }
   }, [user]);
 
@@ -39,7 +44,8 @@ export default function StartPage() {
           from={from}
           to={to}
           centerOnFrom={shouldCenterOnFrom}
-          isLoginPage={!isLoggedIn} />
+          isLoginPage={!isLoggedIn}
+          triggerLoginZoom={triggerMapZoom} />
       </div>
 
       {isLoggedIn ? (
@@ -54,6 +60,9 @@ export default function StartPage() {
       ) : (
         <Login onLogin={handleLogin} />
       )}
+
+      <Row className="hide-watermarks left-watermark non-interactive" />
+      <Row className="hide-watermarks right-watermark non-interactive" />
     </div >
   );
 }

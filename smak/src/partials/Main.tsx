@@ -8,7 +8,7 @@ export default function Main() {
   return (
     <main
       className={`whole-app-horizontal-width m-auto w-100
-      ${shouldHavePadding ? "py-3 whole-app-horizontal-padding" : ""}`}>
+      ${shouldHavePadding ? "whole-app-horizontal-padding" : ""}`}>
       <Outlet />
     </main>
   );
