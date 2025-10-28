@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type GeocodeSelection from "../interfaces/GeocodeSelection.ts";
+import type GeocodeSelection from "../../interfaces/GeocodeSelection.ts";
 
 interface GeocodeInputProps {
   value: GeocodeSelection | null;

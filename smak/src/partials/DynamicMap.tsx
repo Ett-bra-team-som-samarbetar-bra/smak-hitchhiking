@@ -11,11 +11,19 @@ interface DynamicMapProps {
   to: { name: string; coordinates: [number, number] } | null;
   className?: string;
   centerOnFrom?: boolean;
+  isLoginPage?: boolean;
 }
 
-export default function DynamicMap({ from, to, className = "", centerOnFrom = false }: DynamicMapProps) {
+export default function DynamicMap({
+  from,
+  to,
+  className = "",
+  centerOnFrom = false,
+  isLoginPage = false
+}: DynamicMapProps) {
   const [route, setRoute] = useState<any>(null);
   const mapRef = useRef<MapRef>(null);
+  const mapPadding = 140;
 
   // Center on "from" location when triggered by button
   useEffect(() => {
@@ -28,7 +36,7 @@ export default function DynamicMap({ from, to, className = "", centerOnFrom = fa
           [Math.min(...longitudes), Math.min(...latitudes)],
           [Math.max(...longitudes), Math.max(...latitudes)],
         ];
-        mapRef.current?.fitBounds(bounds, { duration: 1000, padding: 100 });
+        mapRef.current?.fitBounds(bounds, { duration: 1000, padding: mapPadding });
       } else if (from) {
         mapRef.current.flyTo({ center: from.coordinates, zoom: 10, duration: 1000 });
       } else if (to) {
@@ -36,7 +44,7 @@ export default function DynamicMap({ from, to, className = "", centerOnFrom = fa
       } else {
         mapRef.current.flyTo({
           center: [16.18071635577292, 58.589806397406655],
-          zoom: 9,
+          zoom: 10,
           duration: 1000
         });
       }
@@ -72,7 +80,7 @@ export default function DynamicMap({ from, to, className = "", centerOnFrom = fa
           [Math.min(...longitudes), Math.min(...latitudes)],
           [Math.max(...longitudes), Math.max(...latitudes)],
         ];
-        mapRef.current?.fitBounds(bounds, { padding: 100, duration: 1000 });
+        mapRef.current?.fitBounds(bounds, { padding: mapPadding, duration: 1000 });
       } catch (err) {
         console.error("Error fetching route:", err);
       }
@@ -96,7 +104,7 @@ export default function DynamicMap({ from, to, className = "", centerOnFrom = fa
         initialViewState={{
           longitude: 16.18071635577292,
           latitude: 58.589806397406655,
-          zoom: config.initialMapZoomLevel,
+          zoom: isLoginPage ? 0 : config.initialMapZoomLevel,
         }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         mapboxAccessToken={MAPBOX_TOKEN}

@@ -1,12 +1,10 @@
 .dynamic-map-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: calc(100% + 120px);
-  margin-top: -60px;
+  width: 100vw;
+  height: 100vh;
   box-sizing: border-box;
-  clip-path: inset(0px 0 60px 0);
   z-index: 0;
 }
 
@@ -79,20 +77,4 @@
 .dynamic-map-city-dropdown {
   padding-top: 10px;
   padding-bottom: 10px
-}
-
-
-
-
-
-
-.swapping {
-  /* transform: scale(0.95);
-  opacity: 0.7; */
-  /* transition: all 0.4s ease; */
-}
-
-.rotating {
-  transform: rotate(180deg);
-  transition: transform 0.2s ease;
 }
