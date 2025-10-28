@@ -8,7 +8,7 @@ export default interface TripCardProps {
   rating?: number;
   distance?: number;
   date?: string;
-  userImage?: string;
+  profileImage?: string;
   vehicleInfo?: string;
   numOfSeats?: string;
   className?: string;

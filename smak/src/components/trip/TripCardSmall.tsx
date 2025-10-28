@@ -15,7 +15,7 @@ export default function TripCardSmall(props: TripCardProps) {
     endTime = "00:00",
     rating = 0,
     distance = 0,
-    userImage = "/images/development/user2.png",
+    profileImage = "/images/development/user2.png",
     className = "",
     onSmallTripCardClick
   } = props;
@@ -67,7 +67,7 @@ export default function TripCardSmall(props: TripCardProps) {
             <div
               className="d-flex align-items-center gap-3">
               <img
-                src={userImage}
+                src={profileImage}
                 alt="Profil"
                 className="rounded-circle"
                 width="38"

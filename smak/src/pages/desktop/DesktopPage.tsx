@@ -42,20 +42,18 @@ export default function DesktopPage() {
   };
 
   return (
-    <div className="d-flex flex-column desktop-min-vh-100">
-      <header className="bg-white py-3">
-        <Container>
-          <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-            <img src="assets/Logo.png" alt="Logo" className="desktop-logo" />
-            <h2 className="mb-0 text-black fw-bold py-1">Småk</h2>
-          </div>
-        </Container>
-      </header>
-
-      <hr className="m-0 text-black" />
-
-      <main className="bg-body flex-grow-1">
-        <Container className="py-5">
+    <>
+      <div className="d-flex flex-column flex-grow-1 overflow-y-auto">
+        <footer className="bg-white py-3 w-100">
+          <Container>
+            <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+              <img src="assets/Logo.png" alt="Logo" className="desktop-logo" />
+              <h2 className="mb-0 text-black fw-bold py-1">Småk</h2>
+            </div>
+          </Container>
+        </footer>
+        <hr className="m-0 text-black" />
+        <Container className="py-5 flex-grow-1 d-flex justify-content-center">
           <Row className="align-items-center text-center text-md-start">
             <Col md={6}>
               <h1 className="display-4 fw-bold">
@@ -116,68 +114,71 @@ export default function DesktopPage() {
             </Col>
           </Row>
         </Container>
-      </main>
 
-      <hr className="m-0 text-black" />
+        <hr className="m-0 text-black" />
 
-      <footer className="bg-white text-black pt-4 mt-auto">
-        <Container>
-          <Row className="pt-3 pt-md-3">
-            <Col md={4} className="text-center pt-2">
-              <h5 className=" fw-bold">Småk</h5>
-              <p className="text-secondary mb-0">
-                Småk är en mobil applikation för att göra liftande säkrare och
-                enklare för alla.
+        <footer className="bg-white text-black pt-4 mt-auto w-100 flex-grow-1">
+          <Container>
+
+            <Row className="pt-3 pt-md-3">
+              <Col md={4} className="text-center pt-2">
+                <h5 className=" fw-bold">Småk</h5>
+                <p className="text-secondary mb-0">
+                  Småk är en mobil applikation för att göra liftande säkrare och
+                  enklare för alla.
+                </p>
+              </Col>
+
+              <Col md={4} className="pt-5 pt-md-3">
+                <h6 className="fw-bold text-center">Följ Oss</h6>
+                <div className="d-flex gap-3 justify-content-center">
+                  <a href="#">
+                    <i className="cursor-pointer text-secondary bi bi-facebook fs-4"></i>
+                  </a>
+                  <a href="#">
+                    <i className="cursor-pointer text-secondary bi bi-twitter fs-4"></i>
+                  </a>
+                  <a href="#">
+                    <i className="cursor-pointer text-secondary bi bi-instagram fs-4"></i>
+                  </a>
+                </div>
+              </Col>
+
+              <Col md={4} className="text-center pt-5 pt-md-3">
+                <h6 className="fw-bold">Support</h6>
+                <ul className="list-unstyled">
+                  <li>
+                    <a href="#" className="text-secondary text-decoration-none">
+                      Kontakta oss
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-secondary text-decoration-none">
+                      Om oss
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="text-secondary text-decoration-none">
+                      Våra löften
+                    </a>
+                  </li>
+                </ul>
+              </Col>
+            </Row>
+
+            <hr className="text-secondary" />
+
+            <div className="m-0 p-2 text-center text-secondary ">
+              <p>
+                &copy; {new Date().getFullYear()} Småk. Alla rättigheter
+                förbehållna.
               </p>
-            </Col>
+            </div>
+          </Container>
+        </footer>
+      </div>
 
-            <Col md={4} className="pt-5 pt-md-3">
-              <h6 className="fw-bold text-center">Följ Oss</h6>
-              <div className="d-flex gap-3 justify-content-center">
-                <a href="#">
-                  <i className="cursor-pointer text-secondary bi bi-facebook fs-4"></i>
-                </a>
-                <a href="#">
-                  <i className="cursor-pointer text-secondary bi bi-twitter fs-4"></i>
-                </a>
-                <a href="#">
-                  <i className="cursor-pointer text-secondary bi bi-instagram fs-4"></i>
-                </a>
-              </div>
-            </Col>
 
-            <Col md={4} className="text-center pt-5 pt-md-3">
-              <h6 className="fw-bold">Support</h6>
-              <ul className="list-unstyled">
-                <li>
-                  <a href="#" className="text-secondary text-decoration-none">
-                    Kontakta oss
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-secondary text-decoration-none">
-                    Om oss
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-secondary text-decoration-none">
-                    Våra löften
-                  </a>
-                </li>
-              </ul>
-            </Col>
-          </Row>
-
-          <hr className="text-secondary" />
-
-          <div className="m-0 p-2 text-center text-secondary ">
-            <p>
-              &copy; {new Date().getFullYear()} Småk. Alla rättigheter
-              förbehållna.
-            </p>
-          </div>
-        </Container>
-      </footer>
-    </div>
+    </ >
   );
 }
