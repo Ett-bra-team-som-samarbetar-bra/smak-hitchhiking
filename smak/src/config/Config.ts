@@ -9,8 +9,9 @@ const config = {
     initialMapZoomLevel: 10,            // NEVER CHANGE THIS
 
     // Animations on login
-    headerFooterAnimationDelay: 100,    // Delay before animation starts (ms)
-    StartComponentAnimationDelay: 600,  // Delay before animation starts (ms)
+    headerFooterAnimationDelay: 100,    // Delay before header/footer animation starts (ms)
+    StartComponentAnimationDelay: 600,  // Delay before <Start> animation starts (ms)
+    MapZoomAnimationDelay: 0,           // Delay before mapzoom starts (ms)
     MapZoomDuration: 5000,              // Map zoom animation duration (ms)
 };
 

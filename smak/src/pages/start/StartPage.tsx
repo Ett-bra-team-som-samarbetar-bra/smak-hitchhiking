@@ -28,9 +28,9 @@ export default function StartPage() {
   // Trigger animations when user logs in
   useEffect(() => {
     if (isLoggedIn) {
-      setTriggerMapZoom(true);
+      setTimeout(() => setTriggerMapZoom(true), config.MapZoomAnimationDelay);
       setTimeout(() => setShowStart(true), config.StartComponentAnimationDelay);
-      setTimeout(() => setTriggerMapZoom(false), config.MapZoomDuration);
+      setTimeout(() => setTriggerMapZoom(false), config.MapZoomDuration + 100);
     } else {
       setShowStart(false);
       setTriggerMapZoom(false);
@@ -61,8 +61,8 @@ export default function StartPage() {
         <Login onLogin={handleLogin} />
       )}
 
-      <Row className="hide-watermarks left-watermark non-interactive" />
-      <Row className="hide-watermarks right-watermark non-interactive" />
+      <Row className="hide-watermarks left-watermark" />
+      <Row className="hide-watermarks right-watermark" />
     </div >
   );
 }
