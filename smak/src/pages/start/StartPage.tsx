@@ -9,9 +9,9 @@ import config from "../../config/Config";
 
 export default function StartPage() {
   const { user, login } = useAuth();
-  const [shouldCenterOnFrom, setShouldCenterOnFrom] = useState(false);
   const [from, setFrom] = useState<GeocodeSelection | null>(null);
   const [to, setTo] = useState<GeocodeSelection | null>(null);
+  const [shouldCenterOnFrom, setShouldCenterOnFrom] = useState(false);
   const [showStart, setShowStart] = useState(false);
   const [triggerMapZoom, setTriggerMapZoom] = useState(false);
   const isLoggedIn = !!user;
