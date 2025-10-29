@@ -12,7 +12,6 @@ import TungisPage from "./pages/debugPages/TungisPage";
 import NotFoundPage from "./pages/notFound/NotFound";
 import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
 import DebugPagePage from "./pages/debugPages/debugPage";
-import LoginPage from "./pages/login/LoginPage";
 import PaymentPage from "./pages/payment/PaymentPage";
 
 interface Route {
@@ -72,12 +71,6 @@ const routes: Route[] = [
     element: <ContactPage />,
     path: "/contacts",
     icon: "people-fill",
-  },
-  {
-    element: <LoginPage />,
-    path: "/login",
-    menuLabel: "Login",
-    icon: "femboy",
   },
   {
     element: <PaymentPage />,

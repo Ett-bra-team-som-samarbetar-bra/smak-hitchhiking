@@ -1,43 +1,41 @@
-import { useState } from "react";
-import { Button } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { Row } from "react-bootstrap";
 import type GeocodeSelection from "../../interfaces/GeocodeSelection";
 import DynamicMap from "../../partials/DynamicMap";
-import SubmitButton from "../../components/SubmitButton";
-import GeocodeInput from "../../utils/GeocodeInput";
-import { useNavigate } from "react-router-dom";
+import Start from "./Start";
+import Login from "./Login";
+import config from "../../config/Config";
 
 export default function StartPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { user, login } = useAuth();
   const [shouldCenterOnFrom, setShouldCenterOnFrom] = useState(false);
   const [from, setFrom] = useState<GeocodeSelection | null>(null);
   const [to, setTo] = useState<GeocodeSelection | null>(null);
-  const navigate = useNavigate();
+  const [showStart, setShowStart] = useState(false);
+  const [triggerMapZoom, setTriggerMapZoom] = useState(false);
+  const isLoggedIn = !!user;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!from || !to) {
-      console.log("Some fields empty");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log("success");
-      navigate("/trips-found"); // Todo
-    } catch (error) {
-      console.error("Submit error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleCenterSelf = () => {
+  const handleCenterMap = () => {
     setShouldCenterOnFrom(true);
     setTimeout(() => setShouldCenterOnFrom(false), 100);
   };
+
+  const handleLogin = async () => {
+    await login("", "");
+  };
+
+  // Trigger animations when user logs in
+  useEffect(() => {
+    if (isLoggedIn) {
+      setTimeout(() => setTriggerMapZoom(true), config.MapZoomAnimationDelay);
+      setTimeout(() => setShowStart(true), config.StartComponentAnimationDelay);
+      setTimeout(() => setTriggerMapZoom(false), config.MapZoomDuration + 100);
+    } else {
+      setShowStart(false);
+      setTriggerMapZoom(false);
+    }
+  }, [user]);
 
   return (
     <div className="position-relative h-100 overflow-hidden">
@@ -45,64 +43,26 @@ export default function StartPage() {
         <DynamicMap
           from={from}
           to={to}
-          centerOnFrom={shouldCenterOnFrom} />
+          centerOnFrom={shouldCenterOnFrom}
+          isLoginPage={!isLoggedIn}
+          triggerLoginZoom={triggerMapZoom} />
       </div>
 
-      <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
-        <div className="d-flex flex-column">
-
-          {/* Center self icon */}
-          <div className="position-relative d-flex justify-content-end mb-3">
-            <Button
-              type="button"
-              className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center"
-              onClick={handleCenterSelf}
-              style={{ width: "38px", height: "38px" }}>
-              <i className="bi bi-cursor-fill text-black fs-5 dynamic-map-center-icon"></i>
-            </Button>
-          </div>
-
-          {/* Swap icon */}
-          {/* <div className="d-flex justify-content-center dynamic-map-swap-container">
-            <Button
-              type="button"
-              className="btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
-              onClick={() => console.log("Swap locations ba")}
-              style={{ width: "38px", height: "38px" }}>
-              <i className="bi bi-arrow-down-up text-black fs-5 dynamic-map-swap-icon"></i>
-            </Button>
-          </div> */}
-
-          <form onSubmit={handleSubmit}>
-            <GeocodeInput
-              value={from}
-              onChange={setFrom}
-              placeholder="Från" />
-
-            <GeocodeInput
-              value={to}
-              onChange={setTo}
-              placeholder="Till" />
-
-            {/* Hitta Resa */}
-            <div className="position-relative">
-              <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
-              <button
-                type="button"
-                className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
-                onClick={() => console.log("Open calenderrrr clicked")}>
-                Avgång
-              </button>
-            </div>
-
-            <SubmitButton
-              isLoading={isLoading}
-              className="mt-4">
-              Hitta Resa
-            </SubmitButton>
-          </form>
+      {isLoggedIn ? (
+        <div className={`start-component ${showStart ? "fade-in" : ""}`}>
+          <Start
+            from={from}
+            setFrom={setFrom}
+            to={to}
+            setTo={setTo}
+            onCenterSelf={handleCenterMap} />
         </div>
-      </div>
+      ) : (
+        <Login onLogin={handleLogin} />
+      )}
+
+      <Row className="hide-watermarks left-watermark" />
+      <Row className="hide-watermarks right-watermark" />
     </div >
   );
 }

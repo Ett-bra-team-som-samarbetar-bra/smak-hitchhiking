@@ -1,18 +1,28 @@
 .dynamic-map-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: calc(100% + 120px);
-  margin-top: -60px;
+  width: 100vw;
+  height: 100vh;
   box-sizing: border-box;
-  clip-path: inset(0px 0 60px 0);
   z-index: 0;
 }
 
 .dynamic-map-ontop-content {
   position: absolute;
-  bottom: 32px;
+  bottom: 122px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.dynamic-map-ontop-header {
+  position: absolute;
+  top: 120px;
   left: 0;
   right: 0;
   z-index: 1;
@@ -81,18 +91,27 @@
   padding-bottom: 10px
 }
 
-
-
-
-
-
-.swapping {
-  /* transform: scale(0.95);
-  opacity: 0.7; */
-  /* transition: all 0.4s ease; */
+.hide-watermarks {
+  position: fixed;
+  bottom: 0px;
+  z-index: 1;
 }
 
-.rotating {
-  transform: rotate(180deg);
-  transition: transform 0.2s ease;
+.left-watermark {
+  left: 0;
+  height: 30px;
+  width: 110px;
+  background-color: #2E4C6B;
+}
+
+.right-watermark {
+  right: 0;
+  height: 20px;
+  width: 290px;
+  background-color: #2E4C6B;
+
+  @media (max-width: 640px) {
+    height: 40px;
+    width: 50px;
+  }
 }
