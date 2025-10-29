@@ -22,7 +22,7 @@ export default function StartPage() {
   };
 
   const handleLogin = async () => {
-    await login("", "");
+    await login("", ""); //todo
   };
 
   // Trigger animations when user logs in
@@ -30,7 +30,7 @@ export default function StartPage() {
     if (isLoggedIn) {
       setTimeout(() => setTriggerMapZoom(true), config.MapZoomAnimationDelay);
       setTimeout(() => setShowStart(true), config.StartComponentAnimationDelay);
-      setTimeout(() => setTriggerMapZoom(false), config.MapZoomDuration + 100);
+      setTimeout(() => setTriggerMapZoom(false), config.MapZoomAnimationDuration + 100);
     } else {
       setShowStart(false);
       setTriggerMapZoom(false);
@@ -58,7 +58,7 @@ export default function StartPage() {
             onCenterSelf={handleCenterMap} />
         </div>
       ) : (
-        <Login onLogin={handleLogin} />
+        <Login onLoginSuccess={handleLogin} />
       )}
 
       <Row className="hide-watermarks left-watermark" />

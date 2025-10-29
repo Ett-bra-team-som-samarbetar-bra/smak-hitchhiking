@@ -1,10 +1,10 @@
 import { Button, Row } from "react-bootstrap";
 
 interface LoginProps {
-  onLogin: () => void;
+  onLoginSuccess: () => void;
 }
 
-export default function Login({ onLogin }: LoginProps) {
+export default function Login({ onLoginSuccess: onLogin }: LoginProps) {
   // todo
   const handleLogin = async () => {
     console.log("login");

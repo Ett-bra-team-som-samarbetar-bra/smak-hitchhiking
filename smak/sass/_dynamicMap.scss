@@ -41,16 +41,6 @@
   z-index: 2;
 }
 
-.dynamic-map-swap-container {
-  position: absolute;
-  display: flex;
-  width: 100%;
-  bottom: 116px;
-  left: 30%;
-  transform: translateY(-50%);
-  z-index: 42;
-}
-
 .dynamic-map-input-field {
   padding-left: 60px;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;

@@ -54,6 +54,7 @@ export default function Start({ from, setFrom, to, setTo, onCenterSelf }: StartP
           </Button>
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit}>
           <GeocodeInput
             value={from}
@@ -87,15 +88,3 @@ export default function Start({ from, setFrom, to, setTo, onCenterSelf }: StartP
 
   );
 }
-
-
-{/* Swap icon */ }
-{/* <div className="d-flex justify-content-center dynamic-map-swap-container">
-    <Button
-      type="button"
-      className="btn btn-light rounded-circle shadow d-flex align-items-center justify-content-center"
-      onClick={() => console.log("Swap locations ba")}
-      style={{ width: "38px", height: "38px" }}>
-      <i className="bi bi-arrow-down-up text-black fs-5 dynamic-map-swap-icon"></i>
-    </Button>
-  </div> */}

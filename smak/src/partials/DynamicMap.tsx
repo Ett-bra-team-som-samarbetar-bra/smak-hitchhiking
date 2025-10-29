@@ -34,7 +34,7 @@ export default function DynamicMap({
       mapRef.current.flyTo({
         center: [16.18071635577292, 58.589806397406655],
         zoom: config.initialMapZoomLevel,
-        duration: config.MapZoomDuration
+        duration: config.MapZoomAnimationDuration
       });
     }
   }, [triggerLoginZoom]);
