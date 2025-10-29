@@ -14,6 +14,7 @@ export default interface TripCardProps {
   className?: string;
   cardButtonType?: "book" | "cancel" | "none";
   onSmallTripCardClick?: () => void;
+  onBigTripCardClick?: () => void;
   onUserClick?: () => void;
   onCarClick?: () => void;
   onButtonClick?: () => void;

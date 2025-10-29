@@ -18,7 +18,7 @@ export default function TripCardBig(props: TripCardProps) {
     rating = 0,
     distance = 0,
     date = "?",
-    userImage = "/images/development/user2.png",
+    profileImage = "/images/development/user2.png",
     vehicleInfo = "Okänd bil",
     numOfSeats = "?",
     className = "",
@@ -26,6 +26,7 @@ export default function TripCardBig(props: TripCardProps) {
     onButtonClick,
     onUserClick,
     onCarClick,
+    onBigTripCardClick,
   } = props;
 
   const userName = `${firstName} ${lastName}`;
@@ -38,7 +39,9 @@ export default function TripCardBig(props: TripCardProps) {
 
   return (
     <SmakCard className={`${className} pb-0`}>
-      <div className="position-relative pb-5">
+      <div
+        className="position-relative pb-5 cursor-pointer"
+        onClick={onBigTripCardClick}>
         <StaticMap
           from={startCity}
           to={endCity}
@@ -49,7 +52,7 @@ export default function TripCardBig(props: TripCardProps) {
         <div className="position-absolute trip-card-profil-image-container">
           <img
             onClick={onUserClick}
-            src={userImage}
+            src={profileImage}
             alt="Profil"
             className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer" />
 
