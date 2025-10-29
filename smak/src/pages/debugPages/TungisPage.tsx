@@ -1,17 +1,10 @@
-import StaticMap from "../../components/trip/StaticMap";
-const from = "Stockholm";
-const to = "Linköping";
+import FileUpload from '../../components/fileUpload/FileUpload';
 
 export default function TungisPage() {
   return (
     <>
       <h1>Hej</h1>
-      <StaticMap
-        from={from}
-        to={to}
-        width="740"
-        height="400"
-        className="w-100" />
+      <FileUpload />
     </>
   );
 }
