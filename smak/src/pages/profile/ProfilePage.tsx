@@ -5,11 +5,14 @@ import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
 import { useLocation, useParams } from "react-router-dom";
 import { getMockUser, getMockCars } from "../../utils/MockData";
+import { useAuth } from "../../hooks/useAuth";
+import UserModal from "./UserModal";
 
 export default function ProfilePage() {
   const { userId } = useParams();
   const location = useLocation();
   const passedUser = location.state?.user;
+  const { user } = useAuth();
 
   const isOwnProfile = !userId;
 
@@ -18,6 +21,16 @@ export default function ProfilePage() {
   } : getMockUser();
 
   const isAlreadyFriend = false;
+
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [userPayload, setUserPayload] = useState({
+    username: displayUser.username,
+    email: displayUser.email,
+    firstName: displayUser.firstName,
+    lastName: displayUser.lastName,
+    phone: displayUser.phone,
+    description: displayUser.description,
+  });
 
   const [showCarModal, setShowCarModal] = useState(false);
   const [carPayload, setCarPayload] = useState({ brand: "", model: "", color: "", licensePlate: "", seats: 0 });
@@ -40,9 +53,21 @@ export default function ProfilePage() {
     setCarPayload({ brand: "", model: "", color: "", licensePlate: "", seats: 0 });
   }
 
+  function handleEditUser(user: { username: string | undefined; email: string | undefined; firstName: string | undefined; lastName: string | undefined; phone: string | undefined; description: string | undefined; rating: number | undefined; tripCount: number | undefined; }) {
+    setUserPayload(user);
+    setIsEdit(true);
+    setShowUserModal(true);
+  }
+
+  function handleCloseUserModal() {
+    setShowUserModal(false);
+    setUserPayload({ username: "", email: "", firstName: "", lastName: "", phone: "", description: "" });
+  }
+
+
   return (
     <>
-      <ProfileCard user={displayUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} />
+      <ProfileCard user={displayUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} onEdit={() => handleEditUser({ username: user?.username, email: user?.email, firstName: user?.firstName, lastName: user?.lastName, phone: user?.phone, description: user?.description, rating: user?.rating, tripCount: user?.tripCount })} />
       <div className="d-flex flex-column gap-3">
         <h2 className="m-0">Fordon</h2>
 
@@ -58,6 +83,14 @@ export default function ProfilePage() {
             />
           ))
         )}
+        <UserModal
+          show={showUserModal}
+          onClose={handleCloseUserModal}
+          payload={userPayload}
+          setPayload={setUserPayload}
+          isEdit={isEdit}
+          isOwnProfile={isOwnProfile}
+        />
         <CarModal
           show={showCarModal}
           onClose={handleCloseModal}
