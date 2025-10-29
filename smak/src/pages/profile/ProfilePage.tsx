@@ -67,7 +67,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      <ProfileCard user={displayUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} onEdit={() => handleEditUser({ username: user?.username, email: user?.email, firstName: user?.firstName, lastName: user?.lastName, phone: user?.phone, description: user?.description, rating: user?.rating, tripCount: user?.tripCount })} />
+      <ProfileCard user={displayUser} isOwnProfile={isOwnProfile} isAlreadyFriend={isAlreadyFriend} onEdit={() => handleEditUser({ username: user?.username, email: user?.email, firstName: user?.firstName, lastName: user?.lastName, phone: user?.phone, description: user?.description, rating: user?.rating, tripCount: user?.tripCount342 })} />
       <div className="d-flex flex-column gap-3">
         <h2 className="m-0">Fordon</h2>
 
