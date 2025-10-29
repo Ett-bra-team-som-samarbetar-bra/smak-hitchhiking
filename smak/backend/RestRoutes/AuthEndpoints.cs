@@ -36,7 +36,10 @@ public static class AuthEndpoints
                     Properties = new JsonObject
                     {
                         ["FirstName"] = request.FirstName ?? "",
-                        ["LastName"] = request.LastName ?? ""
+                        ["LastName"] = request.LastName ?? "",
+                        ["Description"] = request.Description ?? "",
+                        ["Rating"] = request.Rating ?? "",
+                        ["TripCount"] = request.TripCount ?? ""
                     }
                 },
                 request.Password,
@@ -167,7 +170,10 @@ public record RegisterRequest(
     string Password,
     string? FirstName,
     string? LastName,
-    string? Phone
+    string? Phone,
+    string? Description,
+    string? Rating,
+    string? TripCount
 );
 
 public record LoginRequest(string UsernameOrEmail, string Password);
