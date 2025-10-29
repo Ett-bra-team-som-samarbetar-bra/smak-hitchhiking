@@ -79,7 +79,7 @@ const routes: Route[] = [
     icon: "stripe",
   },
   {
-    element: <NotFoundPage />,
+    element: <ProtectedRoute><NotFoundPage /></ProtectedRoute>,
     path: "*",
   },
 

@@ -1,6 +1,6 @@
 const config = {
     // Debug (all false = production mode)
-    hideDesktopPage: true,             // true = hide desktop page
+    hideDesktopPage: false,             // true = hide desktop page
     showDebugPages: true,              // true = show debug page in header
     fakeUserLoggedIn: false,            // true = start app as logged in fake user
     fakeUserEnabled: true,              // true = Mock login/logout etc that will always work

@@ -4,7 +4,7 @@ import { Row } from "react-bootstrap";
 import type GeocodeSelection from "../../interfaces/GeocodeSelection";
 import DynamicMap from "../../partials/DynamicMap";
 import Start from "./Start";
-import Login from "./Login";
+import LoginOrRegister from "./LoginOrRegister";
 import config from "../../config/Config";
 
 export default function StartPage() {
@@ -58,7 +58,7 @@ export default function StartPage() {
             onCenterSelf={handleCenterMap} />
         </div>
       ) : (
-        <Login onLoginSuccess={handleLogin} />
+        <LoginOrRegister onLoginSuccess={handleLogin} />
       )}
 
       <Row className="hide-watermarks left-watermark" />

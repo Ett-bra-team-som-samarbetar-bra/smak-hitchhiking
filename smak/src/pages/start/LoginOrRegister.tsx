@@ -4,7 +4,7 @@ interface LoginProps {
   onLoginSuccess: () => void;
 }
 
-export default function Login({ onLoginSuccess: onLogin }: LoginProps) {
+export default function LoginOrRegister({ onLoginSuccess: onLogin }: LoginProps) {
   // todo
   const handleLogin = async () => {
     console.log("login");
@@ -17,22 +17,28 @@ export default function Login({ onLoginSuccess: onLogin }: LoginProps) {
 
   return (
     <>
+      {/* Header TODO */}
       <Row className="dynamic-map-ontop-header non-interactive">
-        <h1 className="text-white text-center"> Småk blabla</h1>
-        <p className="text-white text-center">No zoom on map cool only rotate yes</p>
+        <div className="d-flex align-items-center flex-column justify-content-center">
+          <i className="login-header-icon" />
+          <h1 className="display-4 fw-bold text-white text-center">
+            Samåk med <span className="text-white">Småk</span>
+          </h1>
+        </div>
       </Row>
 
-      <Row className="dynamic-map-ontop-content px-3 d-flex flex-column">
+      {/* Buttons */}
+      <Row className="dynamic-map-ontop-login px-3 d-flex flex-column">
         <Button
           className="btn btn-light mb-3 rounded-5 py-2"
           onClick={handleRegister}>
-          Registera ba
+          Registrera
         </Button>
 
         <Button
           className="btn btn-primary rounded-5 py-2"
           onClick={handleLogin}>
-          Logga in ba
+          Logga in
         </Button>
       </Row >
     </>
