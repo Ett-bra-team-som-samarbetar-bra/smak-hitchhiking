@@ -36,14 +36,14 @@ export function TripGroupList({ groupedTrips }: TripGroupListProps) {
 
             return isSelected ? (
               <TripCardBig
-                key={index}
+                key={cardKey}
                 {...trip}
                 onBigTripCardClick={() => toggleCard(cardKey)}
               />
 
             ) : (
               <TripCardSmall
-                key={index}
+                key={cardKey}
                 {...trip}
                 onSmallTripCardClick={() => toggleCard(cardKey)}
               />
