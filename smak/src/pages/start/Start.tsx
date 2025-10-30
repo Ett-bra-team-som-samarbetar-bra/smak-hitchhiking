@@ -1,20 +1,13 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import type GeocodeSelection from "../../interfaces/GeocodeSelection";
+import { useDynamicMap } from "../../context/DynamicMapProvider";
 import SubmitButton from "../../components/SubmitButton";
 import GeocodeInput from "../../components/inputForms/GeocodeInput";
 
-interface StartProps {
-  from: GeocodeSelection | null;
-  setFrom: (value: GeocodeSelection | null) => void;
-  to: GeocodeSelection | null;
-  setTo: (value: GeocodeSelection | null) => void;
-  onCenterSelf: () => void;
-}
-
-export default function Start({ from, setFrom, to, setTo, onCenterSelf }: StartProps) {
-  const [isLoading, setIsLoading] = useState(false);
+export default function Start() {
+  const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
+  const [isLoading, setIsLoading] = useState(false); // todo login?
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,9 +41,9 @@ export default function Start({ from, setFrom, to, setTo, onCenterSelf }: StartP
           <Button
             type="button"
             className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center"
-            onClick={onCenterSelf}
+            onClick={centerMapOnLocations}
             style={{ width: "38px", height: "38px" }}>
-            <i className="bi bi-cursor-fill text-black fs-5 dynamic-map-center-icon"></i>
+            <i className="bi bi-geo-alt-fill text-black fs-5 dynamic-map-center-icon"></i>
           </Button>
         </div>
 
@@ -85,6 +78,5 @@ export default function Start({ from, setFrom, to, setTo, onCenterSelf }: StartP
         </form>
       </div>
     </div>
-
   );
 }

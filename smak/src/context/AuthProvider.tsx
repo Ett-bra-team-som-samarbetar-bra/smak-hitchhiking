@@ -58,9 +58,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       const data = await response.json();
       setUser(data);
+
     } catch (error) {
       console.error("Login failed:", error);
       setUser(null);
+      throw new Error("Login failed");
     }
   };
 

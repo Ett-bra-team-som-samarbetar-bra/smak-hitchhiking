@@ -39,9 +39,9 @@ export default function InputFormText({
           minLength={2}
           as={isTextArea ? "textarea" : "input"}
           required
-          defaultValue={value} 
+          defaultValue={value}
           disabled={disabled}
-          />
+        />
       </Form.Label>
     </Form.Group>
   </>

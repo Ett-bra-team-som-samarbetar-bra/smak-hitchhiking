@@ -1,10 +1,18 @@
 import { NavLink } from "react-router-dom";
 import routes from "../../routes";
+import { useAuth } from "../../hooks/useAuth";
+import { Button } from "react-bootstrap";
 
 export default function DebugPagePage() {
+  const { logout } = useAuth();
+
   const debugRoutes = routes.filter((route) =>
     ["/joggus", "/kalv", "/tungis", "/payment"].includes(route.path)
   );
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <div className="d-flex align-items-center flex-column h-100 position-relative">
@@ -30,6 +38,13 @@ export default function DebugPagePage() {
           {route.path}
         </NavLink>
       ))}
+
+      <Button
+        onClick={handleLogout}
+        className="btn btn-danger mt-4 fw-bold">
+        <i className="bi bi-box-arrow-right me-2" />
+        Logga ut
+      </Button>
     </div>
   );
 }
