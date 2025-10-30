@@ -5,36 +5,22 @@ import InputFormImage from "../../components/inputForms/InputformImage";
 import SmakButton from "../../components/SmakButton";
 import InputFormRadioGroups from "../../components/inputForms/InputFormRadioGroups";
 import { useState } from "react";
+import type User from "../../interfaces/User";
 
 interface UserModalProps {
   show: boolean;
   onClose: () => void;
   payload: {
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
-    description: string;
-    rating: number;
-    tripCount: number;
-    preferences: string[];
+    user: User;
   };
   setPayload: React.Dispatch<
     React.SetStateAction<{
-      username: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-      phone: string;
-      description: string;
-      rating: number;
-      tripCount: number;
-      preferences: string[];
+      user: User;
     }>
   >;
   isEdit?: boolean;
   isOwnProfile?: boolean;
+  onSave?: (user: User) => void;
 }
 
 interface PreferenceOption {
@@ -49,9 +35,10 @@ export default function UserModal({
   setPayload,
   isEdit = false,
   isOwnProfile = true,
+  onSave,
 }: UserModalProps) {
   const [preferences, setPreferences] = useState<string[]>(
-    payload.preferences || []
+    payload.user.preferences || []
   );
 
   const preferenceOptions: PreferenceOption[] = [
@@ -77,14 +64,14 @@ export default function UserModal({
       <InputFormEmail
         placeholder="email"
         label="Email"
-        value={payload.email}
+        value={payload.user.email}
         setFormProp={handleChange}
         disabled={!isOwnProfile}
       />
       <InputFormText
         placeholder="förnamn"
         label="Förnamn"
-        value={payload.firstName}
+        value={payload.user.firstName}
         setFormProp={handleChange}
         typeName="firstName"
         disabled={!isOwnProfile}
@@ -93,7 +80,7 @@ export default function UserModal({
       <InputFormText
         placeholder="efternamn"
         label="Efternamn"
-        value={payload.lastName}
+        value={payload.user.lastName}
         setFormProp={handleChange}
         typeName="lastName"
         disabled={!isOwnProfile}
@@ -101,7 +88,7 @@ export default function UserModal({
       <InputFormText
         placeholder="telefonnummer"
         label="Telefonnummer"
-        value={payload.phone}
+        value={payload.user.phone}
         setFormProp={handleChange}
         typeName="phone"
         disabled={!isOwnProfile}
@@ -111,7 +98,7 @@ export default function UserModal({
         label="Beskrivning"
         isTextArea={true}
         maxLength={40}
-        value={payload.description}
+        value={payload.user.description}
         setFormProp={handleChange}
         typeName="description"
         disabled={!isOwnProfile}
@@ -127,7 +114,15 @@ export default function UserModal({
         <div className="d-flex gap-3 w-100 pt-2">
           <SmakButton
             className="text-nowrap"
-            onClick={() => console.log("Spara ändringar")}
+            onClick={() => {
+              if (onSave) {
+                const updatedUser = {
+                  ...payload.user,
+                  preferences: preferences,
+                };
+                onSave(updatedUser);
+              }
+            }}
           >
             Spara ändringar
           </SmakButton>

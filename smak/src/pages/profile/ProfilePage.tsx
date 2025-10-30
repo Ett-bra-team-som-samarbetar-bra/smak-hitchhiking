@@ -3,40 +3,38 @@ import SmakButton from "../../components/SmakButton";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
-import { useLocation, useParams } from "react-router-dom";
-import { getMockUser, getMockCars } from "../../utils/MockData";
+import { useParams } from "react-router-dom";
+import { getMockCars } from "../../utils/MockData";
 import { useAuth } from "../../hooks/useAuth";
 import UserModal from "./UserModal";
+import type User from "../../interfaces/User";
 
 export default function ProfilePage() {
   const { userId } = useParams();
-  const location = useLocation();
-  const passedUser = location.state?.user;
   const { user } = useAuth();
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
 
   const isOwnProfile = !userId;
 
-  const displayUser = passedUser
-    ? {
-        ...passedUser,
-      }
-    : getMockUser();
+  const displayUser = user!;
 
   const isAlreadyFriend = false;
 
   const [showUserModal, setShowUserModal] = useState(false);
-  const [userPayload, setUserPayload] = useState({
-    username: displayUser.username,
-    email: displayUser.email,
-    firstName: displayUser.firstName,
-    lastName: displayUser.lastName,
-    phone: displayUser.phone,
-    description: displayUser.description,
-    rating: displayUser.rating,
-    tripCount: displayUser.tripCount,
-    preferences: preferences,
+  const [userPayload, setUserPayload] = useState<{ user: User }>({
+    user: {
+      id: displayUser.id,
+      username: displayUser.username,
+      email: displayUser.email,
+      firstName: displayUser.firstName,
+      lastName: displayUser.lastName,
+      phone: displayUser.phone,
+      description: displayUser.description,
+      rating: displayUser.rating,
+      tripCount: displayUser.tripCount,
+      preferences: preferences,
+    },
   });
 
   const [showCarModal, setShowCarModal] = useState(false);
@@ -96,8 +94,18 @@ export default function ProfilePage() {
     preferences: string[] | undefined;
   }) {
     setUserPayload({
-      ...user,
-      preferences: user.preferences ?? [],
+      user: {
+        id: displayUser.id,
+        username: user.username || "",
+        email: user.email || "",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        description: user.description,
+        rating: user.rating,
+        tripCount: user.tripCount,
+        preferences: preferences,
+      },
     });
     setIsEdit(true);
     setShowUserModal(true);
@@ -106,38 +114,71 @@ export default function ProfilePage() {
   function handleCloseUserModal() {
     setShowUserModal(false);
     setUserPayload({
-      username: "",
-      email: "",
-      firstName: "",
-      lastName: "",
-      phone: "",
-      description: "",
-      rating: 0,
-      tripCount: 0,
-      preferences: [],
+      user: {
+        id: "",
+        username: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        description: "",
+        rating: 0,
+        tripCount: 0,
+        preferences: [],
+      },
     });
+  }
+
+  async function handleSaveUser(updatedUser: User) {
+    {
+      console.log("Saving user:", updatedUser);
+      try {
+        const response = await fetch(`api/auth/login`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedUser),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to save user");
+        }
+
+        const savedUser = await response.json();
+        console.log("User saved successfully:", savedUser);
+
+        setUserPayload({ user: savedUser });
+        setShowUserModal(false);
+      } catch (error) {
+        console.error("Error saving user:", error);
+      }
+    }
   }
 
   return (
     <>
-      <ProfileCard
-        user={displayUser}
-        isOwnProfile={isOwnProfile}
-        isAlreadyFriend={isAlreadyFriend}
-        onEdit={() =>
-          handleEditUser({
-            username: user?.username,
-            email: user?.email,
-            firstName: user?.firstName,
-            lastName: user?.lastName,
-            phone: user?.phone,
-            description: user?.description,
-            rating: user?.rating,
-            tripCount: user?.tripCount,
-            preferences: preferences,
-          })
-        }
-      />
+      {displayUser && (
+        <ProfileCard
+          user={displayUser}
+          profileImage={"hej"}
+          isOwnProfile={isOwnProfile}
+          isAlreadyFriend={isAlreadyFriend}
+          onEdit={() =>
+            handleEditUser({
+              username: user?.username,
+              email: user?.email,
+              firstName: user?.firstName,
+              lastName: user?.lastName,
+              phone: user?.phone,
+              description: user?.description,
+              rating: user?.rating,
+              tripCount: user?.tripCount,
+              preferences: preferences,
+            })
+          }
+        />
+      )}
       <div className="d-flex flex-column gap-3">
         <h2 className="m-0">Fordon</h2>
 
@@ -168,6 +209,7 @@ export default function ProfilePage() {
           setPayload={setUserPayload}
           isEdit={isEdit}
           isOwnProfile={isOwnProfile}
+          onSave={handleSaveUser}
         />
         <CarModal
           show={showCarModal}

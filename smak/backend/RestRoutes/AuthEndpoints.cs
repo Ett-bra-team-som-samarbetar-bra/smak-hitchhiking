@@ -39,7 +39,9 @@ public static class AuthEndpoints
                         ["LastName"] = request.LastName ?? "",
                         ["Description"] = request.Description ?? "",
                         ["Rating"] = request.Rating ?? "",
-                        ["TripCount"] = request.TripCount ?? ""
+                        ["TripCount"] = request.TripCount ?? "",
+                        ["Preferences"] = request.preferences != null ?
+                            JsonValue.Create(request.preferences) : new JsonArray()
                     }
                 },
                 request.Password,
@@ -161,6 +163,61 @@ public static class AuthEndpoints
         })
         .AllowAnonymous()
         .DisableAntiforgery();
+
+        // PUT /api/auth/login - Edit users
+        app.MapPut("/api/auth/login", async (
+            [FromBody] UpdateUserRequest request,
+            [FromServices] UserManager<IUser> userManager,
+            HttpContext context
+        ) =>
+        {
+            var currentUser = await userManager.GetUserAsync(context.User);
+            if (currentUser == null)
+            {
+                return Results.Unauthorized();
+            }
+
+            var user = currentUser as User;
+
+            if (!string.IsNullOrEmpty(request.Email))
+                user.Email = request.Email;
+
+            if (!string.IsNullOrEmpty(request.Phone))
+                user.PhoneNumber = request.Phone;
+
+            var props = user.Properties ?? new System.Text.Json.Nodes.JsonObject();
+
+            props["FirstName"] = request.FirstName ?? props["FirstName"];
+            props["LastName"] = request.LastName ?? props["LastName"];
+            props["Description"] = request.Description ?? props["Description"];
+            props["Rating"] = request.Rating ?? props["Rating"];
+            props["TripCount"] = request.TripCount ?? props["TripCount"];
+            props["Preferences"] = request.preferences != null ?
+                JsonValue.Create(request.preferences) : props["Preferences"];
+
+            user.Properties = props;
+
+            var result = await userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return Results.BadRequest(new { error = "Failed to update user", details = result.Errors.Select(e => e.Description).ToList() });
+            }
+
+            return Results.Ok(new
+            {
+                message = "User updated successfully",
+                username = user.UserName,
+                email = user.Email,
+                phoneNumber = user.PhoneNumber,
+                firstName = user.Properties?["FirstName"]?.ToString(),
+                lastName = user.Properties?["LastName"]?.ToString(),
+                description = user.Properties?["Description"]?.ToString(),
+                rating = user.Properties?["Rating"]?.ToString(),
+                tripCount = user.Properties?["TripCount"]?.ToString(),
+                preferences = user.Properties?["Preferences"]?.ToJsonString()
+            });
+        }).RequireAuthorization().DisableAntiforgery();
     }
 }
 
@@ -173,7 +230,19 @@ public record RegisterRequest(
     string? Phone,
     string? Description,
     string? Rating,
-    string? TripCount
+    string? TripCount,
+    string[]? preferences
+);
+
+public record UpdateUserRequest(
+    string? Email,
+    string? FirstName,
+    string? LastName,
+    string? Phone,
+    string? Description,
+    string? Rating,
+    string? TripCount,
+    string[]? preferences
 );
 
 public record LoginRequest(string UsernameOrEmail, string Password);
