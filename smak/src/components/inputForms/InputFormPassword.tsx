@@ -6,6 +6,7 @@ interface InputFormPasswordProps {
   placeholder: string;
   value?: string;
   className?: string;
+  disabled: boolean;
 }
 
 export default function InputFormPassword({ setFormProp, label, placeholder, className = "" }: InputFormPasswordProps) {
