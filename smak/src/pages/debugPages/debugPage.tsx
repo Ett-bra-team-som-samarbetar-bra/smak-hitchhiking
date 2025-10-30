@@ -7,7 +7,7 @@ export default function DebugPagePage() {
   const { logout } = useAuth();
 
   const debugRoutes = routes.filter((route) =>
-    ["/joggus", "/kalv", "/tungis", "/payment"].includes(route.path)
+    ["/joggus", "/kalv", "/tungis", "/payment", "/trips-current"].includes(route.path)
   );
 
   const handleLogout = () => {

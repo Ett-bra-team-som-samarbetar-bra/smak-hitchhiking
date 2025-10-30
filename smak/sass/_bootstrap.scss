@@ -92,6 +92,48 @@ $success: green;
   user-select: none;
 }
 
+/* override bootstrap accordion styles */
+
+.custom-accordion .accordion-item {
+  border: none;
+  background-color: transparent;
+}
+
+.custom-accordion .accordion-header {
+  background-color: transparent;
+}
+
+.custom-accordion .accordion-button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  color: inherit;
+}
+
+.custom-accordion .accordion-button:not(.collapsed) {
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+.custom-accordion .accordion-button:focus {
+  border: none;
+  box-shadow: none;
+}
+
+.custom-accordion .accordion-button::after {
+  display: none;
+}
+
+.custom-accordion .accordion-body {
+  padding: 1rem 0;
+}
+
+.custom-accordion .accordion-collapse {
+  border: none;
+}
+
 .interactive {
   pointer-events: auto;
   user-select: auto;
