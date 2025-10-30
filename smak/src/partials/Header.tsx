@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import config from "../config/Config";
+import ReturnButton from "../components/ReturnButton";
 
 export default function Header() {
   const pathName = useLocation().pathname;
@@ -11,11 +12,14 @@ export default function Header() {
 
         {/* Debug or Hidden spacer */}
         {config.showDebugPages ? (
-          <NavLink
-            to={"/debug"}
-            className="text-danger">
-            <i className="bi bi-gear-fill nav-icon-size" />
-          </NavLink>
+          <div>
+            <ReturnButton />
+            <NavLink
+              to={"/debug"}
+              className="text-danger ms-2">
+              <i className="bi bi-gear-fill nav-icon-size" />
+            </NavLink>
+          </div>
         ) : (
           <i className="bi-people-fill nav-icon-size" style={{ visibility: "hidden" }} />
         )}
