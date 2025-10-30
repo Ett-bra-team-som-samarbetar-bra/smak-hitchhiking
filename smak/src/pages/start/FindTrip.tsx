@@ -5,11 +5,12 @@ import { useDynamicMap } from "../../context/DynamicMapProvider";
 import SubmitButton from "../../components/SubmitButton";
 import GeocodeInput from "../../components/inputForms/GeocodeInput";
 
-export default function Start() {
+export default function FindTrip() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
-  const [isLoading, setIsLoading] = useState(false); // todo login?
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // TODO
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -17,12 +18,10 @@ export default function Start() {
       console.log("Some fields empty");
       return;
     }
-
     setIsLoading(true);
 
     try {
-      // Todo
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1400));
       console.log("success");
       navigate("/trips-found");
     } catch (error) {
@@ -32,17 +31,21 @@ export default function Start() {
     }
   };
 
+  const handleOnCalenderClick = async () => {
+    console.log("OnCalenderClick");
+  };
+
   return (
     <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
       <div className="d-flex flex-column">
 
         {/* Center self icon */}
-        <div className="position-relative d-flex justify-content-end mb-3">
+        <div className="position-relative d-flex justify-content-end mb-2">
           <Button
             type="button"
             className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center"
             onClick={centerMapOnLocations}
-            style={{ width: "38px", height: "38px" }}>
+            style={{ width: "40px", height: "40px" }}>
             <i className="bi bi-geo-alt-fill text-black fs-5 dynamic-map-center-icon"></i>
           </Button>
         </div>
@@ -64,7 +67,7 @@ export default function Start() {
             <button
               type="button"
               className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
-              onClick={() => console.log("Open calenderrrr clicked")}>
+              onClick={handleOnCalenderClick}>
               Avgång
             </button>
           </div>

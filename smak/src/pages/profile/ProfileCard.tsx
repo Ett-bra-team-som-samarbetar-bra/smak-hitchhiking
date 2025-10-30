@@ -1,15 +1,9 @@
 import IconButton from "../../components/IconButton";
+import type User from "../../interfaces/User";
 
 interface ProfileCardProps {
-  user: {
-    firstName: string | undefined;
-    lastName: string | undefined;
-    profileImage: string | undefined;
-    trips: number | undefined;
-    rating: string | undefined;
-    activeYears: string | undefined;
-    preferences: string[] | undefined;
-  };
+  user: User;
+  profileImage: string;
   isOwnProfile?: boolean;
   isAlreadyFriend?: boolean;
   onEdit?: () => void;
@@ -17,6 +11,7 @@ interface ProfileCardProps {
 
 export default function ProfileCard({
   user,
+  profileImage,
   isOwnProfile = true,
   isAlreadyFriend = false,
   onEdit,
@@ -27,7 +22,7 @@ export default function ProfileCard({
     >
       <div className="profile-image-container">
         <img
-          src={user.profileImage}
+          src={profileImage}
           alt="Profile"
           className="profile-image shadow"
         />
@@ -55,7 +50,7 @@ export default function ProfileCard({
 
       <div className="d-flex justify-content-between mt-2 mb-4">
         <div className="text-center">
-          <p className="mb-1 fw-bold">{user.trips}</p>
+          <p className="mb-1 fw-bold">{user.tripCount}</p>
           <p className="mb-0 text-black-50">Rutter</p>
         </div>
 
@@ -65,7 +60,7 @@ export default function ProfileCard({
         </div>
 
         <div className="text-center">
-          <p className="mb-1 fw-bold">{user.activeYears}</p>
+          <p className="mb-1 fw-bold">{user.tripCount}</p>
           <p className="mb-0 text-black-50">År</p>
         </div>
       </div>
@@ -76,7 +71,7 @@ export default function ProfileCard({
       </div>
 
       <div className="d-flex flex-column mt-2">
-        {user.preferences!.length > 0 && (
+        {user.preferences! && user.preferences!.length > 0 && (
           <>
             <div className="d-flex justify-content-between gap-2">
               <p>{user.preferences![0]}</p>

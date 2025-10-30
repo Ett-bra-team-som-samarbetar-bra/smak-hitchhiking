@@ -1,19 +1,18 @@
 import { Button, Row } from "react-bootstrap";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 import SmakSlideInModal from "../../components/SmakSlideInModal";
 import InputFormText from "../../components/inputForms/InputFormText";
-import { useAuth } from "../../hooks/useAuth";
 
 export default function LoginOrRegister() {
   const { login } = useAuth();
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
 
-
   // Login TODO
   let [payload, setPayload] = useState<{ name: string; password: string }>({
-    name: "",
-    password: ""
+    name: "tom",
+    password: "Abcd1234!"
   });
 
   function setFormProp(event: React.ChangeEvent) {
@@ -26,7 +25,6 @@ export default function LoginOrRegister() {
 
     try {
       await login(payload.name, payload.password);
-
     } catch (error) {
       console.error("Login error:", error);
       alert("Ett fel uppstod vid inloggning. Försök igen.");
@@ -42,18 +40,9 @@ export default function LoginOrRegister() {
 
 
 
-
-
-
-
-
-
-
-
-
   return (
     <>
-      {/* Header TODO */}
+      {/* Header */}
       <Row className="dynamic-map-ontop-header non-interactive">
         <div className="d-flex align-items-center flex-column justify-content-center">
           <i className="login-header-icon" />
@@ -63,22 +52,21 @@ export default function LoginOrRegister() {
         </div>
       </Row>
 
-
-
       {/* Buttons */}
       <Row className="dynamic-map-ontop-login px-3 d-flex flex-column">
 
 
 
-
+        {/* TODO */}
         <InputFormText
+          value="tom"
           setFormProp={setFormProp}
           typeName={"name"}
           label={""}
           placeholder={"Namn"} >
         </InputFormText>
-
         <InputFormText
+          value="Abcd1234!"
           setFormProp={setFormProp}
           typeName={"password"}
           label={""}
