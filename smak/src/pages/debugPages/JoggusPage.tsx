@@ -59,7 +59,7 @@ export default function JoggusPage() {
         className="my-3"
         setFormProp={setFormProp}
         label="E-postadress"
-        placeholder="Ange din e-postadress" />
+        placeholder="Ange din e-postadress" disabled={false} />
 
       <InputFormText
         className="mb-3"
@@ -72,7 +72,7 @@ export default function JoggusPage() {
           className="mb-3"
           setFormProp={setFormProp}
           label="Password"
-          placeholder="Password" />
+          placeholder="Password" disabled={false} />
 
         <InputFormText
           className="mb-3"
@@ -86,7 +86,7 @@ export default function JoggusPage() {
         className=""
         firstName="Lena"
         lastName="Jansson"
-        userImage="/images/development/user2.png"
+        profileImage="/images/development/user2.png"
         startTime="15:00"
         endTime="19:30"
         startCity="Stockholm"

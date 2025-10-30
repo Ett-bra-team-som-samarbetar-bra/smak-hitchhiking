@@ -212,6 +212,7 @@ export default function ProfilePage() {
           onSave={handleSaveUser}
         />
         <CarModal
+          title={isEdit ? "Redigera fordon" : "Lägg till fordon"}
           show={showCarModal}
           onClose={handleCloseModal}
           payload={carPayload}

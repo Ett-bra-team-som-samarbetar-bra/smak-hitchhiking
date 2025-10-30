@@ -17,10 +17,15 @@ export default function IconButton({
     variant?: "flat" | "shadow";
 }) {
 
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        onClick?.();
+    };
+
     return (
         <button
             type="button"
-            onClick={onClick}
+            onClick={handleClick}
             className={`bi ${icon} ${size} ${color} ${bg} rounded-circle border-0 ${variant} d-flex justify-content-center align-items-center ${className}`}
         />
 

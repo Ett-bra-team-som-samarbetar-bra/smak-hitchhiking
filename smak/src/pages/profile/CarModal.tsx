@@ -4,6 +4,7 @@ import SmakModal from "../../components/SmakModal";
 
 interface CarModalProps {
   show: boolean;
+  title: string;
   onClose: () => void;
   payload: { brand: string; model: string; color: string; licensePlate: string; seats: number };
   setPayload: React.Dispatch<React.SetStateAction<{ brand: string; model: string; color: string; licensePlate: string; seats: number }>>;
@@ -14,6 +15,7 @@ interface CarModalProps {
 export default function CarModal({
   show,
   onClose,
+  title,
   payload,
   setPayload,
   isEdit = false,
@@ -25,20 +27,23 @@ export default function CarModal({
   }
 
   return (
-    <SmakModal title={isEdit ? "Redigera fordon" : "Lägg till fordon"} show={show} onClose={onClose}>
-      <InputFormText 
-        placeholder="märke" 
-        label="Märke" 
-        value={payload.brand} 
-        setFormProp={handleChange} 
+    <SmakModal
+      title={title}
+
+      show={show} onClose={onClose}>
+      <InputFormText
+        placeholder="märke"
+        label="Märke"
+        value={payload.brand}
+        setFormProp={handleChange}
         typeName="brand"
         disabled={!isOwnProfile}
       />
-      <InputFormText 
-        placeholder="modell" 
-        label="Modell" 
-        value={payload.model} 
-        setFormProp={handleChange} 
+      <InputFormText
+        placeholder="modell"
+        label="Modell"
+        value={payload.model}
+        setFormProp={handleChange}
         typeName="model"
         disabled={!isOwnProfile}
       />
