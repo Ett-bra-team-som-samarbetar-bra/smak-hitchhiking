@@ -6,9 +6,10 @@ interface InputFormEmailProps {
   placeholder: string;
   value?: string;
   className?: string;
+  disabled: boolean;
 }
 
-export default function InputFormEmail({ setFormProp, label, placeholder, value = "", className = "" }: InputFormEmailProps) {
+export default function InputFormEmail({ setFormProp, label, placeholder, value = "", className = "", disabled = false }: InputFormEmailProps) {
   return <>
     <Form.Group className={`${className} mb-3 w-100`}>
       <Form.Label className="d-block">
@@ -25,7 +26,8 @@ export default function InputFormEmail({ setFormProp, label, placeholder, value 
           required
           inputMode="email"
           pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
-          defaultValue={value} />
+          defaultValue={value}
+          disabled={disabled} />
       </Form.Label>
     </Form.Group>
   </>

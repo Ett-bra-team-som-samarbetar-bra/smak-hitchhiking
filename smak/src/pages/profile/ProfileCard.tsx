@@ -1,43 +1,57 @@
 import IconButton from "../../components/IconButton";
 
-export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend = false }: {
+interface ProfileCardProps {
   user: {
-    firstName: string;
-    lastName: string;
-    profileImage: string;
-    trips: number;
-    rating: string;
-    activeYears: string;
-    preferences: string[];
-  }
+    firstName: string | undefined;
+    lastName: string | undefined;
+    profileImage: string | undefined;
+    trips: number | undefined;
+    rating: string | undefined;
+    activeYears: string | undefined;
+    preferences: string[] | undefined;
+  };
   isOwnProfile?: boolean;
   isAlreadyFriend?: boolean;
-}) {
+  onEdit?: () => void;
+}
+
+export default function ProfileCard({
+  user,
+  isOwnProfile = true,
+  isAlreadyFriend = false,
+  onEdit,
+}: ProfileCardProps) {
   return (
-    <div className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-5 position-relative`}>
+    <div
+      className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-5 position-relative`}
+    >
       <div className="profile-image-container">
-        <img src={user.profileImage} alt="Profile" className="profile-image shadow" />
+        <img
+          src={user.profileImage}
+          alt="Profile"
+          className="profile-image shadow"
+        />
 
         <IconButton
           icon={
             isOwnProfile
               ? "bi-pencil-fill"
               : isAlreadyFriend
-                ? "bi-trash"
-                : "bi-person-add"
+              ? "bi-trash"
+              : "bi-person-add"
           }
           onClick={() => {
-            if (isOwnProfile) console.log("Edit profile");
+            if (isOwnProfile && onEdit) onEdit();
             else if (isAlreadyFriend) console.log("Remove friend");
             else console.log("Add friend");
           }}
           className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
         />
-
-
       </div>
 
-      <h2>{user.firstName} {user.lastName}</h2>
+      <h2>
+        {user.firstName} {user.lastName}
+      </h2>
 
       <div className="d-flex justify-content-between mt-2 mb-4">
         <div className="text-center">
@@ -62,15 +76,15 @@ export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend
       </div>
 
       <div className="d-flex flex-column mt-2">
-        {user.preferences.length > 0 && (
+        {user.preferences!.length > 0 && (
           <>
             <div className="d-flex justify-content-between gap-2">
-              <p>{user.preferences[0]}</p>
-              <p>{user.preferences[1]}</p>
+              <p>{user.preferences![0]}</p>
+              <p>{user.preferences![1]}</p>
             </div>
             <div className="d-flex justify-content-between gap-2">
-              <p>{user.preferences[2]}</p>
-              <p>{user.preferences[3]}</p>
+              <p>{user.preferences![2]}</p>
+              <p>{user.preferences![3]}</p>
             </div>
           </>
         )}
