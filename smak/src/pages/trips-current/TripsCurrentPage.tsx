@@ -3,7 +3,9 @@ import Row from "react-bootstrap/esm/Row";
 import TripCardBig from "../../components/trip/TripCardBig";
 import SmakContact from "../../components/SmakContact";
 import { getAllTrips, getMockUsers, getMockUser } from "../../utils/MockData";
-import { useAuth } from "../../hooks/useAuth";
+/* import { useAuth } from "../../hooks/useAuth"; */
+import CarModal from "../profile/CarModal";
+import { useNavigate } from "react-router-dom";
 
 export default function TripsCurrentPage() {
   const currentUser = getMockUser();
@@ -30,14 +32,41 @@ export default function TripsCurrentPage() {
     setPassengers(passengers.filter(p => p !== user));
   };
 
+  /* car stuff */
+
+  const [showCarModal, setShowCarModal] = useState(false);
+  const [carPayload, setCarPayload] = useState({
+    brand: "Volvo",
+    model: "V60",
+    color: "svart",
+    licensePlate: "ABC123",
+    seats: 3
+  });
+
+  const handleCarClick = () => {
+    setShowCarModal(true);
+  };
+
+  const handleCloseCarModal = () => {
+    setShowCarModal(false);
+  };
+
+  /* user > */
+
+  const navigate = useNavigate();
+
+  const handleUserClick = (user: any) => {
+    navigate(`/profile/${user.id}`, { state: { user } });
+  };
+
   return (
     <>
-      {/* lil toggle */}
+      {/* lil toggle todo: remove*/}
       <button onClick={() => setIsDriver(!isDriver)} className="btn btn-sm btn-primary mb-3">
         byt till: {isDriver ? "Passagerare" : "Förare"}
       </button>
 
-      <Row className="d-flex align-items-center mb-3">
+      <Row className="d-flex align-items-center mb-4">
         <h2 className="mb-0">{isDriver ? "Förare" : "Passagerare"} <i className="bi bi-chevron-down"></i></h2>
       </Row>
 
@@ -54,18 +83,24 @@ export default function TripsCurrentPage() {
         rating={currentUser.rating}
         vehicleInfo="volvo v60"
         numOfSeats="3"
+        onCarClick={handleCarClick}
+        onUserClick={() => handleUserClick(currentUser)}
       />
 
-      <Row className="d-flex align-items-center my-3">
+      <Row className="d-flex align-items-center my-4">
         <h2 className="mb-0">{isDriver ? "Passagerare" : "Övriga passagerare"} <i className="bi bi-chevron-down"></i></h2>
       </Row>
-      <div className="d-flex flex-column gap-3 mb-5">
+      {passengers.length === 0 && (
+        <p className="text-black-50">Inga passagerare just nu.</p>
+      )}
+      <div className="d-flex flex-column gap-3">
         {passengers.map((user, index) => (
           <SmakContact
             key={index}
             user={user}
             isDriver={isDriver}
             isAddedToTrip={true}
+            onClick={() => handleUserClick(user)}
             onRemove={isDriver ? () => handleRemovePassenger(user) : undefined}
           />
         ))}
@@ -73,9 +108,14 @@ export default function TripsCurrentPage() {
 
       {isDriver && (
         <>
-          <Row className="d-flex align-items-center my-3">
+          <Row className="d-flex align-items-center my-4">
             <h2 className="mb-0">Förfrågningar <i className="bi bi-chevron-down"></i></h2>
           </Row>
+          {
+            (requests.length === 0 && (
+              <p className="text-black-50">Inga förfrågningar just nu.</p>
+            ))
+          }
           <div className="d-flex flex-column gap-3 mb-5">
             {requests.map((user, index) => (
               <SmakContact
@@ -83,6 +123,7 @@ export default function TripsCurrentPage() {
                 user={user}
                 isDriver={true}
                 isAddedToTrip={false}
+                onClick={() => handleUserClick(user)}
                 onAccept={() => handleAcceptRequest(user)}
                 onDeny={() => handleDenyRequest(user)}
               />
@@ -90,6 +131,15 @@ export default function TripsCurrentPage() {
           </div>
         </>
       )}
+
+      <CarModal
+        show={showCarModal}
+        onClose={handleCloseCarModal}
+        payload={carPayload}
+        setPayload={setCarPayload}
+        isEdit={false}
+        isOwnProfile={false}
+      />
     </>
   )
 }
