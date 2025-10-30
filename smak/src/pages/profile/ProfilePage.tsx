@@ -170,6 +170,7 @@ export default function ProfilePage() {
           isOwnProfile={isOwnProfile}
         />
         <CarModal
+          title={isEdit ? "Redigera fordon" : "Lägg till fordon"}
           show={showCarModal}
           onClose={handleCloseModal}
           payload={carPayload}
