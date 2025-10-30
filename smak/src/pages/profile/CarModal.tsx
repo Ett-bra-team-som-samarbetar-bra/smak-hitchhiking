@@ -25,20 +25,29 @@ export default function CarModal({
   }
 
   return (
-    <SmakModal title={isEdit ? "Redigera fordon" : "Lägg till fordon"} show={show} onClose={onClose}>
-      <InputFormText 
-        placeholder="märke" 
-        label="Märke" 
-        value={payload.brand} 
-        setFormProp={handleChange} 
+    <SmakModal
+      title={
+        !isOwnProfile
+          ? "Fordon"
+          : isEdit
+            ? "Redigera fordon"
+            : "Lägg till fordon"
+      }
+
+      show={show} onClose={onClose}>
+      <InputFormText
+        placeholder="märke"
+        label="Märke"
+        value={payload.brand}
+        setFormProp={handleChange}
         typeName="brand"
         disabled={!isOwnProfile}
       />
-      <InputFormText 
-        placeholder="modell" 
-        label="Modell" 
-        value={payload.model} 
-        setFormProp={handleChange} 
+      <InputFormText
+        placeholder="modell"
+        label="Modell"
+        value={payload.model}
+        setFormProp={handleChange}
         typeName="model"
         disabled={!isOwnProfile}
       />

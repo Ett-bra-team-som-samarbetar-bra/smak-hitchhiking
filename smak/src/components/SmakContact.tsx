@@ -3,7 +3,7 @@ import IconButton from "./IconButton";
 import SmakCard from "./SmakCard";
 import { Col, Row } from "react-bootstrap";
 
-export default function SmakContact({ user, isDriver = false, isAddedToTrip = false, className = "", onClick }: {
+export default function SmakContact({ user, isDriver = false, isAddedToTrip = false, className = "", onClick, onAccept, onDeny, onRemove }: {
   user: {
     firstName: string;
     lastName: string;
@@ -15,7 +15,12 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
   isDriver?: boolean;
   isAddedToTrip?: boolean;
   onClick?: () => void;
+  onAccept?: () => void;
+  onDeny?: () => void;
+  onRemove?: () => void;
+
 }) {
+  
   return (
     <SmakCard className={`${className}`}>
       <Row
@@ -51,22 +56,22 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
           {isDriver && !isAddedToTrip && (
             <>
               <IconButton
-                icon="bi-x-square-fill"
-                variant="flat"
-                onClick={() => console.log("Denied request")}
-              />
-              <IconButton
                 icon="bi-check-square-fill"
                 variant="flat"
-                onClick={() => console.log("Accepted request")}
+                onClick={() => onAccept?.()}
+              />
+              <IconButton
+                icon="bi-x-square-fill"
+                variant="flat"
+                onClick={() => onDeny?.()}
               />
             </>
           )}
-          {isAddedToTrip && (
+          {isAddedToTrip && onRemove && (
             <IconButton
               icon="bi-trash"
               variant="flat"
-              onClick={() => console.log("Removed from trip")}
+              onClick={() => onRemove()}
             />
           )}
         </Col>
