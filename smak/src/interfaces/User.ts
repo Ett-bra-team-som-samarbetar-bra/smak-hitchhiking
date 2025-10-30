@@ -8,5 +8,5 @@ export default interface User {
   description?: string;
   rating?: number;
   tripCount?: number;
-  preferences: string[];
+  preferences?: string[];
 }

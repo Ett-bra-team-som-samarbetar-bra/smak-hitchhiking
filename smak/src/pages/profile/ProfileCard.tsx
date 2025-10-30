@@ -9,38 +9,49 @@ interface ProfileCardProps {
     rating: string | undefined;
     activeYears: string | undefined;
     preferences: string[] | undefined;
-  }
+  };
   isOwnProfile?: boolean;
   isAlreadyFriend?: boolean;
   onEdit?: () => void;
 }
 
-export default function ProfileCard({ user, isOwnProfile = true, isAlreadyFriend = false, onEdit }: ProfileCardProps) {
+export default function ProfileCard({
+  user,
+  isOwnProfile = true,
+  isAlreadyFriend = false,
+  onEdit,
+}: ProfileCardProps) {
   return (
-    <div className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-5 position-relative`}>
+    <div
+      className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-5 position-relative`}
+    >
       <div className="profile-image-container">
-        <img src={user.profileImage} alt="Profile" className="profile-image shadow" />
+        <img
+          src={user.profileImage}
+          alt="Profile"
+          className="profile-image shadow"
+        />
 
         <IconButton
           icon={
             isOwnProfile
               ? "bi-pencil-fill"
               : isAlreadyFriend
-                ? "bi-trash"
-                : "bi-person-add"
+              ? "bi-trash"
+              : "bi-person-add"
           }
           onClick={() => {
-            if (isOwnProfile) onEdit;
+            if (isOwnProfile && onEdit) onEdit();
             else if (isAlreadyFriend) console.log("Remove friend");
             else console.log("Add friend");
           }}
           className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
         />
-
-
       </div>
 
-      <h2>{user.firstName} {user.lastName}</h2>
+      <h2>
+        {user.firstName} {user.lastName}
+      </h2>
 
       <div className="d-flex justify-content-between mt-2 mb-4">
         <div className="text-center">
