@@ -40,10 +40,10 @@ export default function FindTrip() {
       <div className="d-flex flex-column">
 
         {/* Center self icon */}
-        <div className="position-relative d-flex justify-content-end mb-2">
+        <div className="position-relative d-flex justify-content-end mb-2 ">
           <Button
             type="button"
-            className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center"
+            className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center interactive"
             onClick={centerMapOnLocations}
             style={{ width: "40px", height: "40px" }}>
             <i className="bi bi-geo-alt-fill text-black fs-5 dynamic-map-center-icon"></i>
@@ -62,7 +62,7 @@ export default function FindTrip() {
             onChange={setTo}
             placeholder="Till" />
 
-          <div className="position-relative">
+          <div className="position-relative interactive">
             <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
             <button
               type="button"
@@ -74,7 +74,7 @@ export default function FindTrip() {
 
           <SubmitButton
             isLoading={isLoading}
-            className="mt-4"
+            className="mt-4 interactive"
             color={"primary"}>
             Hitta Resa
           </SubmitButton>

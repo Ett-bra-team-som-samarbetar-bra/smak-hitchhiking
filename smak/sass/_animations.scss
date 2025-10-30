@@ -34,12 +34,11 @@
   transform: translateY(0);
 }
 
-// Start component fade-in animation TODO broken
-.start-component {
+.find-trip {
   opacity: 0;
   transition: opacity 1s ease-out;
 }
 
-.start-component.fade-in {
+.find-trip.fade-in {
   opacity: 1;
 }

@@ -25,7 +25,7 @@ export default function SmakSlideInModal({ isOpen, onClose, children }: SlideUpM
   if (!isVisible) return null;
 
   return (
-    <div className={`slide-in-modal-backdrop ${isAnimating ? 'active' : ''}`}>
+    <div className={`interactive slide-in-modal-backdrop ${isAnimating ? 'active' : ''}`}>
       <div className={`slide-in-modal ${isAnimating ? 'slide-in' : ''}`}>
         <div className="p-3">
           {children}

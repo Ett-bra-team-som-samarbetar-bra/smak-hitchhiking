@@ -39,7 +39,7 @@ export default function DrivePage() {
   };
 
   return (
-    <div className="position-relative h-100 overflow-hidden">
+    <div className="position-relative h-100 z-index-fix non-interactive">
       <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
         <div className="d-flex flex-column">
 
@@ -47,7 +47,7 @@ export default function DrivePage() {
           <div className="position-relative d-flex justify-content-end mb-2">
             <Button
               type="button"
-              className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center"
+              className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center interactive"
               onClick={centerMapOnLocations}
               style={{ width: "40px", height: "40px" }}>
               <i className="bi bi-geo-alt-fill text-black fs-5 dynamic-map-center-icon"></i>
@@ -59,7 +59,7 @@ export default function DrivePage() {
             <div className="position-relative mb-1">
               <i className="bi bi-car-front-fill dynamic-map-input-icons fs-5" />
               <Button
-                className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
+                className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline interactive"
                 onClick={handleOnCarClick}>
                 Fordon
               </Button>
@@ -78,7 +78,7 @@ export default function DrivePage() {
             <div className="position-relative">
               <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
               <Button
-                className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
+                className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline interactive"
                 onClick={handleOnCalenderClick}>
                 Avgång
               </Button>
@@ -86,7 +86,7 @@ export default function DrivePage() {
 
             <SubmitButton
               isLoading={isLoading}
-              className="mt-4"
+              className="mt-4 interactive"
               color={"primary"}>
               Skapa Resa
             </SubmitButton>

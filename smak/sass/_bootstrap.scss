@@ -59,6 +59,10 @@ $success: green;
   padding-bottom: 7rem;
 }
 
+.z-index-fix {
+  z-index: 1;
+}
+
 .text-grow {
   transform: scale(1.14);
 }
@@ -86,4 +90,9 @@ $success: green;
 .non-interactive {
   pointer-events: none;
   user-select: none;
+}
+
+.interactive {
+  pointer-events: auto;
+  user-select: auto;
 }

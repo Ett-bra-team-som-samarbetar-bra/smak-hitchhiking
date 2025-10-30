@@ -48,7 +48,7 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
   const [route, setRoute] = useState<any>(null);
   const [className, setClassName] = useState("");
   const [centerOnFrom, setCenterOnFrom] = useState(false);
-  const [isLoginPage, setIsLoginPage] = useState(false);
+  const [isLoginPage, setIsLoginPage] = useState(true);
   const [triggerLoginZoom, setTriggerLoginZoom] = useState(false);
   const [hasLoginAnimationCompleted, setHasLoginAnimationCompleted] = useState(false);
   const mapRef = useRef<MapRef>(null);
@@ -146,7 +146,6 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
     setTo(null);
     setRoute(null);
     setCenterOnFrom(false);
-    setIsLoginPage(false);
     setTriggerLoginZoom(false);
     setHasLoginAnimationCompleted(false);
 

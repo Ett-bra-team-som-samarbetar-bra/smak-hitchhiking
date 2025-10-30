@@ -49,7 +49,7 @@ export default function GeocodeInput({
   };
 
   return (
-    <div className="position-relative mb-1" >
+    <div className="position-relative mb-1 interactive" >
       <i className={`bi bi-geo-alt-fill dynamic-map-input-icons fs-5`} />
       <input
         type="text"

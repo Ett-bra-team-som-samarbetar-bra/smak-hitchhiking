@@ -7,6 +7,9 @@ import InputFormText from "../../components/inputForms/InputFormText";
 export default function LoginOrRegister() {
   const { login } = useAuth();
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  //const [showLoginModal, setShowLoginModal] = useState(false);
+
+
 
 
   // Login TODO
@@ -22,6 +25,7 @@ export default function LoginOrRegister() {
 
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
+    console.log("login");
 
     try {
       await login(payload.name, payload.password);
@@ -59,13 +63,16 @@ export default function LoginOrRegister() {
 
         {/* TODO */}
         <InputFormText
+          className="interactive"
           value="tom"
           setFormProp={setFormProp}
           typeName={"name"}
           label={""}
           placeholder={"Namn"} >
         </InputFormText>
+
         <InputFormText
+          className="interactive"
           value="Abcd1234!"
           setFormProp={setFormProp}
           typeName={"password"}
@@ -75,16 +82,14 @@ export default function LoginOrRegister() {
 
 
 
-
-
         <Button
-          className="btn btn-light mb-3 rounded-5 py-2"
+          className="btn btn-light mb-3 rounded-5 py-2 interactive"
           onClick={handleRegister}>
           Registrera
         </Button>
 
         <Button
-          className="btn btn-primary rounded-5 py-2"
+          className="btn btn-primary rounded-5 py-2 interactive"
           onClick={handleLogin}>
           Logga in
         </Button>

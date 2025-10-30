@@ -24,9 +24,9 @@ export default function StartPage() {
   }, [isLoggedIn, setTriggerLoginZoom, hasLoginAnimationCompleted]);
 
   return (
-    <div className="position-relative h-100">
+    <div className="position-relative h-100 z-index-fix non-interactive">
       {isLoggedIn ? (
-        <div className={`start-component ${!showStart ? "" : "fade-in"}`}>
+        <div className={`find-trip ${showStart ? "fade-in" : ""}`}>
           <FindTrip />
         </div>
       ) : (
@@ -35,6 +35,6 @@ export default function StartPage() {
 
       <Row className="hide-watermarks left-watermark" />
       <Row className="hide-watermarks right-watermark" />
-    </div >
+    </div>
   );
 }
