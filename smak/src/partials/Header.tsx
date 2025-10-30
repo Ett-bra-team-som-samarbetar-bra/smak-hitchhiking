@@ -21,7 +21,7 @@ export default function Header() {
         )}
 
         {/* Logo */}
-        <div className="header-div d-flex align-items-center gap-1 justify-content-center mb-0">
+        <div className="d-flex align-items-center gap-1 justify-content-center mb-0">
           <i className="header-icon" />
           <h2 className="mb-0">Småk</h2>
         </div>

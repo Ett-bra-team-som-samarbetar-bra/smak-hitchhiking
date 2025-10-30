@@ -13,6 +13,7 @@ import NotFoundPage from "./pages/notFound/NotFound";
 import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
 import DebugPagePage from "./pages/debugPages/debugPage";
 import PaymentPage from "./pages/payment/PaymentPage";
+import ProtectedRoute from "./utils/ProtectedRoutes";
 
 interface Route {
   element: JSX.Element;
@@ -24,17 +25,17 @@ interface Route {
 
 const routes: Route[] = [
   {
-    element: <ProfilePage />,
+    element: <ProtectedRoute><ProfilePage /></ProtectedRoute>,
     path: "/profile",
     menuLabel: "Profil",
     icon: "person-fill-check",
   },
   {
-    element: <ProfilePage />,
+    element: <ProtectedRoute><ProfilePage /></ProtectedRoute>,
     path: "/profile/:userId",
   },
   {
-    element: <DrivePage />,
+    element: <ProtectedRoute><DrivePage /></ProtectedRoute>,
     path: "/drive",
     menuLabel: "Kör",
     icon: "car-front-fill",
@@ -46,60 +47,60 @@ const routes: Route[] = [
     icon: "geo-alt-fill ",
   },
   {
-    element: <ComingTripsPage />,
+    element: <ProtectedRoute><ComingTripsPage /></ProtectedRoute>,
     path: "/coming-trips",
     menuLabel: "Bokade",
     icon: "calendar-check-fill",
   },
   {
-    element: <HistoryPage />,
+    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>,
     path: "/history",
     menuLabel: "Historik",
     icon: "clock-fill",
   },
   {
-    element: <TripsCurrentPage />,
+    element: <ProtectedRoute><TripsCurrentPage /></ProtectedRoute>,
     path: "/trips-current",
     menuLabel: "Pågående",
     icon: "car-front",
   },
   {
-    element: <TripsFoundPage />,
+    element: <ProtectedRoute><TripsFoundPage /></ProtectedRoute>,
     path: "/trips-found",
   },
   {
-    element: <ContactPage />,
+    element: <ProtectedRoute><ContactPage /></ProtectedRoute>,
     path: "/contacts",
     icon: "people-fill",
   },
   {
-    element: <PaymentPage />,
+    element: <ProtectedRoute><PaymentPage /></ProtectedRoute>,
     path: "/payment",
     icon: "stripe",
   },
   {
-    element: <NotFoundPage />,
+    element: <ProtectedRoute><NotFoundPage /></ProtectedRoute>,
     path: "*",
   },
 
   // ############ Debug ############
   {
-    element: <DebugPagePage />,
+    element: <ProtectedRoute><DebugPagePage /></ProtectedRoute>,
     path: "/debug",
     icon: "gear",
   },
   {
-    element: <JoggusPage />,
+    element: <ProtectedRoute><JoggusPage /></ProtectedRoute>,
     path: "/joggus",
     icon: "apple-music",
   },
   {
-    element: <KalvPage />,
+    element: <ProtectedRoute><KalvPage /></ProtectedRoute>,
     path: "/kalv",
     icon: "android",
   },
   {
-    element: <TungisPage />,
+    element: <ProtectedRoute><TungisPage /></ProtectedRoute>,
     path: "/tungis",
     icon: "tux",
   },

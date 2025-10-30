@@ -4,14 +4,14 @@ import { Row } from "react-bootstrap";
 import type GeocodeSelection from "../../interfaces/GeocodeSelection";
 import DynamicMap from "../../partials/DynamicMap";
 import Start from "./Start";
-import Login from "./Login";
+import LoginOrRegister from "./LoginOrRegister";
 import config from "../../config/Config";
 
 export default function StartPage() {
   const { user, login } = useAuth();
-  const [shouldCenterOnFrom, setShouldCenterOnFrom] = useState(false);
   const [from, setFrom] = useState<GeocodeSelection | null>(null);
   const [to, setTo] = useState<GeocodeSelection | null>(null);
+  const [shouldCenterOnFrom, setShouldCenterOnFrom] = useState(false);
   const [showStart, setShowStart] = useState(false);
   const [triggerMapZoom, setTriggerMapZoom] = useState(false);
   const isLoggedIn = !!user;
@@ -22,7 +22,7 @@ export default function StartPage() {
   };
 
   const handleLogin = async () => {
-    await login("", "");
+    await login("", ""); //todo
   };
 
   // Trigger animations when user logs in
@@ -30,7 +30,7 @@ export default function StartPage() {
     if (isLoggedIn) {
       setTimeout(() => setTriggerMapZoom(true), config.MapZoomAnimationDelay);
       setTimeout(() => setShowStart(true), config.StartComponentAnimationDelay);
-      setTimeout(() => setTriggerMapZoom(false), config.MapZoomDuration + 100);
+      setTimeout(() => setTriggerMapZoom(false), config.MapZoomAnimationDuration + 100);
     } else {
       setShowStart(false);
       setTriggerMapZoom(false);
@@ -58,7 +58,7 @@ export default function StartPage() {
             onCenterSelf={handleCenterMap} />
         </div>
       ) : (
-        <Login onLogin={handleLogin} />
+        <LoginOrRegister onLoginSuccess={handleLogin} />
       )}
 
       <Row className="hide-watermarks left-watermark" />
