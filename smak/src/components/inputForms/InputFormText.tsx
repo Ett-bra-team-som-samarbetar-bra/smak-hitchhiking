@@ -1,7 +1,9 @@
 import { Form } from "react-bootstrap";
 
 interface InputFormTextProps {
-  setFormProp: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setFormProp: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   label: string;
   placeholder: string;
   maxLength?: number;
@@ -21,28 +23,28 @@ export default function InputFormText({
   value = "",
   isTextArea = false,
   className = "",
-  disabled = false
-
+  disabled = false,
 }: InputFormTextProps) {
-
-  return <>
-    <Form.Group className={`${className} mb-3 w-100`}>
-      <Form.Label className="d-block">
-        <p className="mb-1 text-black">{label}</p>
-        <Form.Control
-          className="bg-light border-1 placeholder-text"
-          name={typeName}
-          onChange={setFormProp}
-          autoComplete="off"
-          placeholder={placeholder}
-          maxLength={maxLength}
-          minLength={2}
-          as={isTextArea ? "textarea" : "input"}
-          required
-          defaultValue={value}
-          disabled={disabled}
-        />
-      </Form.Label>
-    </Form.Group>
-  </>
+  return (
+    <>
+      <Form.Group className={`${className} mb-3 w-100`}>
+        <Form.Label className="d-block">
+          <p className="mb-1 text-black">{label}</p>
+          <Form.Control
+            className="bg-light border-1 placeholder-text"
+            name={typeName}
+            onChange={setFormProp}
+            autoComplete="off"
+            placeholder={placeholder}
+            maxLength={maxLength}
+            minLength={2}
+            as={isTextArea ? "textarea" : "input"}
+            required
+            value={value ?? ""}
+            disabled={disabled}
+          />
+        </Form.Label>
+      </Form.Group>
+    </>
+  );
 }

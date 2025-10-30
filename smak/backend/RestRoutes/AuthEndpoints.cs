@@ -148,6 +148,10 @@ public static class AuthEndpoints
                 phoneNumber = u?.PhoneNumber,
                 firstName = u?.Properties?["FirstName"]?.ToString(),
                 lastName = u?.Properties?["LastName"]?.ToString(),
+                description = u?.Properties?["Description"]?.ToString(),
+                rating = u?.Properties?["Rating"]?.ToString(),
+                tripCount = u?.Properties?["TripCount"]?.ToString(),
+                preferences = u?.Properties?["Preferences"]?.AsArray(),
                 roles = context.User.FindAll(ClaimTypes.Role)
                     .Select(c => c.Value)
                     .ToList()

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SmakButton from "../../components/SmakButton";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
@@ -11,31 +11,34 @@ import type User from "../../interfaces/User";
 
 export default function ProfilePage() {
   const { userId } = useParams();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
 
   const isOwnProfile = !userId;
 
-  const displayUser = user!;
-
   const isAlreadyFriend = false;
 
   const [showUserModal, setShowUserModal] = useState(false);
-  const [userPayload, setUserPayload] = useState<{ user: User }>({
-    user: {
-      id: displayUser.id,
-      username: displayUser.username,
-      email: displayUser.email,
-      firstName: displayUser.firstName,
-      lastName: displayUser.lastName,
-      phone: displayUser.phone,
-      description: displayUser.description,
-      rating: displayUser.rating,
-      tripCount: displayUser.tripCount,
-      preferences: preferences,
-    },
-  });
+  const [userPayload, setUserPayload] = useState<{ user: User } | null>(null);
+  useEffect(() => {
+    if (user) {
+      setUserPayload({
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phoneNumber: user.phoneNumber,
+          description: user.description,
+          rating: user.rating,
+          tripCount: user.tripCount,
+          preferences: user.preferences,
+        },
+      });
+    }
+  }, [user]);
 
   const [showCarModal, setShowCarModal] = useState(false);
   const [carPayload, setCarPayload] = useState({
@@ -82,29 +85,19 @@ export default function ProfilePage() {
     });
   }
 
-  function handleEditUser(user: {
-    username: string | undefined;
-    email: string | undefined;
-    firstName: string | undefined;
-    lastName: string | undefined;
-    phone: string | undefined;
-    description: string | undefined;
-    rating: number | undefined;
-    tripCount: number | undefined;
-    preferences: string[] | undefined;
-  }) {
+  function handleEditUser(user: Partial<User>) {
     setUserPayload({
       user: {
-        id: displayUser.id,
+        id: user.id || "",
         username: user.username || "",
         email: user.email || "",
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phone: user.phone,
-        description: user.description,
-        rating: user.rating,
-        tripCount: user.tripCount,
-        preferences: preferences,
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        phoneNumber: user.phoneNumber || "",
+        description: user.description || "",
+        rating: user.rating ?? 0,
+        tripCount: user.tripCount ?? 0,
+        preferences: preferences || [],
       },
     });
     setIsEdit(true);
@@ -120,7 +113,7 @@ export default function ProfilePage() {
         email: "",
         firstName: "",
         lastName: "",
-        phone: "",
+        phoneNumber: "",
         description: "",
         rating: 0,
         tripCount: 0,
@@ -132,13 +125,24 @@ export default function ProfilePage() {
   async function handleSaveUser(updatedUser: User) {
     {
       console.log("Saving user:", updatedUser);
+
+      const payloadToSend = {
+        username: updatedUser.username,
+        email: updatedUser.email,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        phoneNumber: updatedUser.phoneNumber,
+        description: updatedUser.description,
+        preferences: updatedUser.preferences,
+      };
+
       try {
         const response = await fetch(`api/auth/login`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedUser),
+          body: JSON.stringify(payloadToSend),
         });
 
         if (!response.ok) {
@@ -147,6 +151,8 @@ export default function ProfilePage() {
 
         const savedUser = await response.json();
         console.log("User saved successfully:", savedUser);
+
+        await refreshUser();
 
         setUserPayload({ user: savedUser });
         setShowUserModal(false);
@@ -158,19 +164,20 @@ export default function ProfilePage() {
 
   return (
     <>
-      {displayUser && (
+      {user! && (
         <ProfileCard
-          user={displayUser}
+          user={user!}
           profileImage={"hej"}
           isOwnProfile={isOwnProfile}
           isAlreadyFriend={isAlreadyFriend}
           onEdit={() =>
             handleEditUser({
+              id: user?.id,
               username: user?.username,
               email: user?.email,
               firstName: user?.firstName,
               lastName: user?.lastName,
-              phone: user?.phone,
+              phoneNumber: user?.phoneNumber,
               description: user?.description,
               rating: user?.rating,
               tripCount: user?.tripCount,
@@ -202,15 +209,17 @@ export default function ProfilePage() {
             />
           ))
         )}
-        <UserModal
-          show={showUserModal}
-          onClose={handleCloseUserModal}
-          payload={userPayload}
-          setPayload={setUserPayload}
-          isEdit={isEdit}
-          isOwnProfile={isOwnProfile}
-          onSave={handleSaveUser}
-        />
+        {userPayload && (
+          <UserModal
+            show={showUserModal}
+            onClose={handleCloseUserModal}
+            payload={userPayload}
+            setPayload={setUserPayload}
+            isEdit={isEdit}
+            isOwnProfile={isOwnProfile}
+            onSave={handleSaveUser}
+          />
+        )}
         <CarModal
           title={isEdit ? "Redigera fordon" : "Lägg till fordon"}
           show={showCarModal}
