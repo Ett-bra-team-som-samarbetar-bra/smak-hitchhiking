@@ -3,7 +3,6 @@ import type { MapRef } from "react-map-gl/mapbox";
 import config from '../config/Config';
 
 interface DynamicMapContextType {
-  // State
   from: { name: string; coordinates: [number, number] } | null;
   to: { name: string; coordinates: [number, number] } | null;
   route: any;
@@ -11,6 +10,7 @@ interface DynamicMapContextType {
   centerOnFrom: boolean;
   isLoginPage: boolean;
   triggerLoginZoom: boolean;
+  hasLoginAnimationCompleted: boolean;
   mapRef: React.RefObject<MapRef | null>;
 
   // Setters
@@ -50,22 +50,20 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
   const [centerOnFrom, setCenterOnFrom] = useState(false);
   const [isLoginPage, setIsLoginPage] = useState(false);
   const [triggerLoginZoom, setTriggerLoginZoom] = useState(false);
-
+  const [hasLoginAnimationCompleted, setHasLoginAnimationCompleted] = useState(false);
   const mapRef = useRef<MapRef>(null);
   const mapPadding = 140;
 
   // Zoom in animation when user logs in
   useEffect(() => {
-
-    console.log("triggerLoginZoom changed:");
-
     if (triggerLoginZoom && mapRef.current) {
-      console.log("Triggering login zoom animation");
       mapRef.current.flyTo({
         center: [16.18071635577292, 58.589806397406655],
         zoom: config.initialMapZoomLevel,
         duration: config.MapZoomAnimationDuration
       });
+      setTriggerLoginZoom(false);
+      setHasLoginAnimationCompleted(true);
     }
   }, [triggerLoginZoom]);
 
@@ -80,20 +78,28 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
           [Math.min(...longitudes), Math.min(...latitudes)],
           [Math.max(...longitudes), Math.max(...latitudes)],
         ];
-        mapRef.current?.fitBounds(bounds, { duration: 1000, padding: mapPadding });
+        mapRef.current?.fitBounds(bounds, { padding: mapPadding });
       } else if (from) {
-        mapRef.current.flyTo({ center: from.coordinates, zoom: 10, duration: 1000 });
+        mapRef.current.flyTo({ center: from.coordinates, zoom: 10 });
       } else if (to) {
-        mapRef.current.flyTo({ center: to.coordinates, zoom: 10, duration: 1000 });
+        mapRef.current.flyTo({ center: to.coordinates, zoom: 10 });
       } else {
         mapRef.current.flyTo({
           center: [16.18071635577292, 58.589806397406655],
-          zoom: 10,
-          duration: 1000
+          zoom: 10
         });
       }
     }
   }, [centerOnFrom, from, to]);
+
+  // Auto center on single location
+  useEffect(() => {
+    if (from && !to) {
+      mapRef.current?.flyTo({ center: from.coordinates, zoom: 10 });
+    } else if (to && !from) {
+      mapRef.current?.flyTo({ center: to.coordinates, zoom: 10 });
+    }
+  }, [from, to]);
 
   // Fetch route when from/to changes
   useEffect(() => {
@@ -134,34 +140,31 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
     fetchRoute();
   }, [from, to]);
 
-  // Auto center on single location
-  useEffect(() => {
-    if (from && !to) {
-      mapRef.current?.flyTo({ center: from.coordinates, zoom: 10 });
-    } else if (to && !from) {
-      mapRef.current?.flyTo({ center: to.coordinates, zoom: 10 });
-    }
-  }, [from, to]);
-
   // Methods
   const resetMap = () => {
     setFrom(null);
     setTo(null);
     setRoute(null);
-    setClassName("");
     setCenterOnFrom(false);
     setIsLoginPage(false);
     setTriggerLoginZoom(false);
+    setHasLoginAnimationCompleted(false);
+
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: [16.18071635577292, 58.589806397406655],
+        zoom: 0.8,
+        duration: 0
+      });
+    }
   };
 
   const centerMapOnLocations = () => {
     setCenterOnFrom(true);
-    // Reset after triggering
     setTimeout(() => setCenterOnFrom(false), 100);
   };
 
   const value = {
-    // State
     from,
     to,
     route,
@@ -169,6 +172,7 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
     centerOnFrom,
     isLoginPage,
     triggerLoginZoom,
+    hasLoginAnimationCompleted,
     mapRef,
 
     // Setters

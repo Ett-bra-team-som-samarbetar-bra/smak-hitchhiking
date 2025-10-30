@@ -2,33 +2,32 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Row } from "react-bootstrap";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
-import Start from "./Start";
+import FindTrip from "./FindTrip";
 import LoginOrRegister from "./LoginOrRegister";
 import config from "../../config/Config";
 
 export default function StartPage() {
-  const { user, login } = useAuth();
-  const { setTriggerLoginZoom } = useDynamicMap();
+  const { user } = useAuth();
+  const { setTriggerLoginZoom, resetMap, hasLoginAnimationCompleted } = useDynamicMap();
   const [showStart, setShowStart] = useState(true);
   const isLoggedIn = !!user;
 
   // Trigger animations when user logs in
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && !hasLoginAnimationCompleted) {
       setTimeout(() => setTriggerLoginZoom(true), config.MapZoomAnimationDelay);
       setTimeout(() => setShowStart(true), config.StartComponentAnimationDelay);
-      setTimeout(() => setTriggerLoginZoom(false), config.MapZoomAnimationDuration + 100);
-    } else {
+    } else if (!isLoggedIn) {
+      resetMap();
       setShowStart(false);
-      setTriggerLoginZoom(false);
     }
-  }, [isLoggedIn, setTriggerLoginZoom]);
+  }, [isLoggedIn, setTriggerLoginZoom, hasLoginAnimationCompleted]);
 
   return (
-    <div className="position-relative h-100 overflow-hidden">
+    <div className="position-relative h-100">
       {isLoggedIn ? (
         <div className={`start-component ${!showStart ? "" : "fade-in"}`}>
-          <Start />
+          <FindTrip />
         </div>
       ) : (
         <LoginOrRegister />
