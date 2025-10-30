@@ -4,7 +4,7 @@ export default interface User {
   email: string;
   firstName?: string;
   lastName?: string;
-  phone?: string;
+  phoneNumber?: string;
   description?: string;
   rating?: number;
   tripCount?: number;

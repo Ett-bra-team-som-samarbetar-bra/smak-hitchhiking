@@ -16,7 +16,7 @@ interface UserModalProps {
   setPayload: React.Dispatch<
     React.SetStateAction<{
       user: User;
-    }>
+    } | null>
   >;
   isEdit?: boolean;
   isOwnProfile?: boolean;
@@ -52,7 +52,16 @@ export default function UserModal({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     const { name, value } = event.target;
-    setPayload({ ...payload, [name]: value });
+    setPayload((prev) => {
+      if (!prev) return prev; // or return null
+      return {
+        ...prev,
+        user: {
+          ...prev.user,
+          [name]: value,
+        },
+      };
+    });
   }
 
   return (
@@ -88,7 +97,7 @@ export default function UserModal({
       <InputFormText
         placeholder="telefonnummer"
         label="Telefonnummer"
-        value={payload.user.phone}
+        value={payload.user.phoneNumber}
         setFormProp={handleChange}
         typeName="phone"
         disabled={!isOwnProfile}
