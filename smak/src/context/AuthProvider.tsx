@@ -13,7 +13,7 @@ interface AuthProviderProps {
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const fakeUser: User = {
-  id: 42,
+  id: "42",
   username: "Dev User",
   email: "dev@example.com",
 };
@@ -58,7 +58,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       const data = await response.json();
       setUser(data);
-
     } catch (error) {
       console.error("Login failed:", error);
       setUser(null);
