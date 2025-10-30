@@ -1,64 +1,37 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Row } from "react-bootstrap";
-import type GeocodeSelection from "../../interfaces/GeocodeSelection";
-import DynamicMap from "../../partials/DynamicMap";
+import { useDynamicMap } from "../../context/DynamicMapProvider";
 import Start from "./Start";
 import LoginOrRegister from "./LoginOrRegister";
 import config from "../../config/Config";
 
 export default function StartPage() {
   const { user, login } = useAuth();
-  const [from, setFrom] = useState<GeocodeSelection | null>(null);
-  const [to, setTo] = useState<GeocodeSelection | null>(null);
-  const [shouldCenterOnFrom, setShouldCenterOnFrom] = useState(false);
-  const [showStart, setShowStart] = useState(false);
-  const [triggerMapZoom, setTriggerMapZoom] = useState(false);
+  const { setTriggerLoginZoom } = useDynamicMap();
+  const [showStart, setShowStart] = useState(true);
   const isLoggedIn = !!user;
-
-  const handleCenterMap = () => {
-    setShouldCenterOnFrom(true);
-    setTimeout(() => setShouldCenterOnFrom(false), 100);
-  };
-
-  const handleLogin = async () => {
-    await login("", ""); //todo
-  };
 
   // Trigger animations when user logs in
   useEffect(() => {
     if (isLoggedIn) {
-      setTimeout(() => setTriggerMapZoom(true), config.MapZoomAnimationDelay);
+      setTimeout(() => setTriggerLoginZoom(true), config.MapZoomAnimationDelay);
       setTimeout(() => setShowStart(true), config.StartComponentAnimationDelay);
-      setTimeout(() => setTriggerMapZoom(false), config.MapZoomAnimationDuration + 100);
+      setTimeout(() => setTriggerLoginZoom(false), config.MapZoomAnimationDuration + 100);
     } else {
       setShowStart(false);
-      setTriggerMapZoom(false);
+      setTriggerLoginZoom(false);
     }
-  }, [user]);
+  }, [isLoggedIn, setTriggerLoginZoom]);
 
   return (
     <div className="position-relative h-100 overflow-hidden">
-      <div className="dynamic-map-container">
-        <DynamicMap
-          from={from}
-          to={to}
-          centerOnFrom={shouldCenterOnFrom}
-          isLoginPage={!isLoggedIn}
-          triggerLoginZoom={triggerMapZoom} />
-      </div>
-
       {isLoggedIn ? (
-        <div className={`start-component ${showStart ? "fade-in" : ""}`}>
-          <Start
-            from={from}
-            setFrom={setFrom}
-            to={to}
-            setTo={setTo}
-            onCenterSelf={handleCenterMap} />
+        <div className={`start-component ${!showStart ? "" : "fade-in"}`}>
+          <Start />
         </div>
       ) : (
-        <LoginOrRegister onLoginSuccess={handleLogin} />
+        <LoginOrRegister />
       )}
 
       <Row className="hide-watermarks left-watermark" />

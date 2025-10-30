@@ -1,20 +1,31 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./hooks/useAuth";
+import DynamicMapProvider, { useDynamicMap } from "./context/DynamicMapProvider";
 import AuthProvider from "./context/AuthProvider";
 import Main from "./partials/Main";
 import Header from "./partials/Header";
 import Footer from "./partials/Footer";
 import DesktopPage from "./pages/desktop/DesktopPage";
 import config from "./config/Config";
+import DynamicMap from "./partials/DynamicMap";
 
 function AppContent() {
   const { user } = useAuth();
+  const { setIsLoginPage } = useDynamicMap();
   const [isPwa, setIsPwa] = useState(false);
   const [showHeaderFooter, setShowHeaderFooter] = useState(false);
   const isLoggedIn = !!user;
+  const mapActivePaths = ["/", "/drive"];
+  const shouldShowMap = mapActivePaths.includes(location.pathname);
 
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
+  // DynamicMap
+  useEffect(() => {
+    setIsLoginPage(!isLoggedIn);
+  }, [isLoggedIn, setIsLoginPage]);
+
+  // Is PWA?
   useEffect(() => {
     const checkPwaStatus = () => {
       const isPwaMode =
@@ -49,13 +60,15 @@ function AppContent() {
   // PWA
   return (
     <>
-      <div className={`header-container ${showHeaderFooter ? 'header-visible' : 'header-hidden'}`}>
-        {isLoggedIn && <Header />}
+      <div className={`header-container ${showHeaderFooter ? "header-visible" : "header-hidden"}`}>
+        <Header />
       </div>
       <Main />
-      <div className={`footer-container ${showHeaderFooter ? 'footer-visible' : 'footer-hidden'}`}>
-        {isLoggedIn && <Footer />}
+      <div className={`footer-container ${showHeaderFooter ? "footer-visible" : "footer-hidden"}`}>
+        <Footer />
       </div>
+
+      <DynamicMap className={`dynamic-map-container ${shouldShowMap ? "" : "dynamic-map-hidden"}`} />
     </>
   );
 }
@@ -63,7 +76,9 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <DynamicMapProvider>
+        <AppContent />
+      </DynamicMapProvider>
     </AuthProvider>
   );
 }

@@ -1,24 +1,55 @@
 import { Button, Row } from "react-bootstrap";
-import SmakSlideInModal from "../../components/SmakSlideInModal";
 import { useState } from "react";
+import SmakSlideInModal from "../../components/SmakSlideInModal";
+import InputFormText from "../../components/inputForms/InputFormText";
+import { useAuth } from "../../hooks/useAuth";
 
-interface LoginProps {
-  onLoginSuccess: () => void;
-}
-
-export default function LoginOrRegister({ onLoginSuccess: onLogin }: LoginProps) {
+export default function LoginOrRegister() {
+  const { login } = useAuth();
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  // todo
-  const handleLogin = async () => {
-    console.log("login");
-    onLogin();
-  };
+
+
+  // Login TODO
+  let [payload, setPayload] = useState<{ name: string; password: string }>({
+    name: "",
+    password: ""
+  });
+
+  function setFormProp(event: React.ChangeEvent) {
+    let { name, value }: { name: string, value: string | null } = event.target as HTMLInputElement;
+    setPayload({ ...payload, [name]: value.trim() });
+  }
+
+  async function handleLogin(event: React.FormEvent) {
+    event.preventDefault();
+
+    try {
+      await login(payload.name, payload.password);
+
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Ett fel uppstod vid inloggning. Försök igen.");
+    }
+  }
+
+
 
   const handleRegister = async () => {
     console.log("register");
     setShowRegisterModal(true);
   };
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
@@ -32,8 +63,32 @@ export default function LoginOrRegister({ onLoginSuccess: onLogin }: LoginProps)
         </div>
       </Row>
 
+
+
       {/* Buttons */}
       <Row className="dynamic-map-ontop-login px-3 d-flex flex-column">
+
+
+
+
+        <InputFormText
+          setFormProp={setFormProp}
+          typeName={"name"}
+          label={""}
+          placeholder={"Namn"} >
+        </InputFormText>
+
+        <InputFormText
+          setFormProp={setFormProp}
+          typeName={"password"}
+          label={""}
+          placeholder={"Löäsen"} >
+        </InputFormText>
+
+
+
+
+
         <Button
           className="btn btn-light mb-3 rounded-5 py-2"
           onClick={handleRegister}>
@@ -49,8 +104,6 @@ export default function LoginOrRegister({ onLoginSuccess: onLogin }: LoginProps)
 
 
 
-
-
       {/* Register */}
       <SmakSlideInModal
         isOpen={showRegisterModal}
@@ -60,10 +113,9 @@ export default function LoginOrRegister({ onLoginSuccess: onLogin }: LoginProps)
           <h1>Hello from Modal!</h1>
         </div>
 
+
+
       </SmakSlideInModal>
-
-
-
     </>
   )
 }

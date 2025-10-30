@@ -15,8 +15,6 @@ const router = createBrowserRouter([
   }
 ]);
 
-// DynamicMap montera här TODO
-
 createRoot(document.querySelector("#root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
