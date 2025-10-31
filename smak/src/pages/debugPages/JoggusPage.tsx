@@ -59,7 +59,7 @@ export default function JoggusPage() {
         className="my-3"
         setFormProp={setFormProp}
         label="E-postadress"
-        placeholder="Ange din e-postadress" />
+        placeholder="Ange din e-postadress" disabled={false} />
 
       <InputFormText
         className="mb-3"
@@ -85,8 +85,8 @@ export default function JoggusPage() {
       <TripCardSmall
         className=""
         firstName="Lena"
-        lastName="Handen"
-        userImage="/images/development/user2.png"
+        lastName="Jansson"
+        profileImage="/images/development/user2.png"
         startTime="15:00"
         endTime="19:30"
         startCity="Stockholm"
@@ -97,7 +97,7 @@ export default function JoggusPage() {
       <TripCardBig
         className=""
         firstName="Lena"
-        lastName="Handen"
+        lastName="kekek"
         startTime="15:00"
         endTime="19:30"
         startCity="Stockholm"
@@ -106,7 +106,8 @@ export default function JoggusPage() {
         distance={420}
         date="13/03 25"
         vehicleInfo="Keken"
-        numOfSeats="42" />
+        numOfSeats="42"
+        cardButtonType="book" />
 
       <SmakContact
         user={user}

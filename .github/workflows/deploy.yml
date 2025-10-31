@@ -1,32 +1,66 @@
-name: Deploy to Raspberry Pi
+name: Deploy to Raspberry Pi (Frontend + Backend)
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: self-hosted
 
+    env:
+      BACKEND_SERVICE_NAME: orchard
+      FRONTEND_SRC: smak
+      BACKEND_SRC: smak/backend
+      FRONTEND_DEST: /var/www/smak
+      BACKEND_DEST: /var/www/backend
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # -------- Frontend ------------
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: smak
+        working-directory: ${{ env.FRONTEND_SRC }}
         run: npm ci
 
       - name: Build project
-        working-directory: smak
+        working-directory: ${{ env.FRONTEND_SRC }}
+        env:
+          VITE_MAPBOX_TOKEN: ${{secrets.VITE_MAPBOX_TOKEN}}
         run: npm run build
 
-      - name: Deploy build to Nginx
+      # -------- Backend -------------
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore backend
+        working-directory: ${{ env.BACKEND_SRC }}
+        run: dotnet restore
+
+      - name: Publish backend
+        working-directory: ${{ env.BACKEND_SRC }}
+        run: dotnet publish -c Release -o out
+
+      # --------- Deploy -------------
+
+      - name: Deploy frontend to Nginx
         run: |
-          sudo rm -rf /var/www/smak/*
-          sudo cp -r smak/dist/* /var/www/smak/
+          sudo mkdir -p "${FRONTEND_DEST}"
+          sudo rm -rf "${FRONTEND_DEST:?}/"*
+          sudo cp -r "${FRONTEND_SRC}/dist/"* "${FRONTEND_DEST}/"
           sudo systemctl reload nginx
+
+      - name: Deploy backend to service folder
+        run: |
+          sudo mkdir -p "${BACKEND_DEST}"
+          sudo rm -rf "${BACKEND_DEST:?}/"*
+          sudo cp -r "${BACKEND_SRC}/out/"* "${BACKEND_DEST}/"
+          sudo systemctl restart "${BACKEND_SERVICE_NAME}"

@@ -22,7 +22,7 @@ export default function Footer() {
   const isActive = (path: string) => pathName === path;
 
   return (
-    <footer className="bg-white d-flex justify-content-center">
+    <footer className="bg-white d-flex justify-content-center border-top">
       <div className="whole-app-horizontal-width w-100">
         <Row className="m-0 pb-3">
           <Col className="d-flex align-items-center justify-content-between pt-2 pb-3">
@@ -32,11 +32,10 @@ export default function Footer() {
                 <NavLink
                   to={route.path}
                   key={i}
-                  className={`
-                ${isActive(route.path) ? "text-black text-grow" : "text-secondary"} 
-                text-decoration-none d-flex flex-column justify-content-center nav-link-set-width`}>
+                  className={`${isActive(route.path) ? "text-primary text-grow" : "text-secondary"} 
+                            text-decoration-none d-flex flex-column justify-content-center nav-link-set-width`}>
                   <i className={`bi bi-${route.icon} text-center nav-icon-size`} />
-                  <p className="text-center nav-link-size m-0" key={i}>
+                  <p className={`text-center nav-link-size m-0`} key={i}>
                     {route.menuLabel}
                   </p>
                 </NavLink>

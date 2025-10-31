@@ -1,0 +1,44 @@
+// Header
+.header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  transition: transform 0.8s ease-in-out;
+}
+
+.header-hidden {
+  transform: translateY(-100%);
+}
+
+.header-visible {
+  transform: translateY(0);
+}
+
+// Footer
+.footer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  transition: transform 1s ease-in-out;
+}
+
+.footer-hidden {
+  transform: translateY(100%);
+}
+
+.footer-visible {
+  transform: translateY(0);
+}
+
+.find-trip {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+.find-trip.fade-in {
+  opacity: 1;
+}

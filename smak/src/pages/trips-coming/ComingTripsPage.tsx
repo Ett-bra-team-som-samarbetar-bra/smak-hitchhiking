@@ -1,8 +1,21 @@
+import { getTripDateTime, groupTripsByDate } from "../../utils/DateUtils";
+import { getAllTrips } from "../../utils/MockData";
+import { TripGroupList } from "../../components/TripListRender";
 
 export default function ComingTripsPage() {
-    return (
-        <div className="d-flex justify-content-center align-items-center flex-column h-100 p-3">
-            <h1 className="text-center text-primary">Bokade resor här</h1> 
-        </div>
-    )
+
+  const allTrips = getAllTrips();
+
+  const sortedTrips = [...allTrips].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
+  const today = new Date();
+  const upcomingTrips = sortedTrips.filter(trip => getTripDateTime(trip) > today);
+
+  const groupedUpcomingTrips = groupTripsByDate(upcomingTrips);
+
+  return (
+    <TripGroupList groupedTrips={groupedUpcomingTrips} />
+  );
 }

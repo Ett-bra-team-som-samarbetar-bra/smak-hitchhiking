@@ -1,41 +1,32 @@
 import { Col, Row } from "react-bootstrap";
 import { renderRatingStars } from "../../utils/Utils";
+import type TripCardProps from "../../interfaces/TripCardProps";
 import SmakCard from "../SmakCard";
 import DividerLine from "../DividerLine";
 import "../../components/trip/TripCard.scss";
 
-interface TripCardProps {
-  firstName?: string;
-  lastName?: string;
-  userImage?: string;
-  startCity?: string;
-  endCity?: string;
-  startTime?: string;
-  endTime?: string;
-  rating?: number;
-  distance?: number;
-  className?: string;
-}
+export default function TripCardSmall(props: TripCardProps) {
+  const {
+    firstName = "Okänd",
+    lastName = "användare",
+    startCity = "Okänd stad",
+    endCity = "Okänd stad",
+    startTime = "00:00",
+    endTime = "00:00",
+    rating = 0,
+    distance = 0,
+    profileImage = "/images/development/user2.png",
+    className = "",
+    onSmallTripCardClick
+  } = props;
 
-export default function TripCardSmall({
-  firstName = "Okänd",
-  lastName = "användare",
-  userImage = "",
-  startCity = "Okänd stad",
-  endCity = "Okänd stad",
-  startTime = "00:00",
-  endTime = "00:00",
-  rating = 0,
-  distance = 0,
-  className = "",
-}: TripCardProps) {
   const userName = `${firstName} ${lastName}`;
 
   return (
     <SmakCard className={`${className} pb-0`}>
       <div
         className="cursor-pointer"
-        onClick={() => console.log("TripCard pressed")}>
+        onClick={onSmallTripCardClick}>
 
         <Row className="trip-card-small-height">
           <Col xs={9}>
@@ -64,7 +55,7 @@ export default function TripCardSmall({
             </Row>
           </Col>
 
-          <Col xs={3} className="d-flex justify-content-end align-items-start">
+          <Col xs={3} className="d-flex justify-content-end">
             <p className="text-primary fw-bold">{distance}km</p>
           </Col>
         </Row>
@@ -76,7 +67,7 @@ export default function TripCardSmall({
             <div
               className="d-flex align-items-center gap-3">
               <img
-                src={userImage}
+                src={profileImage}
                 alt="Profil"
                 className="rounded-circle"
                 width="38"

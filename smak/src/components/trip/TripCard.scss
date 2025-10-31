@@ -5,8 +5,23 @@
 .trip-card-large-height {
   min-height: 5rem;
 
-  @media (max-width: 400px) {
+  @media (max-width: 425px) {
     margin-top: 30px !important;
+  }
+}
+
+#trip-card-button-mobile-hide {
+  @media (max-width: 425px) {
+    display: none;
+  }
+}
+
+#trip-card-button-desktop-hide {
+  margin-top: -8px;
+  padding-bottom: 6px;
+
+  @media (min-width: 426px) {
+    display: none;
   }
 }
 
@@ -21,13 +36,16 @@
 }
 
 .trip-card-map-image {
-  height: 240px;
+  height: 244px;
   object-fit: cover;
   object-position: center;
+  clip-path: inset(20px 0 20px 0);
+  margin-top: -20px;
+  margin-bottom: -20px;
 }
 
 .trip-card-profil-image-container {
-  top: 10rem;
+  top: 126px;
   right: 1rem;
 }
 
@@ -51,4 +69,8 @@
 
 .small-font-size {
   font-size: 0.8rem;
+}
+
+.trip-card-button-width {
+  width: 100px;
 }

@@ -20,7 +20,6 @@ $success: green;
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
 
-
 // Globals
 * {
   box-sizing: border-box;
@@ -56,10 +55,16 @@ $success: green;
 .whole-app-horizontal-padding {
   padding-left: 0.6rem;
   padding-right: 0.6rem;
+  padding-top: 4.4rem;
+  padding-bottom: 7rem;
+}
+
+.z-index-fix {
+  z-index: 1;
 }
 
 .text-grow {
-  transform: scale(1.1);
+  transform: scale(1.14);
 }
 
 .cursor-pointer {
@@ -73,4 +78,63 @@ $success: green;
 
 .shadow {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+}
+
+.focus-no-outline {
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.non-interactive {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* override bootstrap accordion styles */
+
+.custom-accordion .accordion-item {
+  border: none;
+  background-color: transparent;
+}
+
+.custom-accordion .accordion-header {
+  background-color: transparent;
+}
+
+.custom-accordion .accordion-button {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  color: inherit;
+}
+
+.custom-accordion .accordion-button:not(.collapsed) {
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+.custom-accordion .accordion-button:focus {
+  border: none;
+  box-shadow: none;
+}
+
+.custom-accordion .accordion-button::after {
+  display: none;
+}
+
+.custom-accordion .accordion-body {
+  padding: 1rem 0;
+}
+
+.custom-accordion .accordion-collapse {
+  border: none;
+}
+
+.interactive {
+  pointer-events: auto;
+  user-select: auto;
 }

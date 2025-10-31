@@ -5,12 +5,15 @@ import DrivePage from "./pages/drive/DrivePage";
 import HistoryPage from "./pages/history/HistoryPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import TripsCurrentPage from "./pages/trips-current/TripsCurrentPage";
-import SettingsPage from "./pages/settings/settings";
 import ComingTripsPage from "./pages/trips-coming/ComingTripsPage";
 import JoggusPage from "./pages/debugPages/JoggusPage";
 import KalvPage from "./pages/debugPages/KalvPage";
 import TungisPage from "./pages/debugPages/TungisPage";
 import NotFoundPage from "./pages/notFound/NotFound";
+import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
+import DebugPagePage from "./pages/debugPages/debugPage";
+import PaymentPage from "./pages/payment/PaymentPage";
+import ProtectedRoute from "./utils/ProtectedRoutes";
 
 interface Route {
   element: JSX.Element;
@@ -22,72 +25,85 @@ interface Route {
 
 const routes: Route[] = [
   {
-    element: <ProfilePage />,
+    element: <ProtectedRoute><ProfilePage /></ProtectedRoute>,
     path: "/profile",
     menuLabel: "Profil",
-    icon: "person-fill-check"
+    icon: "person-fill-check",
   },
   {
-    element: <DrivePage />,
+    element: <ProtectedRoute><ProfilePage /></ProtectedRoute>,
+    path: "/profile/:userId",
+  },
+  {
+    element: <ProtectedRoute><DrivePage /></ProtectedRoute>,
     path: "/drive",
     menuLabel: "Kör",
-    icon: "car-front-fill"
+    icon: "car-front-fill",
   },
   {
     element: <StartPage />,
     path: "/",
     menuLabel: "Sök",
-    icon: "geo-alt-fill "
+    icon: "geo-alt-fill ",
   },
   {
-    element: <ComingTripsPage />,
+    element: <ProtectedRoute><ComingTripsPage /></ProtectedRoute>,
     path: "/coming-trips",
     menuLabel: "Bokade",
-    icon: "calendar-check-fill"
+    icon: "calendar-check-fill",
   },
   {
-    element: <HistoryPage />,
+    element: <ProtectedRoute><HistoryPage /></ProtectedRoute>,
     path: "/history",
     menuLabel: "Historik",
-    icon: "clock-fill"
+    icon: "clock-fill",
   },
   {
-    element: <TripsCurrentPage />,
+    element: <ProtectedRoute><TripsCurrentPage /></ProtectedRoute>,
     path: "/trips-current",
     menuLabel: "Pågående",
-    icon: "car-front"
+    icon: "car-front",
   },
   {
-    element: <ContactPage />,
+    element: <ProtectedRoute><TripsFoundPage /></ProtectedRoute>,
+    path: "/trips-found",
+  },
+  {
+    element: <ProtectedRoute><ContactPage /></ProtectedRoute>,
     path: "/contacts",
-    icon: "people-fill"
+    icon: "people-fill",
   },
   {
-    element: <SettingsPage />,
-    path: "/settings",
-    icon: "gear"
+    element: <ProtectedRoute><PaymentPage /></ProtectedRoute>,
+    path: "/payment",
+    icon: "stripe",
   },
   {
-    element: <NotFoundPage />,
-    path: "*"
+    element: <ProtectedRoute><NotFoundPage /></ProtectedRoute>,
+    path: "*",
   },
 
   // ############ Debug ############
   {
-    element: <JoggusPage />,
+    element: <ProtectedRoute><DebugPagePage /></ProtectedRoute>,
+    path: "/debug",
+    icon: "gear",
+  },
+  {
+    element: <ProtectedRoute><JoggusPage /></ProtectedRoute>,
     path: "/joggus",
-    icon: "apple-music"
+    icon: "apple-music",
   },
   {
-    element: <KalvPage />,
+    element: <ProtectedRoute><KalvPage /></ProtectedRoute>,
     path: "/kalv",
-    icon: "android"
+    icon: "android",
   },
   {
-    element: <TungisPage />,
+    element: <ProtectedRoute><TungisPage /></ProtectedRoute>,
     path: "/tungis",
-    icon: "tux"
-  }
+    icon: "tux",
+  },
 ];
 
 export default routes;

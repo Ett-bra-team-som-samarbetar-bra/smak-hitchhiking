@@ -6,13 +6,14 @@ interface SmakButtonProps {
     children?: React.ReactNode;
     className?: string;
     color?: string;
+    rounded?: string;
 }
 
-export default function SmakButton({ onClick, children, className = "", color = "primary" }: SmakButtonProps) {
+export default function SmakButton({ onClick, children, className = "", color = "primary", rounded = "rounded-5" }: SmakButtonProps) {
     return (
         <Button
             type="button"
-            className={`${className} btn btn-${color} py-2 rounded-5 w-100 shadow`}
+            className={`${className} btn btn-${color} py-2 ${rounded} w-100`}
             onClick={onClick}
         >
             {children}

@@ -13,12 +13,13 @@ export default function SubmitButton({ isLoading, children, className = "", colo
     <Button
       type="submit"
       className={`${className} btn btn-${color} py-2 rounded-5 w-100 shadow`}
-      disabled={isLoading} >
+      disabled={isLoading}
+      style={{ opacity: isLoading ? 0.96 : 1 }}>
       {
         isLoading ? (
           <>
             <Spinner
-              animation="grow"
+              animation="border"
               size="sm"
               role="status"
               variant="light"

@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "save": "node scripts/save-seed.js",
+    "restore": "node scripts/restore-seed.js",
+    "backend": "node scripts/ensure-setup.js && cd backend && dotnet run --urls http://localhost:5001",
+    "start": "concurrently \"npm run backend\" \"npm run dev\""
   },
   "dependencies": {
     "bootstrap": "^5.3.6",
@@ -27,6 +31,7 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.2.1",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

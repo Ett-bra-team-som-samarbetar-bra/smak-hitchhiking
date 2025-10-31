@@ -10,11 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.env
-
-# User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-
-# Mono auto generated files
 mono_crash.*
 
 # Build results
@@ -22,26 +18,14 @@ mono_crash.*
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-
-[Dd]ebug/x64/
-[Dd]ebugPublic/x64/
-[Rr]elease/x64/
-[Rr]eleases/x64/
-bin/x64/
-obj/x64/
-
-[Dd]ebug/x86/
-[Dd]ebugPublic/x86/
-[Rr]elease/x86/
-[Rr]eleases/x86/
-bin/x86/
-obj/x86/
-
+x64/
+x86/
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 [Aa][Rr][Mm]64[Ee][Cc]/
 bld/
+[Bb]in/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/
@@ -426,3 +410,124 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Mac
+.DS_Store
+
+# ============================================
+# .NET / C# (backend)
+# ============================================
+
+# Visual Studio and .NET
+.vs/
+Generated\ Files/
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+BenchmarkDotNet.Artifacts/
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+*.received.*
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio / Rider
+.vs/
+.vscode/
+.idea/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln.iml
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+
+# Orchard Core specific
+# Ignore runtime App_Data (gets restored from seed)
+smak/backend/App_Data/
+
+# But keep the seed data committed to git
+!backend/App_Data.seed/
+
+# Ignore ImageSharp cache and other wwwroot runtime files
+backend/wwwroot/Default/
+
+# Other Orchard ignores
+App_Data_Sites/
+Localization/
+*.db-shm
+*.db-wal
+
+# ASP.NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Signing keys
+signing-key.json
+*.pfx
+*.p12
+
+# Node.js / TypeScript / JavaScript
+node_modules/
+jspm_packages/
+dist/
+build/
+.next/
+out/
+.vite/
+*.tsbuildinfo
+
+# Environment and logs
+.env*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing and coverage
+coverage/
+*.lcov
+.nyc_output
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# Editor temporary files
+*.swp
+*.swo
+*~
+
+# JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+smak/backend/App_Data/Sites/Default/OrchardCore.db
+smak/backend/App_Data/Sites/Default/Media/_Users/4qn6twzb1y5zd7f8004294agc8/4qn6twzb1y5zd7f8004294agc8
