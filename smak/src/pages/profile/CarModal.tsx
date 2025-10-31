@@ -6,7 +6,10 @@ interface CarModalProps {
   show: boolean;
   title: string;
   onClose: () => void;
+  onSave?: () => void;
+  onDelete?: () => void;
   payload: {
+    id: string;
     brand: string;
     model: string;
     color: string;
@@ -15,6 +18,7 @@ interface CarModalProps {
   };
   setPayload: React.Dispatch<
     React.SetStateAction<{
+      id: string;
       brand: string;
       model: string;
       color: string;
@@ -26,24 +30,28 @@ interface CarModalProps {
   isOwnProfile?: boolean;
 }
 
+
 export default function CarModal({
   show,
   onClose,
   title,
   payload,
   setPayload,
+  onSave,
+  onDelete,
   isEdit = false,
-  isOwnProfile = true,
-}: CarModalProps) {
-  function handleChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  isOwnProfile = true }:
+  CarModalProps) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
     setPayload({ ...payload, [name]: value });
   }
 
   return (
-    <SmakModal title={title} show={show} onClose={onClose}>
+    <SmakModal
+      title={title}
+
+      show={show} onClose={onClose}>
       <InputFormText
         placeholder="märke"
         label="Märke"
@@ -89,17 +97,22 @@ export default function CarModal({
         <div className="d-flex gap-3 w-100 pt-2">
           <SmakButton
             className="text-nowrap"
-            onClick={() => console.log("Save car")}
-          >
+            onClick={onSave} color="primary">
             {isEdit ? "Redigera bil" : "Spara bil"}
           </SmakButton>
           <SmakButton
             className="text-nowrap"
-            onClick={onClose}
-            color="secondary"
-          >
-            Avbryt
-          </SmakButton>
+            onClick={onClose} color="secondary">Avbryt</SmakButton>
+
+          {isEdit && (
+            <SmakButton
+              className="text-nowrap"
+              onClick={onDelete}
+              color="danger"
+            >
+              Ta bort bil
+            </SmakButton>
+          )}
         </div>
       )}
     </SmakModal>
