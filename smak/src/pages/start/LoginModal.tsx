@@ -86,7 +86,7 @@ export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalP
           color="secondary"
           className="mt-2"
           onClick={onClose}>
-          Tillbaka
+          Avbryt
         </SmakButton>
       </SmakCard>
 

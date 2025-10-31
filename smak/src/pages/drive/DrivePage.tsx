@@ -61,7 +61,7 @@ export default function DrivePage() {
               <Button
                 className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline interactive"
                 onClick={handleOnCarClick}>
-                Fordon
+                Välj fordon
               </Button>
             </div>
 
@@ -88,7 +88,7 @@ export default function DrivePage() {
               isLoading={isLoading}
               className="mt-4 interactive"
               color={"primary"}>
-              Skapa Resa
+              Skapa resa
             </SubmitButton>
           </form>
         </div>

@@ -76,7 +76,7 @@ export default function FindTrip() {
             isLoading={isLoading}
             className="mt-4 interactive"
             color={"primary"}>
-            Hitta Resa
+            Sök resa
           </SubmitButton>
         </form>
       </div>

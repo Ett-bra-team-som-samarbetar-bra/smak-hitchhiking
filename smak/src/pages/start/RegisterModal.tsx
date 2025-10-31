@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { Button, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import type { RegisterPayload } from "../../interfaces/RegisterPayload";
 import SmakSlideInModal from "../../components/SmakSlideInModal";
 import InputFormText from "../../components/inputForms/InputFormText";
 import SubmitButton from "../../components/SubmitButton";
 import InputFormEmail from "../../components/inputForms/InputFormEmail";
-import InputFormRadioGroups from "../../components/inputForms/InputFormRadioGroups";
 import preferenceOptions from "../../interfaces/PreferenceOptions";
 import InputFormPhoneNumber from "../../components/inputForms/InputFormPhoneNumber";
 import InputFormPassword from "../../components/inputForms/InputFormPassword";
+import SmakCard from "../../components/SmakCard";
+import SmakButton from "../../components/SmakButton";
+import InputRadioGroup from "../../components/inputForms/InputRadioGroups";
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -29,9 +31,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     description: "",
     preferences: [],
   });
-
-  const [preferences, setPreferencesState] = useState<string[]>(
-    registerPayload.preferences || []
+  const [preferencesState, setPreferencesState] = useState<string[]>(
+    preferenceOptions.map(() => "Ja")
   );
 
   // Sync preferences with registerPayload
@@ -52,8 +53,13 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     event.preventDefault();
     setIsLoading(true);
 
+    // Map ja/nej to actual preference values
+    const mappedPreferences = preferencesState.map((val, i) =>
+      val === "Ja" ? preferenceOptions[i].options[0] : preferenceOptions[i].options[1]
+    );
+
     try {
-      await register({ ...registerPayload, preferences });
+      await register({ ...registerPayload, preferences: mappedPreferences });
       //onClose();
 
     } catch (error) {
@@ -66,87 +72,90 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
 
   return (
     <SmakSlideInModal
-      className="slide-in-modal-content-scroll"
+      className="slide-in-modal-content-scroll "
       isOpen={isOpen}
       onClose={onClose}>
 
-      <Row className="non-interactive">
+      <Row className="non-interactive pt-4 mx-1">
         <div className="d-flex align-items-center flex-column justify-content-center">
           <i className="login-header-icon" />
-          <h1 className="set-font-size fw-bold text-black text-center text-nowrap">
-            Registrera
+          <h1 className="set-font-size-login-modals fw-bold text-primary text-center text-nowrap mt-2">
+            Skapa ditt konto
           </h1>
         </div>
       </Row>
 
+      <SmakCard className="mt-3 py-4 set-width-login-modals mx-auto">
+        <form onSubmit={handleRegister}>
+          <InputFormEmail
+            label={"E-postadress"}
+            placeholder="Ange din e-postadress"
+            value={registerPayload.email}
+            setFormProp={setRegisterProp} />
 
+          <InputFormPassword
+            value={registerPayload.password}
+            setFormProp={setRegisterProp}
+            label={"Lösenord"}
+            placeholder={"Ange ditt lösenord"} >
+          </InputFormPassword>
 
-      <form onSubmit={handleRegister}>
+          <InputFormText
+            placeholder="Ange ditt förnamn"
+            label="Förnamn"
+            value={registerPayload.firstName}
+            setFormProp={setRegisterProp}
+            isRequired={true}
+            typeName="firstName" />
 
-        <InputFormEmail
-          label="Email"
-          placeholder="Ange din email"
-          value={registerPayload.email}
-          setFormProp={setRegisterProp} />
+          <InputFormText
+            placeholder="Ange ditt efternamn"
+            label="Efternamn"
+            value={registerPayload.lastName}
+            setFormProp={setRegisterProp}
+            isRequired={true}
+            typeName="lastName" />
 
-        <InputFormPassword
-          className="interactive"
-          value={registerPayload.password}
-          setFormProp={setRegisterProp}
-          label={"Lösenord"}
-          placeholder={"Ange ditt lösenord"} >
-        </InputFormPassword>
+          <InputFormPhoneNumber
+            placeholder="Ange ditt telefonnummer"
+            label="Telefonnummer"
+            value={registerPayload.phoneNumber}
+            setFormProp={setRegisterProp}
+            typeName="phoneNumber" />
 
-        <InputFormText
-          placeholder="Ange ditt förnamn"
-          label="Förnamn"
-          value={registerPayload.firstName}
-          setFormProp={setRegisterProp}
-          isRequired={true}
-          typeName="firstName" />
+          <InputFormText
+            label="Beskrivning"
+            placeholder="Beskriv dig själv med några ord..."
+            isTextArea={true}
+            maxLength={40}
+            isRequired={true}
+            value={registerPayload.description}
+            setFormProp={setRegisterProp}
+            typeName="description" />
 
-        <InputFormText
-          placeholder="Ange ditt efternamn"
-          label="Efternamn"
-          value={registerPayload.lastName}
-          setFormProp={setRegisterProp}
-          isRequired={true}
-          typeName="lastName" />
+          <InputRadioGroup
+            className="mt-4 pt-1 mb-2"
+            preferences={preferenceOptions}
+            selectedValues={preferencesState}
+            setPreferences={handlePreferencesChange} />
 
-        <InputFormPhoneNumber
-          placeholder="Ange ditt telefonnummer"
-          label="Telefonnummer"
-          value={registerPayload.phoneNumber}
-          setFormProp={setRegisterProp}
-          typeName="phoneNumber" />
+          <hr className="mt-4" />
 
-        <InputFormText
-          placeholder="Beskrivning som visas på din profil"
-          label="Beskrivning"
-          isTextArea={true}
-          maxLength={40}
-          isRequired={true}
-          value={registerPayload.description}
-          setFormProp={setRegisterProp}
-          typeName="description" />
+          <SubmitButton
+            isLoading={isLoading}
+            className="mt-3"
+            color={"primary"}>
+            Skapa konto
+          </SubmitButton>
+        </form>
 
-        <InputFormRadioGroups
-          className="pt-3"
-          preferences={preferenceOptions}
-          selectedValues={preferences}
-          setPreferences={handlePreferencesChange} />
-
-        <SubmitButton
-          isLoading={isLoading}
-          className="mt-4"
-          color={"primary"}>
-          Registrera
-        </SubmitButton>
-      </form>
-
-      <div className="d-flex justify-content-center mt-3">
-        <Button variant="danger" onClick={onClose}>Stäng ba</Button>
-      </div>
+        <SmakButton
+          color="secondary"
+          className="mt-2 mb-2"
+          onClick={onClose}>
+          Avbryt
+        </SmakButton>
+      </SmakCard>
 
     </SmakSlideInModal>
   );

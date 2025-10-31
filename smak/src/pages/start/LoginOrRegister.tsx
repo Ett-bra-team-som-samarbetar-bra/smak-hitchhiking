@@ -32,7 +32,7 @@ export default function LoginOrRegister() {
           <Button
             className="btn btn-light mb-3 rounded-5 py-2 interactive shadow"
             onClick={registerClicked}>
-            Registrera
+            Skapa konto
           </Button>
 
           <Button

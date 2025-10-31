@@ -68,7 +68,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const register = async (payload: RegisterPayload) => {
-    payload.userName = payload.firstName + payload.email.replace(/@/g, "");
+    payload.userName = payload.firstName + "_" + payload.email.replace(/@/g, "");
 
     try {
       const response = await fetch(`/api/auth/register`, {
