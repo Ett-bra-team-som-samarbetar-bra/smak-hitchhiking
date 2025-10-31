@@ -7,6 +7,7 @@ using OrchardCore.Users.Models;
 using OrchardCore.Users.Services;
 using System.Text.Json.Nodes;
 using System.Security.Claims;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 public static class AuthEndpoints
 {
@@ -114,11 +115,16 @@ public static class AuthEndpoints
             var u = user as User;
             return Results.Ok(new
             {
+                id = u?.UserId,
                 username = user.UserName,
                 email = u?.Email,
                 phoneNumber = u?.PhoneNumber,
                 firstName = u?.Properties?["FirstName"]?.ToString(),
                 lastName = u?.Properties?["LastName"]?.ToString(),
+                description = u?.Properties?["Description"]?.ToString(),
+                rating = u?.Properties?["Rating"]?.ToString(),
+                tripCount = u?.Properties?["TripCount"]?.ToString(),
+                preferences = u?.Properties?["Preferences"]?.AsArray(),
                 roles = context.User.FindAll(ClaimTypes.Role)
                     .Select(c => c.Value)
                     .ToList()
@@ -143,6 +149,7 @@ public static class AuthEndpoints
 
             return Results.Ok(new
             {
+                id = u?.UserId,
                 username = user.UserName,
                 email = u?.Email,
                 phoneNumber = u?.PhoneNumber,
@@ -183,13 +190,13 @@ public static class AuthEndpoints
 
             var user = currentUser as User;
 
-            if (!string.IsNullOrEmpty(request.Email))
+            if (!string.IsNullOrEmpty(request.Email) && user != null)
                 user.Email = request.Email;
 
-            if (!string.IsNullOrEmpty(request.Phone))
+            if (!string.IsNullOrEmpty(request.Phone) && user != null)
                 user.PhoneNumber = request.Phone;
 
-            var props = user.Properties ?? new System.Text.Json.Nodes.JsonObject();
+            var props = user?.Properties ?? new System.Text.Json.Nodes.JsonObject();
 
             props["FirstName"] = request.FirstName ?? props["FirstName"];
             props["LastName"] = request.LastName ?? props["LastName"];
@@ -199,7 +206,7 @@ public static class AuthEndpoints
             props["Preferences"] = request.preferences != null ?
                 JsonValue.Create(request.preferences) : props["Preferences"];
 
-            user.Properties = props;
+            user!.Properties = props;
 
             var result = await userManager.UpdateAsync(user);
 
@@ -239,6 +246,7 @@ public record RegisterRequest(
 );
 
 public record UpdateUserRequest(
+    string? Id,
     string? Email,
     string? FirstName,
     string? LastName,

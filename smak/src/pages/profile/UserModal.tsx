@@ -21,7 +21,7 @@ interface UserModalProps {
   >;
   isEdit?: boolean;
   isOwnProfile?: boolean;
-  onSave?: (user: User) => void;
+  onSave?: (user: User, profileFile?: File | null) => void;
 }
 
 export default function UserModal({
@@ -33,6 +33,7 @@ export default function UserModal({
   isOwnProfile = true,
   onSave,
 }: UserModalProps) {
+  const [profileFile, setProfileFile] = useState<File | null>(null);
   const [preferences, setPreferences] = useState<string[]>(
     payload.user.preferences || []
   );
@@ -64,7 +65,7 @@ export default function UserModal({
         label="Email"
         value={payload.user.email}
         setFormProp={handleChange}
-        disabled={!isOwnProfile}
+        disabled={true}
       />
       <InputFormText
         placeholder="förnamn"
@@ -106,7 +107,7 @@ export default function UserModal({
         selectedValues={preferences}
         setPreferences={setPreferences}
       />
-      <InputFormImage setFormProp={handleChange} label={"Profilbild"} />
+      <InputFormImage setFormProp={setProfileFile} label={"Profilbild"} />
 
       {isOwnProfile && (
         <div className="d-flex gap-3 w-100 pt-2">
@@ -118,7 +119,7 @@ export default function UserModal({
                   ...payload.user,
                   preferences: preferences,
                 };
-                onSave(updatedUser);
+                onSave(updatedUser, profileFile);
               }
             }}
           >

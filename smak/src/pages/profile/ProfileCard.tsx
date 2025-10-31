@@ -3,7 +3,7 @@ import type User from "../../interfaces/User";
 
 interface ProfileCardProps {
   user: User;
-  profileImage: string;
+  profileImage: string | undefined;
   isOwnProfile?: boolean;
   isAlreadyFriend?: boolean;
   onEdit?: () => void;

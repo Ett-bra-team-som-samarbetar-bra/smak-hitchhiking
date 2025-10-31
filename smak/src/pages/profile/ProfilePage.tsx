@@ -4,14 +4,19 @@ import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
 import { useParams } from "react-router-dom";
-import { getMockCars } from "../../utils/MockData";
 import { useAuth } from "../../hooks/useAuth";
 import UserModal from "./UserModal";
 import type User from "../../interfaces/User";
+import { uploadMedia } from "../../components/fileUpload/MediaUploader";
+import useProfileImage from "../../hooks/useProfileImage";
+import type Car from "../../interfaces/Cars";
 
 export default function ProfilePage() {
   const { userId } = useParams();
   const { user, refreshUser } = useAuth();
+  const { profileImage, refreshProfileImage } = useProfileImage(
+    user?.id || null
+  );
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
 
@@ -19,8 +24,52 @@ export default function ProfilePage() {
 
   const isAlreadyFriend = false;
 
+  const [cars, setCars] = useState<Car[]>([]);
   const [showUserModal, setShowUserModal] = useState(false);
   const [userPayload, setUserPayload] = useState<{ user: User } | null>(null);
+  const [showCarModal, setShowCarModal] = useState(false);
+  const [carPayload, setCarPayload] = useState({
+    id: "",
+    brand: "",
+    model: "",
+    color: "",
+    licensePlate: "",
+    seats: 0,
+  });
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    async function fetchCars() {
+      try {
+
+        const response = await fetch(`/api/Car`);
+        if (!response.ok) throw new Error('Failed to fetch cars');
+        const allCars = await response.json();
+        console.log('ALL cars:', allCars);
+        console.log('User ID to match:', user!.id);
+        const userCars = allCars
+          .filter((car: any) => car.userId === user!.id)
+          .map((car: any) => ({
+            id: car.id || '',
+            brand: car.brand || '',
+            model: car.model || '',
+            color: car.color || '',
+            licensePlate: car.licensePlate || '',
+            seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
+            userId: car.userId
+          }));
+        console.log('Filtered user cars:', userCars);
+
+        setCars(userCars);
+      } catch (error) {
+        console.error('Error fetching cars:', error);
+      }
+    }
+
+    fetchCars();
+  }, [user]);
+
   useEffect(() => {
     if (user) {
       setUserPayload({
@@ -40,50 +89,7 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  const [showCarModal, setShowCarModal] = useState(false);
-  const [carPayload, setCarPayload] = useState({
-    brand: "",
-    model: "",
-    color: "",
-    licensePlate: "",
-    seats: 0,
-  });
   const [isEdit, setIsEdit] = useState(false);
-
-  function handleAddCar() {
-    setCarPayload({
-      brand: "",
-      model: "",
-      color: "",
-      licensePlate: "",
-      seats: 0,
-    });
-    setIsEdit(false);
-    setShowCarModal(true);
-  }
-
-  function handleEditCar(car: {
-    brand: string;
-    model: string;
-    color: string;
-    licensePlate: string;
-    seats: number;
-  }) {
-    setCarPayload(car);
-    setIsEdit(true);
-    setShowCarModal(true);
-  }
-
-  function handleCloseModal() {
-    setShowCarModal(false);
-    setCarPayload({
-      brand: "",
-      model: "",
-      color: "",
-      licensePlate: "",
-      seats: 0,
-    });
-  }
 
   function handleEditUser(user: Partial<User>) {
     setUserPayload({
@@ -122,7 +128,7 @@ export default function ProfilePage() {
     });
   }
 
-  async function handleSaveUser(updatedUser: User) {
+  async function handleSaveUser(updatedUser: User, profileFile?: File | null) {
     {
       console.log("Saving user:", updatedUser);
 
@@ -152,6 +158,12 @@ export default function ProfilePage() {
         const savedUser = await response.json();
         console.log("User saved successfully:", savedUser);
 
+        if (profileFile) {
+          console.log("Uploading profile image file:", profileFile);
+          await uploadMedia(profileFile);
+          refreshProfileImage();
+        }
+
         await refreshUser();
 
         setUserPayload({ user: savedUser });
@@ -162,12 +174,119 @@ export default function ProfilePage() {
     }
   }
 
+  // Car stuff
+
+  function handleAddCar() {
+    setCarPayload({ id: "", brand: "", model: "", color: "", licensePlate: "", seats: 0 });
+    setIsEdit(false);
+    setShowCarModal(true);
+  }
+
+  function handleEditCar(car: Car) {
+    setCarPayload({
+      id: car.id,
+      brand: car.brand,
+      model: car.model,
+      color: car.color,
+      licensePlate: car.licensePlate,
+      seats: car.seats,
+    });
+    setIsEdit(true);
+    setShowCarModal(true);
+  }
+
+  function handleCloseModal() {
+    setShowCarModal(false);
+    setCarPayload({ id: "", brand: "", model: "", color: "", licensePlate: "", seats: 0 });
+  }
+
+  async function handleSaveCar(car: typeof carPayload) {
+    console.log("Saving car payload:", car);
+
+    if (!user?.id) {
+      console.error("Cannot save car: user ID is missing");
+      return;
+    }
+
+    const isCreating = !isEdit;
+
+    const payload = {
+      brand: car.brand,
+      model: car.model,
+      color: car.color,
+      licensePlate: car.licensePlate,
+      seats: Number(car.seats),
+      userId: user.id,
+    };
+
+    console.log("Payload being sent to API:", payload);
+
+    const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
+
+    try {
+      const response = await fetch(url, {
+        method: isCreating ? 'POST' : 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Failed to save car: ${errText}`);
+      }
+
+      const allCarsResponse = await fetch(`/api/Car`);
+      const allCars = await allCarsResponse.json();
+      const updatedCars = allCars
+        .filter((car: any) => car.userId === user.id)
+        .map((car: any) => ({
+          id: car.id || '',
+          brand: car.brand || '',
+          model: car.model || '',
+          color: car.color || '',
+          licensePlate: car.licensePlate || '',
+          seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
+          userId: car.userId
+        }));
+      console.log('Updated cars after save:', updatedCars);
+      setCars(updatedCars);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving car:', error);
+    }
+  }
+
+  async function handleDeleteCar(car: typeof carPayload) {
+    try {
+      const deleteResponse = await fetch(`/api/Car/${car.id}`, { method: 'DELETE' });
+      if (!deleteResponse.ok) throw new Error('Failed to delete car');
+
+      const allCarsResponse = await fetch(`/api/Car`);
+      const allCars = await allCarsResponse.json();
+      const updatedCars = allCars
+        .filter((c: any) => c.userId === user?.id)
+        .map((car: any) => ({
+          id: car.id || '',
+          brand: car.brand || '',
+          model: car.model || '',
+          color: car.color || '',
+          licensePlate: car.licensePlate || '',
+          seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
+          userId: car.userId
+        }));
+      setCars(updatedCars);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error deleting car:', error);
+    }
+  }
+
   return (
     <>
       {user! && (
         <ProfileCard
           user={user!}
-          profileImage={"hej"}
+          profileImage={profileImage}
           isOwnProfile={isOwnProfile}
           isAlreadyFriend={isAlreadyFriend}
           onEdit={() =>
@@ -189,24 +308,11 @@ export default function ProfilePage() {
       <div className="d-flex flex-column gap-3">
         <h2 className="m-0">Fordon</h2>
 
-        {getMockCars().length === 0 ? (
+        {cars.length === 0 ? (
           <p className="text-muted">Inga fordon tillagda</p>
         ) : (
-          getMockCars().map((car, index) => (
-            <CarCard
-              key={index}
-              car={car}
-              isOwnProfile={isOwnProfile}
-              onEdit={() =>
-                handleEditCar({
-                  brand: car.brand,
-                  model: car.model,
-                  color: car.color,
-                  licensePlate: car.licensePlate,
-                  seats: car.seats,
-                })
-              }
-            />
+          cars.map((car) => (
+            <CarCard key={car.id} car={car} isOwnProfile={isOwnProfile} onEdit={() => handleEditCar(car)} />
           ))
         )}
         {userPayload && (
@@ -228,6 +334,8 @@ export default function ProfilePage() {
           setPayload={setCarPayload}
           isEdit={isEdit}
           isOwnProfile={isOwnProfile}
+          onSave={() => handleSaveCar(carPayload)}
+          onDelete={() => handleDeleteCar(carPayload)}
         />
         {isOwnProfile && (
           <SmakButton className="my-2" onClick={handleAddCar}>
