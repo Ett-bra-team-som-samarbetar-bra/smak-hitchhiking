@@ -39,11 +39,11 @@ jobs:
 
       - name: Restore backend
         working-directory: ${{ env.BACKEND_SRC }}
-        run: dotnet restore
+        run: home/thoernve/dotnet/dotnet restore
 
       - name: Publish backend
         working-directory: ${{ env.BACKEND_SRC }}
-        run: dotnet publish -c Release -o out
+        run: home/thoernve/dotnet/dotnet publish -c Release -o out
 
       # --------- Deploy -------------
 
