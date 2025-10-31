@@ -6,8 +6,22 @@ interface CarModalProps {
   show: boolean;
   title: string;
   onClose: () => void;
-  payload: { brand: string; model: string; color: string; licensePlate: string; seats: number };
-  setPayload: React.Dispatch<React.SetStateAction<{ brand: string; model: string; color: string; licensePlate: string; seats: number }>>;
+  payload: {
+    brand: string;
+    model: string;
+    color: string;
+    licensePlate: string;
+    seats: number;
+  };
+  setPayload: React.Dispatch<
+    React.SetStateAction<{
+      brand: string;
+      model: string;
+      color: string;
+      licensePlate: string;
+      seats: number;
+    }>
+  >;
   isEdit?: boolean;
   isOwnProfile?: boolean;
 }
@@ -19,18 +33,17 @@ export default function CarModal({
   payload,
   setPayload,
   isEdit = false,
-  isOwnProfile = true }:
-  CarModalProps) {
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  isOwnProfile = true,
+}: CarModalProps) {
+  function handleChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     const { name, value } = event.target;
     setPayload({ ...payload, [name]: value });
   }
 
   return (
-    <SmakModal
-      title={title}
-
-      show={show} onClose={onClose}>
+    <SmakModal title={title} show={show} onClose={onClose}>
       <InputFormText
         placeholder="märke"
         label="Märke"
@@ -76,12 +89,17 @@ export default function CarModal({
         <div className="d-flex gap-3 w-100 pt-2">
           <SmakButton
             className="text-nowrap"
-            onClick={() => console.log("Save car")}>
+            onClick={() => console.log("Save car")}
+          >
             {isEdit ? "Redigera bil" : "Spara bil"}
           </SmakButton>
           <SmakButton
             className="text-nowrap"
-            onClick={onClose} color="secondary">Avbryt</SmakButton>
+            onClick={onClose}
+            color="secondary"
+          >
+            Avbryt
+          </SmakButton>
         </div>
       )}
     </SmakModal>

@@ -190,13 +190,13 @@ public static class AuthEndpoints
 
             var user = currentUser as User;
 
-            if (!string.IsNullOrEmpty(request.Email))
+            if (!string.IsNullOrEmpty(request.Email) && user != null)
                 user.Email = request.Email;
 
-            if (!string.IsNullOrEmpty(request.Phone))
+            if (!string.IsNullOrEmpty(request.Phone) && user != null)
                 user.PhoneNumber = request.Phone;
 
-            var props = user.Properties ?? new System.Text.Json.Nodes.JsonObject();
+            var props = user?.Properties ?? new System.Text.Json.Nodes.JsonObject();
 
             props["FirstName"] = request.FirstName ?? props["FirstName"];
             props["LastName"] = request.LastName ?? props["LastName"];
@@ -206,7 +206,7 @@ public static class AuthEndpoints
             props["Preferences"] = request.preferences != null ?
                 JsonValue.Create(request.preferences) : props["Preferences"];
 
-            user.Properties = props;
+            user!.Properties = props;
 
             var result = await userManager.UpdateAsync(user);
 
