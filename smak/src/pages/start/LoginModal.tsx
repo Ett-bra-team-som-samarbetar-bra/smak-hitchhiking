@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { Button, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import SmakSlideInModal from "../../components/SmakSlideInModal";
-import InputFormText from "../../components/inputForms/InputFormText";
 import SubmitButton from "../../components/SubmitButton";
 import InputFormPassword from "../../components/inputForms/InputFormPassword";
+import SmakCard from "../../components/SmakCard";
+import SmakButton from "../../components/SmakButton";
+import InputFormEmail from "../../components/inputForms/InputFormEmail";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -15,11 +17,9 @@ interface LoginModalProps {
 export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalProps) {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-
-
-  let [userPayload, setUserPayload] = useState<{ name: string; password: string }>({
-    name: "thomas@nodehill.com",
-    password: "Abcd1234!" // todo
+  let [userPayload, setUserPayload] = useState<{ email: string; password: string }>({
+    email: "",
+    password: ""
   });
 
   function setUserProp(event: React.ChangeEvent) {
@@ -32,63 +32,63 @@ export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalP
     setIsLoading(true);
 
     try {
-      await login(userPayload.name, userPayload.password);
+      await login(userPayload.email, userPayload.password);
       setshowPage(false);
       onClose();
 
     } catch (error) {
-      alert("Ett fel uppstod vid registrering. Försök igen.");
+      alert("Ett fel uppstod vid inloggningen.\nKontrollera dina uppgifter och försök igen.");
 
     } finally {
       setIsLoading(false);
     }
   }
 
-
   return (
     <SmakSlideInModal
+      className="slide-in-modal-content-scroll "
       isOpen={isOpen}
       onClose={onClose}>
 
-      <Row className="non-interactive">
+      <Row className="non-interactive pt-4 mx-1">
         <div className="d-flex align-items-center flex-column justify-content-center">
           <i className="login-header-icon" />
-          <h1 className="set-font-size fw-bold text-black text-center text-nowrap">
-            Logga in
+          <h1 className="set-font-size-login-modals fw-bold text-primary text-center text-nowrap mt-2">
+            Välkommen tillbaka!
           </h1>
         </div>
       </Row>
 
-      <form onSubmit={handleLogin}>
-        <InputFormText
-          className="interactive"
-          value={userPayload.name}
-          setFormProp={setUserProp}
-          typeName={"name"}
-          label={"Email address"}
-          isRequired={true}
-          placeholder={"Namn"} >
-        </InputFormText>
+      <SmakCard className="mt-3 py-4 set-width-login-modals mx-auto">
+        <form onSubmit={handleLogin}>
+          <InputFormEmail
+            label={"E-postadress"}
+            placeholder="Ange din e-postadress"
+            value={userPayload.email}
+            setFormProp={setUserProp} />
 
-        <InputFormPassword
-          className="interactive"
-          value={userPayload.password}
-          setFormProp={setUserProp}
-          label={"Lösenord"}
-          placeholder={"Löäsen"} >
-        </InputFormPassword>
+          <InputFormPassword
+            value={userPayload.password}
+            setFormProp={setUserProp}
+            label={"Lösenord"}
+            placeholder={"Ange ditt lösenord"} >
+          </InputFormPassword>
 
-        <SubmitButton
-          isLoading={isLoading}
-          className="mt-4 interactive"
-          color={"primary"}>
-          Logga in
-        </SubmitButton>
-      </form>
+          <SubmitButton
+            isLoading={isLoading}
+            className="mt-4"
+            color={"primary"}>
+            Logga in
+          </SubmitButton>
+        </form>
 
-      <div className="d-flex justify-content-center mt-3">
-        <Button variant="danger" onClick={onClose}>Stäng ba</Button>
-      </div>
+        <SmakButton
+          color="secondary"
+          className="mt-2"
+          onClick={onClose}>
+          Tillbaka
+        </SmakButton>
+      </SmakCard>
 
     </SmakSlideInModal >
   );

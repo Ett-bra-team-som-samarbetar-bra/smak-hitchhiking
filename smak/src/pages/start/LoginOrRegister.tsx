@@ -23,20 +23,20 @@ export default function LoginOrRegister() {
           <div className="d-flex align-items-center flex-column justify-content-center">
             <i className="login-header-icon" />
             <h1 className="set-font-size fw-bold text-white text-center text-nowrap">
-              Samåk med <span className="text-white">Småk</span>
+              Samåk med <span className="text-warning">Småk</span>
             </h1>
           </div>
         </Row>
 
         <Row className="dynamic-map-ontop-login px-3 d-flex flex-column">
           <Button
-            className="btn btn-light mb-3 rounded-5 py-2 interactive"
+            className="btn btn-light mb-3 rounded-5 py-2 interactive shadow"
             onClick={registerClicked}>
             Registrera
           </Button>
 
           <Button
-            className="btn btn-primary rounded-5 py-2 interactive"
+            className="btn btn-primary rounded-5 py-2 interactive shadow"
             onClick={loginClicked}>
             Logga in
           </Button>
