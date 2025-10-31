@@ -8,10 +8,15 @@ import { getMockCars } from "../../utils/MockData";
 import { useAuth } from "../../hooks/useAuth";
 import UserModal from "./UserModal";
 import type User from "../../interfaces/User";
+import { uploadMedia } from "../../components/fileUpload/MediaUploader";
+import useProfileImage from "../../hooks/useProfileImage";
 
 export default function ProfilePage() {
   const { userId } = useParams();
   const { user, refreshUser } = useAuth();
+  const { profileImage, refreshProfileImage } = useProfileImage(
+    user?.id || null
+  );
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
 
@@ -122,7 +127,7 @@ export default function ProfilePage() {
     });
   }
 
-  async function handleSaveUser(updatedUser: User) {
+  async function handleSaveUser(updatedUser: User, profileFile?: File | null) {
     {
       console.log("Saving user:", updatedUser);
 
@@ -152,6 +157,15 @@ export default function ProfilePage() {
         const savedUser = await response.json();
         console.log("User saved successfully:", savedUser);
 
+        if (profileFile) {
+          const fakeInput = document.createElement("input");
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(profileFile);
+          fakeInput.files = dataTransfer.files;
+          await uploadMedia(fakeInput);
+          refreshProfileImage();
+        }
+
         await refreshUser();
 
         setUserPayload({ user: savedUser });
@@ -167,7 +181,7 @@ export default function ProfilePage() {
       {user! && (
         <ProfileCard
           user={user!}
-          profileImage={"hej"}
+          profileImage={profileImage}
           isOwnProfile={isOwnProfile}
           isAlreadyFriend={isAlreadyFriend}
           onEdit={() =>
