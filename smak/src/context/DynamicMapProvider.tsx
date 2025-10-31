@@ -140,6 +140,109 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
     fetchRoute();
   }, [from, to]);
 
+
+  // Spin globe animation
+  const bearingRef = useRef(190); // start at EU
+
+  useEffect(() => {
+    if (!config.enableGlobeAnimation) return;
+
+    let animationId: number;
+    let pollId: number;
+    let spinning = false;
+    let interacting = false;
+    let rawMap: any;
+
+    function spinGlobe() {
+      if (!spinning || interacting) return;
+      const mapbox = mapRef.current;
+      if (mapbox && mapbox.getMap) {
+        rawMap = mapbox.getMap();
+        if (rawMap) {
+          bearingRef.current += config.globeAnimationSpeed;
+          const lng = (bearingRef.current % 360) - 180;
+          rawMap.setCenter([lng, rawMap.getCenter().lat]);
+        }
+      }
+      animationId = requestAnimationFrame(spinGlobe);
+    }
+
+    // Stop on left mouseBtn or touch
+    function onMouseDown(e: any) {
+      if (e.originalEvent && e.originalEvent.button === 0) {
+        stopSpin();
+      }
+    }
+    function onTouchStart() {
+      stopSpin();
+    }
+
+    function stopSpin() {
+      if (animationId) cancelAnimationFrame(animationId);
+      spinning = false;
+      interacting = true;
+      if (rawMap) {
+        rawMap.off('mousedown', onMouseDown);
+        rawMap.off('touchstart', onTouchStart);
+        rawMap.on('mouseup', startSpinAfterInteraction);
+        rawMap.on('touchend', startSpinAfterInteraction);
+      }
+    }
+
+    function startSpinAfterInteraction() {
+      interacting = false;
+      if (rawMap) {
+        const lng = rawMap.getCenter().lng;
+        bearingRef.current = lng + 180;
+      }
+      if (!spinning && isLoginPage) {
+        spinning = true;
+        spinGlobe();
+
+        if (rawMap) {
+          rawMap.off('mouseup', startSpinAfterInteraction);
+          rawMap.off('touchend', startSpinAfterInteraction);
+          rawMap.on('mousedown', onMouseDown);
+          rawMap.on('touchstart', onTouchStart);
+        }
+      }
+    }
+
+    function tryStartSpin() {
+      const mapbox = mapRef.current;
+      rawMap = mapbox?.getMap?.();
+      if (
+        isLoginPage &&
+        rawMap &&
+        rawMap.isStyleLoaded &&
+        rawMap.isStyleLoaded()
+      ) {
+        if (!spinning && !interacting) {
+          spinning = true;
+          spinGlobe();
+          rawMap.on('mousedown', onMouseDown);
+          rawMap.on('touchstart', onTouchStart);
+        }
+        clearInterval(pollId);
+      }
+    }
+
+    // Poll every 200ms until map is loaded
+    pollId = window.setInterval(tryStartSpin, 200);
+
+    return () => {
+      if (animationId) cancelAnimationFrame(animationId);
+      if (pollId) clearInterval(pollId);
+      if (rawMap) {
+        rawMap.off('mousedown', onMouseDown);
+        rawMap.off('touchstart', onTouchStart);
+        rawMap.off('mouseup', startSpinAfterInteraction);
+        rawMap.off('touchend', startSpinAfterInteraction);
+        rawMap.off('mouseout', startSpinAfterInteraction);
+      }
+    };
+  }, [isLoginPage]);
+
   // Methods
   const resetMap = () => {
     setFrom(null);

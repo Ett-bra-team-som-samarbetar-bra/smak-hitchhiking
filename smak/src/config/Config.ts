@@ -9,6 +9,8 @@ const config = {
   initialMapZoomLevel: 10, // NEVER CHANGE THIS
 
   // Animations
+  enableGlobeAnimation: true, // Globe spin animation on login page
+  globeAnimationSpeed: 0.02, // Speed of spin animation
   headerFooterAnimationDelay: 100, // Delay before header/footer animation starts (ms)
   StartComponentAnimationDelay: 600, // Delay before <Start> animation starts (ms)
   MapZoomAnimationDelay: 0, // Delay before mapzoom starts (ms)

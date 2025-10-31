@@ -39,7 +39,8 @@ export default function DynamicMap({ className: propClassName }: DynamicMapProps
         scrollZoom={!isLoginPage}
         doubleClickZoom={!isLoginPage}
         boxZoom={!isLoginPage}
-        keyboard={!isLoginPage}>
+        keyboard={!isLoginPage}
+        touchZoomRotate={!isLoginPage}>
 
         {from && (
           <Marker
