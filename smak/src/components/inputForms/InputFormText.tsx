@@ -12,6 +12,7 @@ interface InputFormTextProps {
   isTextArea?: boolean;
   className?: string;
   disabled?: boolean;
+  isRequired?: boolean;
 }
 
 export default function InputFormText({
@@ -24,6 +25,7 @@ export default function InputFormText({
   isTextArea = false,
   className = "",
   disabled = false,
+  isRequired = false,
 }: InputFormTextProps) {
   return (
     <>
@@ -39,7 +41,7 @@ export default function InputFormText({
             maxLength={maxLength}
             minLength={2}
             as={isTextArea ? "textarea" : "input"}
-            required
+            required={isRequired}
             value={value ?? ""}
             disabled={disabled}
           />

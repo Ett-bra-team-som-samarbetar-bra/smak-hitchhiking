@@ -34,8 +34,24 @@ export default function LoginOrRegister() {
     console.log("login");
     setIsLoading(true);
 
+
     try {
+      /* await login(payload.name, payload.password);
+      setShowLoginModal(false);
+      commitLogin(); */
+
+      /* setTimeout(() => { console.log("kör"); commitLogin(); }, 3000); */
+
+
       await login(payload.name, payload.password);
+
+
+      //setShowLoginModal(false);
+      /* setTimeout(() => {
+        commitLogin();
+      }, 300); // Wait for modal animation to finish */
+
+
 
     } catch (error) {
       console.error("Login error:", error);
@@ -104,10 +120,28 @@ export default function LoginOrRegister() {
           </div>
         </Row>
 
+
+
         <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
           <h1>Register!</h1>
         </div>
+
+
+
+
+        {/* id: user?.id,
+            username: user?.username,
+            email: user?.email,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            phoneNumber: user?.phoneNumber,
+            description: user?.description,
+            rating: user?.rating,
+            tripCount: user?.tripCount,
+            preferences: preferences, */}
       </SmakSlideInModal>
+
+
 
 
 
@@ -125,14 +159,16 @@ export default function LoginOrRegister() {
           <h1>Login!</h1>
 
 
+
           {/* Form */}
           <form onSubmit={handleLogin}>
             <InputFormText
               className="interactive"
-              value="tom"
+              value={payload.name}
               setFormProp={setFormProp}
               typeName={"name"}
               label={""}
+              isRequired={true}
               placeholder={"Namn"} >
             </InputFormText>
 
@@ -142,6 +178,7 @@ export default function LoginOrRegister() {
               setFormProp={setFormProp}
               typeName={"password"}
               label={""}
+              isRequired={true}
               placeholder={"Löäsen"} >
             </InputFormText>
 

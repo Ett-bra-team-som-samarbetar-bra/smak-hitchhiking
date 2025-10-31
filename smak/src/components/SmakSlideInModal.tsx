@@ -32,7 +32,6 @@ export default function SmakSlideInModal({ isOpen, onClose, children }: SlideUpM
         </div>
 
         <Button onClick={onClose}> Close </Button>
-
       </div>
     </div>
   );

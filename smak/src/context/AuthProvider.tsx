@@ -10,8 +10,6 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
-
 const fakeUser: User = {
   id: "42",
   username: "Dev User",
