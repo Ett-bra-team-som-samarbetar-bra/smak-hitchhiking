@@ -158,11 +158,8 @@ export default function ProfilePage() {
         console.log("User saved successfully:", savedUser);
 
         if (profileFile) {
-          const fakeInput = document.createElement("input");
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(profileFile);
-          fakeInput.files = dataTransfer.files;
-          await uploadMedia(fakeInput);
+          console.log("Uploading profile image file:", profileFile);
+          await uploadMedia(profileFile);
           refreshProfileImage();
         }
 

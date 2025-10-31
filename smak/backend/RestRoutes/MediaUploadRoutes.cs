@@ -72,11 +72,11 @@ public static class MediaUploadRoutes
 
                 string mediaPath;
                 string relativeUrl;
+                var orchardUser = user as User;
+                var userId = orchardUser?.UserId ?? "unknown";
 
                 if (USE_USER_SUBFOLDERS)
                 {
-                    var orchardUser = user as User;
-                    var userId = orchardUser?.UserId ?? "unknown";
                     mediaPath = Path.Combine(baseMediaPath, "_Users", userId);
                     relativeUrl = $"/media/_Users/{userId}";
                 }
@@ -91,7 +91,7 @@ public static class MediaUploadRoutes
 
                 // Generate unique filename with original extension
                 var extension = Path.GetExtension(file.FileName);
-                var fileName = $"{Guid.NewGuid()}{extension}";
+                var fileName = userId;
                 var filePath = Path.Combine(mediaPath, fileName);
 
                 // Save the file
