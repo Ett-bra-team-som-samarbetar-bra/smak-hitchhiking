@@ -6,7 +6,7 @@ import InputFormImage from "../../components/inputForms/InputformImage";
 import SmakButton from "../../components/SmakButton";
 import InputFormRadioGroups from "../../components/inputForms/InputFormRadioGroups";
 import type User from "../../interfaces/User";
-import preferenceOptions from "../../interfaces/preferenceOptions";
+import preferenceOptions from "../../interfaces/PreferenceOptions";
 
 interface UserModalProps {
   show: boolean;

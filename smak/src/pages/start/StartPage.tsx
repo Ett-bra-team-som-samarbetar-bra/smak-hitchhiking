@@ -12,10 +12,6 @@ export default function StartPage() {
   const [showStart, setShowStart] = useState(true);
   const isLoggedIn = !!user;
 
-
-  console.log("isloggedin:", isLoggedIn);
-
-
   // Trigger animations when user logs in
   useEffect(() => {
     if (isLoggedIn && !hasLoginAnimationCompleted) {

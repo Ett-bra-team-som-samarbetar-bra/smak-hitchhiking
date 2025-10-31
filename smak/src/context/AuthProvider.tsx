@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
 import type { AuthContextType } from "./AuthContext";
+import type { RegisterPayload } from "../interfaces/RegisterPayload";
 import type User from "../interfaces/User";
 import config from "../config/Config";
 
@@ -18,18 +19,16 @@ const fakeUser: User = {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (config.fakeUserLoggedIn) {
       setUser(fakeUser);
-      setLoading(false);
-      console.log("Using fake user, skipping refresh.");
+      console.log("Using fake user");
       return;
     }
 
-    refreshUser().finally(() => setLoading(false));
+    refreshUser();
   }, []);
 
   const login = async (usernameOrEmail: string, password: string) => {
@@ -51,15 +50,43 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (!response.ok) {
         setUser(null);
-        throw new Error("Login failed");
+        throw new Error("Inlogg misslyckades");
       }
 
+      // Dont touch my spaghetti
       const data = await response.json();
-      setUser(data);
+      await Promise.all([data, new Promise((res) => setTimeout(res, 1000))]);
+
+      setTimeout(() => {
+        setUser(data);
+      }, 300);
+
     } catch (error) {
-      console.error("Login failed:", error);
       setUser(null);
-      throw new Error("Login failed");
+      throw new Error("Inlogg misslyckades");
+    }
+  };
+
+  const register = async (payload: RegisterPayload) => {
+    payload.userName = payload.firstName + payload.email.replace(/@/g, "");
+
+    try {
+      const response = await fetch(`/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Registrering misslyckades");
+      }
+
+      const registerResponse = await response.json();
+      await Promise.all([registerResponse, new Promise((res) => setTimeout(res, 1000))]);
+
+    } catch (error) {
+      throw new Error(String(error));
     }
   };
 
@@ -100,7 +127,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const value: AuthContextType = { user, loading, login, logout, refreshUser };
+  const value: AuthContextType = { user, login, logout, refreshUser, register };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

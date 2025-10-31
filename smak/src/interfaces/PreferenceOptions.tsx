@@ -1,4 +1,4 @@
-interface PreferenceOption {
+export interface PreferenceOption {
   label: string;
   options: [string, string];
 }
