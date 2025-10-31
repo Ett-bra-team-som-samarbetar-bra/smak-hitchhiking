@@ -6,7 +6,7 @@ interface InputFormEmailProps {
   placeholder: string;
   value?: string;
   className?: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export default function InputFormEmail({ setFormProp, label, placeholder, value = "", className = "", disabled = false }: InputFormEmailProps) {

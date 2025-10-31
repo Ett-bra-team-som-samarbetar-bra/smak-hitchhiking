@@ -1,11 +1,12 @@
+import { useState } from "react";
 import SmakModal from "../../components/SmakModal";
 import InputFormText from "../../components/inputForms/InputFormText";
 import InputFormEmail from "../../components/inputForms/InputFormEmail";
 import InputFormImage from "../../components/inputForms/InputformImage";
 import SmakButton from "../../components/SmakButton";
 import InputFormRadioGroups from "../../components/inputForms/InputFormRadioGroups";
-import { useState } from "react";
 import type User from "../../interfaces/User";
+import preferenceOptions from "../../interfaces/PreferenceOptions";
 
 interface UserModalProps {
   show: boolean;
@@ -23,11 +24,6 @@ interface UserModalProps {
   onSave?: (user: User, profileFile?: File | null) => void;
 }
 
-interface PreferenceOption {
-  label: string;
-  options: [string, string];
-}
-
 export default function UserModal({
   show,
   onClose,
@@ -41,13 +37,6 @@ export default function UserModal({
   const [preferences, setPreferences] = useState<string[]>(
     payload.user.preferences || []
   );
-
-  const preferenceOptions: PreferenceOption[] = [
-    { label: "Rökning", options: ["Rökare", "Icke-Rökare"] as const },
-    { label: "Djur", options: ["Djurvänlig", "Inga Pälsdjur"] as const },
-    { label: "Musik", options: ["Musik", "Utan Musik"] as const },
-    { label: "Kultur", options: ["Pratglad", "Tyst"] as const },
-  ];
 
   function handleChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

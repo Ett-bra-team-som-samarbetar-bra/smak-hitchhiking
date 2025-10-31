@@ -10,6 +10,7 @@ interface InputFormRadioGroupProps {
   setPreferences: (selected: string[]) => void;
   selectedValues: string[];
   className?: string;
+  isRequired?: boolean;
 }
 
 export default function InputFormRadioGroup({
@@ -17,6 +18,7 @@ export default function InputFormRadioGroup({
   setPreferences,
   selectedValues,
   className = "",
+  isRequired = false,
 }: InputFormRadioGroupProps) {
   // When a radio button is changed
   const handleChange = (categoryIndex: number, value: string) => {
@@ -33,6 +35,7 @@ export default function InputFormRadioGroup({
           <Form.Label className="text-black mb-2 d-block">
             {pref.label}
           </Form.Label>
+
           <div
             className="d-grid"
             style={{
@@ -44,6 +47,7 @@ export default function InputFormRadioGroup({
             {pref.options.map((option) => (
               <Form.Check
                 key={option}
+                required={isRequired} // todo
                 type="radio"
                 id={`${pref.label}-${option}`}
                 name={`pref-${index}`}

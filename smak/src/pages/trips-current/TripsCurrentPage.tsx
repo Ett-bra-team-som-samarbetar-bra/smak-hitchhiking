@@ -36,6 +36,7 @@ export default function TripsCurrentPage() {
 
   const [showCarModal, setShowCarModal] = useState(false);
   const [carPayload, setCarPayload] = useState({
+    id: "",
     brand: "Volvo",
     model: "V60",
     color: "svart",

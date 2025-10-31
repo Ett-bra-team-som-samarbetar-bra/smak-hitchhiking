@@ -466,7 +466,7 @@ artifacts/
 
 # Orchard Core specific
 # Ignore runtime App_Data (gets restored from seed)
-backend/App_Data/
+smak/backend/App_Data/
 
 # But keep the seed data committed to git
 !backend/App_Data.seed/
@@ -529,3 +529,5 @@ coverage/
 *.iml
 *.iws
 *.ipr
+smak/backend/App_Data/Sites/Default/OrchardCore.db
+smak/backend/App_Data/Sites/Default/Media/_Users/4qn6twzb1y5zd7f8004294agc8/4qn6twzb1y5zd7f8004294agc8

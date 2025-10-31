@@ -72,7 +72,7 @@ export default function JoggusPage() {
           className="mb-3"
           setFormProp={setFormProp}
           label="Password"
-          placeholder="Password" disabled={false} />
+          placeholder="Password" />
 
         <InputFormText
           className="mb-3"
