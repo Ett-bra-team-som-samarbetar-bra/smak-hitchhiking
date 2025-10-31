@@ -7,6 +7,7 @@ using OrchardCore.Users.Models;
 using OrchardCore.Users.Services;
 using System.Text.Json.Nodes;
 using System.Security.Claims;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 public static class AuthEndpoints
 {
@@ -114,11 +115,16 @@ public static class AuthEndpoints
             var u = user as User;
             return Results.Ok(new
             {
+                id = u?.UserId,
                 username = user.UserName,
                 email = u?.Email,
                 phoneNumber = u?.PhoneNumber,
                 firstName = u?.Properties?["FirstName"]?.ToString(),
                 lastName = u?.Properties?["LastName"]?.ToString(),
+                description = u?.Properties?["Description"]?.ToString(),
+                rating = u?.Properties?["Rating"]?.ToString(),
+                tripCount = u?.Properties?["TripCount"]?.ToString(),
+                preferences = u?.Properties?["Preferences"]?.AsArray(),
                 roles = context.User.FindAll(ClaimTypes.Role)
                     .Select(c => c.Value)
                     .ToList()
@@ -143,6 +149,7 @@ public static class AuthEndpoints
 
             return Results.Ok(new
             {
+                id = u?.UserId,
                 username = user.UserName,
                 email = u?.Email,
                 phoneNumber = u?.PhoneNumber,
@@ -239,6 +246,7 @@ public record RegisterRequest(
 );
 
 public record UpdateUserRequest(
+    string? Id,
     string? Email,
     string? FirstName,
     string? LastName,
