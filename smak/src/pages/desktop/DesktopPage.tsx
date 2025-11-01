@@ -47,7 +47,7 @@ export default function DesktopPage() {
         <footer className="bg-white py-3 w-100">
           <Container>
             <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-              <img src="assets/Logo.png" alt="Logo" className="desktop-logo" />
+              <img src="assets/Logo_192x192.png" alt="Logo" className="desktop-logo" />
               <h2 className="mb-0 text-black fw-bold py-1">Småk</h2>
             </div>
           </Container>
