@@ -79,7 +79,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       });
 
       if (!response.ok) {
-        throw new Error("Registrering misslyckades");
+        throw new Error("Registrering misslyckades.");
       }
 
       const registerResponse = await response.json();

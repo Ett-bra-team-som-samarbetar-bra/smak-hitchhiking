@@ -13,7 +13,7 @@ interface InputFormRadioGroupProps {
   className?: string;
 }
 
-export default function InputRadioGroup({
+export default function InputFormPreferences({
   preferences,
   setPreferences,
   selectedValues,

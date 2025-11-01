@@ -7,6 +7,7 @@ import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SmakCard from "../../components/SmakCard";
 import SmakButton from "../../components/SmakButton";
 import InputFormEmail from "../../components/inputForms/InputFormEmail";
+import SmakTopAlert from "../../components/SmakTopAlert";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ interface LoginModalProps {
 export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalProps) {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   let [userPayload, setUserPayload] = useState<{ email: string; password: string }>({
     email: "",
     password: ""
@@ -37,7 +39,8 @@ export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalP
       onClose();
 
     } catch (error) {
-      alert("Ett fel uppstod vid inloggningen.\nKontrollera dina uppgifter och försök igen.");
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 6000);
 
     } finally {
       setIsLoading(false);
@@ -89,6 +92,14 @@ export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalP
           Avbryt
         </SmakButton>
       </SmakCard>
+
+      <SmakTopAlert
+        show={showAlert}
+        textColor="white"
+        backgroundColor={"danger"} >
+        <p className="m-0">Ett fel uppstod vid inloggningen.</p>
+        <p className="m-0">Kontrollera dina uppgifter och försök igen.</p>
+      </SmakTopAlert>
 
     </SmakSlideInModal >
   );

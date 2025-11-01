@@ -11,16 +11,20 @@ import InputFormPhoneNumber from "../../components/inputForms/InputFormPhoneNumb
 import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SmakCard from "../../components/SmakCard";
 import SmakButton from "../../components/SmakButton";
-import InputRadioGroup from "../../components/inputForms/InputRadioGroups";
+import InputFormPreferences from "../../components/inputForms/InputFormPreferences";
+import SmakTopAlert from "../../components/SmakTopAlert";
 
 interface RegisterModalProps {
   isOpen: boolean;
   onClose: () => void;
+  setshowRegisterMessage: (show: boolean) => void;
 }
 
-export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
+export default function RegisterModal({ isOpen, onClose, setshowRegisterMessage }: RegisterModalProps) {
   const { register } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
   const [registerPayload, setRegisterPayload] = useState<RegisterPayload>({
     userName: "",
     email: "",
@@ -60,10 +64,19 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
 
     try {
       await register({ ...registerPayload, preferences: mappedPreferences });
-      //onClose();
+      onClose();
+
+      setTimeout(() => {
+        setshowRegisterMessage(true);
+        setTimeout(() => {
+          setshowRegisterMessage(false);
+        }, 7000);
+      }, 500);
 
     } catch (error) {
-      alert(error);
+      setAlertMessage(error instanceof Error ? error.message : "Ett okänt fel uppstod.");
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 7000);
 
     } finally {
       setIsLoading(false);
@@ -126,14 +139,14 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           <InputFormText
             label="Beskrivning"
             placeholder="Beskriv dig själv med några ord..."
-            isTextArea={true}
+            isTextArea={false}
             maxLength={40}
             isRequired={true}
             value={registerPayload.description}
             setFormProp={setRegisterProp}
             typeName="description" />
 
-          <InputRadioGroup
+          <InputFormPreferences
             className="mt-4 pt-1 mb-2"
             preferences={preferenceOptions}
             selectedValues={preferencesState}
@@ -156,6 +169,13 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           Avbryt
         </SmakButton>
       </SmakCard>
+
+      <SmakTopAlert
+        show={showAlert}
+        textColor="white"
+        backgroundColor={"danger"} >
+        {alertMessage}
+      </SmakTopAlert>
 
     </SmakSlideInModal>
   );
