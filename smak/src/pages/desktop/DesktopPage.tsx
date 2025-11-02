@@ -51,7 +51,7 @@ export default function DesktopPage() {
         <footer className="bg-white py-3 w-100">
           <Container>
             <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start cursor-pointer">
-              <img src="assets/Logo_192x192.png" alt="Logo" className="desktop-logo" />
+              <img src="assets/logo-256x256.png" alt="Logo" className="desktop-logo" />
               <h2 className="mb-0 text-black fw-bold py-1">Småk</h2>
             </div>
           </Container>
@@ -107,7 +107,7 @@ export default function DesktopPage() {
               <img
                 src="images/app-screenshot-new.png"
                 alt="App"
-                className="desktop-img shadow-sm rounded-2"
+                className="desktop-img shadow-sm rounded-3"
               />
               <img
                 src="images/desktop-purple-circle.png"
