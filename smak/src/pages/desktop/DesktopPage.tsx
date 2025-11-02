@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import SmakModal from "../../components/SmakModal";
 
 export default function DesktopPage() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [IOSAlertModal, setIOSAlertModal] = useState(false);
+  const userAgent = window.navigator.userAgent || window.navigator || (window as any).opera;
+  const isIOS = /iPad|iPhone|iPod/.test(userAgent) && (typeof (window as any).MSStream === "undefined");
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -26,18 +30,18 @@ export default function DesktopPage() {
   }, []);
 
   const handleInstallClick = async () => {
+    if (isIOS) {
+      setIOSAlertModal(true);
+    }
+
     if (!deferredPrompt) {
-      alert(
-        'För att installera appen, använd webbläsarens meny och välj "Installera app"'
-      ); // todo modal for prompting ios
       return;
     }
 
+    // Some magic
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-    }
-
+    if (outcome === "accepted") { }
     setDeferredPrompt(null);
   };
 
@@ -46,8 +50,8 @@ export default function DesktopPage() {
       <div className="d-flex flex-column flex-grow-1 overflow-y-auto">
         <footer className="bg-white py-3 w-100">
           <Container>
-            <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-              <img src="assets/Logo.png" alt="Logo" className="desktop-logo" />
+            <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start cursor-pointer">
+              <img src="assets/logo-256x256.png" alt="Logo" className="desktop-logo" />
               <h2 className="mb-0 text-black fw-bold py-1">Småk</h2>
             </div>
           </Container>
@@ -88,10 +92,9 @@ export default function DesktopPage() {
 
               <Button
                 onClick={handleInstallClick}
-                className="btn btn-primary btn-lg px-4 rounded-5 shadow-sm mt-2"
-              >
+                className="btn btn-primary btn-lg px-4 rounded-5 shadow-sm mt-2">
                 <i className="bi bi-download me-2"></i>
-                Ladda ner appen
+                Ladda ner appen!
               </Button>
             </Col>
 
@@ -102,9 +105,9 @@ export default function DesktopPage() {
               className="text-center mt-5 mt-md-0 p-0 position-relative"
             >
               <img
-                src="images/app-screenshot.png"
+                src="images/app-screenshot-new.png"
                 alt="App"
-                className="desktop-img shadow-sm"
+                className="desktop-img shadow-sm rounded-3"
               />
               <img
                 src="images/desktop-purple-circle.png"
@@ -130,7 +133,7 @@ export default function DesktopPage() {
               </Col>
 
               <Col md={4} className="pt-5 pt-md-3">
-                <h6 className="fw-bold text-center">Följ Oss</h6>
+                <h6 className="fw-bold text-center ">Följ Oss</h6>
                 <div className="d-flex gap-3 justify-content-center">
                   <a href="#">
                     <i className="cursor-pointer text-secondary bi bi-facebook fs-4"></i>
@@ -178,7 +181,33 @@ export default function DesktopPage() {
         </footer>
       </div>
 
+      <SmakModal
+        show={IOSAlertModal}
+        showHeader={false}
+        contentClassName="bg-white"
+        onClose={() => setIOSAlertModal(false)}>
 
-    </ >
+        <div className="mb-3">
+          <div className="fw-bold fs-5 mb-3 text-center">Installation på iOS</div>
+          <hr className="m-0 p-0 mb-3 text-black" />
+          <ol className="ps-4 ms-1">
+            <li>
+              Tryck på <i className="bi bi-box-arrow-up text-primary fs-5"></i> <b>dela-ikonen</b> längst ner.
+            </li>
+            <li>
+              Välj <b>Lägg till på hemskärmen</b>.
+            </li>
+          </ol>
+        </div>
+
+        <div className="text-center mt-4">
+          <Button
+            className="btn btn-primary py-2 w-50 rounded-5"
+            onClick={() => setIOSAlertModal(false)}>
+            OK
+          </Button>
+        </div>
+      </SmakModal>
+    </>
   );
 }

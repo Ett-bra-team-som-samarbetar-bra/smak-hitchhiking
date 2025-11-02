@@ -1,5 +1,5 @@
 .login-header-icon {
-    background-image: url('/assets/Logo.png');
+    background-image: url('/assets/logo-256x256.png');
     background-size: contain;
     background-repeat: no-repeat;
     display: inline-block;
@@ -33,4 +33,12 @@
 
 .set-font-size {
     font-size: 2.4rem;
+}
+
+.set-font-size-login-modals {
+    font-size: 2rem;
+}
+
+.set-width-login-modals {
+    max-width: 900px;
 }

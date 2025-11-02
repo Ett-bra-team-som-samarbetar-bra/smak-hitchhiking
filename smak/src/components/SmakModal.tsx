@@ -8,6 +8,7 @@ interface SmakModalProps {
   dialogClassName?: string;
   contentClassName?: string;
   children?: React.ReactNode;
+  showHeader?: boolean;
 }
 
 export default function SmakModal({
@@ -17,6 +18,7 @@ export default function SmakModal({
   className = "", // Style for backdrop
   dialogClassName = "", // Style for ?
   contentClassName = "", // Style for actual modal content
+  showHeader = true,
   children
 }: SmakModalProps) {
   return (
@@ -30,12 +32,14 @@ export default function SmakModal({
       centered
       dialogClassName={`${dialogClassName}`}
       contentClassName={`${contentClassName}`}
-      className={`${className}`}
+      className={`${className}`}>
 
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+      {showHeader && (
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+      )}
+
       <Modal.Body style={{
         paddingBlock: "1.5rem",
         overflowY: "auto",
