@@ -40,7 +40,6 @@ export function TripGroupList({ groupedTrips }: TripGroupListProps) {
                 {...trip}
                 onBigTripCardClick={() => toggleCard(cardKey)}
               />
-
             ) : (
               <TripCardSmall
                 key={cardKey}
