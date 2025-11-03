@@ -18,3 +18,8 @@
 2025-11-03 13:17:18.1896||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
 2025-11-03 13:17:18.1896||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
 2025-11-03 13:20:35.2000||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-11-03 16:40:34.7163|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-11-03 16:40:34.7375||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-11-03 16:40:34.7375||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-11-03 16:40:34.7375||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-11-03 16:42:30.3559||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
