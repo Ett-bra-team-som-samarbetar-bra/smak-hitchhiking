@@ -464,12 +464,10 @@ artifacts/
 [Bb]uild[Ll]og.*
 *.trx
 
-# Orchard Core specific
-# Ignore runtime App_Data (gets restored from seed)
-smak/backend/App_Data/
+
 
 # But keep the seed data committed to git
-!backend/App_Data.seed/
+
 
 # Ignore ImageSharp cache and other wwwroot runtime files
 backend/wwwroot/Default/
@@ -529,5 +527,3 @@ coverage/
 *.iml
 *.iws
 *.ipr
-smak/backend/App_Data/Sites/Default/OrchardCore.db
-smak/backend/App_Data/Sites/Default/Media/_Users/4qn6twzb1y5zd7f8004294agc8/4qn6twzb1y5zd7f8004294agc8

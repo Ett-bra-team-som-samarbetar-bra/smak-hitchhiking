@@ -23,5 +23,8 @@ dev-dist
 *.sln
 *.sw?
 
-backend/App_Data/
-!backend/App_Data.seed/
+# Orchard Core data
+/backend/App_Data/
+!/backend/App_Data.seed/
+!/backend/App_Data.seed/**
+
