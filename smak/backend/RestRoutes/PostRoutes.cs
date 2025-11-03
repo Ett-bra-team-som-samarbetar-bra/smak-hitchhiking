@@ -125,6 +125,15 @@ public static class PostRoutes
                         // Assign as a List<string> to avoid wrapping
                         if (idValue != null)
                         {
+                            // Initialize the field structure if it doesn't exist
+                            if (contentItem.Content[contentType] == null)
+                            {
+                                contentItem.Content[contentType] = new JObject();
+                            }
+                            if (contentItem.Content[contentType][fieldName] == null)
+                            {
+                                contentItem.Content[contentType][fieldName] = new JObject();
+                            }
                             contentItem.Content[contentType][fieldName]["ContentItemIds"] = new List<string> { idValue };
                         }
                     }
