@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./hooks/useAuth";
+import { SmakTopAlertProvider } from "./context/SmakTopAlertProvider";
 import DynamicMapProvider, { useDynamicMap } from "./context/DynamicMapProvider";
 import AuthProvider from "./context/AuthProvider";
 import Main from "./partials/Main";
@@ -76,9 +77,11 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <DynamicMapProvider>
-        <AppContent />
-      </DynamicMapProvider>
+      <SmakTopAlertProvider>
+        <DynamicMapProvider>
+          <AppContent />
+        </DynamicMapProvider>
+      </SmakTopAlertProvider>
     </AuthProvider>
   );
 }

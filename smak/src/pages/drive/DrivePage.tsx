@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 import { Button } from "react-bootstrap";
 import GeocodeInput from "../../components/inputForms/GeocodeInput";
 import SubmitButton from "../../components/SubmitButton";
 
 export default function DrivePage() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
+  const { showAlert } = useSmakTopAlert();
   const [isLoading, setIsLoading] = useState(false);
 
   // TODO
@@ -21,10 +23,21 @@ export default function DrivePage() {
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1400));
-      console.log("success");
-      alert("Resa skapad!");
+      showAlert({
+        message: "Resa skapad!",
+        backgroundColor: "success",
+        textColor: "white",
+        duration: 3000,
+      });
+
     } catch (error) {
-      console.error("Submit error:", error);
+      showAlert({
+        message: "Ett fel uppstod vid skapandet av resan. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
+
     } finally {
       setIsLoading(false);
     }

@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 import SubmitButton from "../../components/SubmitButton";
 import GeocodeInput from "../../components/inputForms/GeocodeInput";
 
 export default function FindTrip() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
+  const { showAlert } = useSmakTopAlert();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -18,14 +20,21 @@ export default function FindTrip() {
       console.log("Some fields empty");
       return;
     }
+
     setIsLoading(true);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1400));
-      console.log("success");
       navigate("/trips-found");
+
     } catch (error) {
-      console.error("Submit error:", error);
+      showAlert({
+        message: "Ett fel uppstod vid sökningen av resor. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
+
     } finally {
       setIsLoading(false);
     }

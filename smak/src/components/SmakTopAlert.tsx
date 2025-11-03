@@ -1,9 +1,12 @@
 import { Alert } from "react-bootstrap";
 
+// DO NOT USE
+// Use "const { showAlert } = useSmakTopAlert();" instead!
+
 interface SmakTopAlertProps {
   show: boolean;
   children: React.ReactNode;
-  backgroundColor: string; // "success", "danger", "warning"
+  backgroundColor: string;
   textColor: string;
   className?: string;
 }

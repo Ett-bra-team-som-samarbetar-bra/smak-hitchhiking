@@ -2,13 +2,11 @@ import { Button, Row, } from "react-bootstrap";
 import { useState } from "react";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
-import SmakTopAlert from "../../components/SmakTopAlert";
 
 export default function LoginOrRegister() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showPage, setshowPage] = useState(true);
-  const [showRegisterMessage, setShowRegisterMessage] = useState(false);
 
   const loginClicked = async () => {
     setShowLoginModal(true);
@@ -31,13 +29,6 @@ export default function LoginOrRegister() {
         </Row>
 
         <Row className="dynamic-map-ontop-login px-3 d-flex flex-column">
-          <SmakTopAlert
-            show={showRegisterMessage}
-            textColor="white"
-            backgroundColor={"success"} >
-            Ditt konto har skapats! Du kan nu logga in.
-          </SmakTopAlert>
-
           <Button
             className="btn btn-light mb-3 rounded-5 py-2 interactive shadow"
             onClick={registerClicked}>
@@ -59,8 +50,7 @@ export default function LoginOrRegister() {
 
       <RegisterModal
         isOpen={showRegisterModal}
-        onClose={() => setShowRegisterModal(false)}
-        setshowRegisterMessage={setShowRegisterMessage} />
+        onClose={() => setShowRegisterModal(false)} />
     </>
   )
 }
