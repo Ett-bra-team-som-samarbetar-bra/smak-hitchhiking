@@ -50,11 +50,14 @@ export default function TripCardBig(props: TripCardProps) {
           className="trip-card-map-image w-100" />
 
         <div className="position-absolute trip-card-profil-image-container">
-          <img
-            onClick={onUserClick}
-            src={profileImage}
-            alt="Profil"
-            className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer" />
+          <div className="d-flex justify-content-center">
+            <img
+              onClick={onUserClick}
+              src={profileImage}
+              alt="Profil"
+              className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer"
+            />
+          </div>
 
           <div className="position-relative d-flex align-items-center flex-column mt-2">
             <div className="text-primary text-center m-0 fw-semibold medium-font-size">
