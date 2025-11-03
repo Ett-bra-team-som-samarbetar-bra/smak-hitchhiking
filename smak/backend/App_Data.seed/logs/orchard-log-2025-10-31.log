@@ -1,0 +1,104 @@
+2025-10-31 08:15:35.1470|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 08:15:35.1668||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 08:15:35.1668||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 08:15:35.1668||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 08:34:22.7294||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-10-31 08:34:30.0327|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 08:34:30.0596||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 08:34:30.0596||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 08:34:30.0596||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 08:34:40.7415|Default|00-fff529059bc243f9fb5c456ff47318bd-f9c777c611a12780-00|1|Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware|ERROR|An unhandled exception has occurred while executing the request. System.InvalidOperationException: The node must be of type 'JsonArray'.
+   at System.Text.Json.ThrowHelper.ThrowInvalidOperationException_NodeWrongType(String typeName)
+   at System.Text.Json.Nodes.JsonNode.AsArray()
+   at RestRoutes.AuthEndpoints.<>c.<<MapAuthEndpoints>b__0_4>d.MoveNext() in C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend\RestRoutes\AuthEndpoints.cs:line 211
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass102_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at SixLabors.ImageSharp.Web.Middleware.ImageSharpMiddleware.Invoke(HttpContext httpContext, Boolean retry)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at OrchardCore.Liquid.ScriptsMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at OrchardCore.Diagnostics.DiagnosticsStartupFilter.<>c__DisplayClass3_0.<<Configure>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)
+   at OrchardCore.ContentPreview.PreviewStartupFilter.<>c.<<Configure>b__0_1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at OrchardCore.Users.Services.ExternalAuthenticationsStartupFilter.<>c.<<Configure>b__0_1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at OrchardCore.Modules.ModularTenantRouterMiddleware.Invoke(HttpContext httpContext)
+   at OrchardCore.Modules.ModularTenantContainerMiddleware.<>c__DisplayClass4_0.<<Invoke>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Modules.ModularTenantContainerMiddleware.Invoke(HttpContext httpContext)
+   at RestRoutes.AdminScriptInjectorMiddleware.InvokeAsync(HttpContext context) in C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend\RestRoutes\AdminScriptInjectorMiddleware.cs:line 55
+   at RestRoutes.ExceptionHandler.<>c.<<UseRestRoutesExceptionHandler>b__0_0>d.MoveNext() in C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend\RestRoutes\ExceptionHandler.cs:line 11
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)    at System.Text.Json.ThrowHelper.ThrowInvalidOperationException_NodeWrongType(String typeName)
+   at System.Text.Json.Nodes.JsonNode.AsArray()
+   at RestRoutes.AuthEndpoints.<>c.<<MapAuthEndpoints>b__0_4>d.MoveNext() in C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend\RestRoutes\AuthEndpoints.cs:line 211
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass102_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at SixLabors.ImageSharp.Web.Middleware.ImageSharpMiddleware.Invoke(HttpContext httpContext, Boolean retry)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at OrchardCore.Liquid.ScriptsMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at OrchardCore.Diagnostics.DiagnosticsStartupFilter.<>c__DisplayClass3_0.<<Configure>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)
+   at OrchardCore.ContentPreview.PreviewStartupFilter.<>c.<<Configure>b__0_1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at OrchardCore.Users.Services.ExternalAuthenticationsStartupFilter.<>c.<<Configure>b__0_1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at OrchardCore.Modules.ModularTenantRouterMiddleware.Invoke(HttpContext httpContext)
+   at OrchardCore.Modules.ModularTenantContainerMiddleware.<>c__DisplayClass4_0.<<Invoke>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Environment.Shell.Scope.ShellScope.UsingAsync(Func`2 execute, Boolean activateShell)
+   at OrchardCore.Modules.ModularTenantContainerMiddleware.Invoke(HttpContext httpContext)
+   at RestRoutes.AdminScriptInjectorMiddleware.InvokeAsync(HttpContext context) in C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend\RestRoutes\AdminScriptInjectorMiddleware.cs:line 55
+   at RestRoutes.ExceptionHandler.<>c.<<UseRestRoutesExceptionHandler>b__0_0>d.MoveNext() in C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend\RestRoutes\ExceptionHandler.cs:line 11
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-10-31 08:35:47.2003||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-10-31 08:35:53.2498|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 08:35:53.2815||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 08:35:53.2815||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 08:35:53.2815||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 08:40:48.6752||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-10-31 08:40:54.6582|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 08:40:54.6788||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 08:40:54.6788||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 08:40:54.6788||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 09:52:23.4093||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-10-31 09:53:33.9950|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 09:53:34.0151||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 09:53:34.0151||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 09:53:34.0151||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 10:07:00.0871||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-10-31 10:07:07.6420|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 10:07:07.6660||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 10:07:07.6660||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 10:07:07.6660||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 10:08:29.1268||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-10-31 10:08:34.6416|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 10:08:34.6618||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 10:08:34.6618||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 10:08:34.6618||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 10:11:17.7770||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
+2025-10-31 10:11:32.1647|||14|Microsoft.Hosting.Lifetime|INFO|Now listening on: http://localhost:5001 
+2025-10-31 10:11:32.2007||||Microsoft.Hosting.Lifetime|INFO|Application started. Press Ctrl+C to shut down. 
+2025-10-31 10:11:32.2007||||Microsoft.Hosting.Lifetime|INFO|Hosting environment: Development 
+2025-10-31 10:11:32.2007||||Microsoft.Hosting.Lifetime|INFO|Content root path: C:\Users\Viktor\source\repos\smak-hitchhiking\smak\backend 
+2025-10-31 10:21:29.3055||||Microsoft.Hosting.Lifetime|INFO|Application is shutting down... 
