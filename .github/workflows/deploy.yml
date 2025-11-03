@@ -61,6 +61,11 @@ jobs:
           sudo rm -rf "${BACKEND_DEST:?}/"*
           sudo cp -r "${BACKEND_SRC}/out/"* "${BACKEND_DEST}/"
 
+      - name: Set userpermissions
+        run: |
+          sudo chown -R thoernve:thoernve "${FRONTEND_DEST}"
+          sudo chown -R thoernve:thoernve "${BACKEND_DEST}"
+
       - name: Restore seeded App_Data
         working-directory: ${{ env.SCRIPT_SRC }}
         run: |
