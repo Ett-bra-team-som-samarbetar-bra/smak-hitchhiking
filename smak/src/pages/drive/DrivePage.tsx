@@ -7,6 +7,7 @@ import GeocodeInput from "../../components/inputForms/GeocodeInput";
 import SubmitButton from "../../components/SubmitButton";
 import CarModal from "../profile/CarModal";
 import type Car from "../../interfaces/Cars";
+import SmakMapButton from "../../components/SmakMapButton";
 
 export default function DrivePage() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
@@ -28,7 +29,7 @@ export default function DrivePage() {
   });
 
 
-  // TODO
+  // TODO calender
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -70,6 +71,12 @@ export default function DrivePage() {
     console.log("OnCalenderClick");
   };
 
+  const handleClearInputs = () => {
+    setSelectedVehicle(null);
+    setFrom(null);
+    setTo(null);
+  };
+
   const handleAddVehicle = () => {
     setShowCarModal(true);
   };
@@ -84,7 +91,9 @@ export default function DrivePage() {
     async function fetchCars() {
       try {
         const response = await fetch(`/api/Car`);
-        if (!response.ok) throw new Error('Failed to fetch cars');
+        if (!response.ok)
+          throw new Error('Failed to fetch cars');
+
         const allCars = await response.json();
         const userCars = allCars
           .filter((car: any) => car.userId === user!.id)
@@ -100,10 +109,9 @@ export default function DrivePage() {
 
         setCars(userCars);
       } catch (error) {
-        console.error('Error fetching cars:', error);
+        //console.error('Error fetching cars:', error);
       }
     }
-
     fetchCars();
   }, [user]);
 
@@ -112,7 +120,7 @@ export default function DrivePage() {
     const isCreating = true;
 
     if (!user?.id) {
-      console.error("Cannot save car: user ID is missing");
+      //console.error("Cannot save car: user ID is missing");
       return;
     }
 
@@ -125,7 +133,7 @@ export default function DrivePage() {
       userId: user.id,
     };
 
-    console.log("Payload being sent to API:", payload);
+
     const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
 
     try {
@@ -154,7 +162,7 @@ export default function DrivePage() {
           userId: car.userId
         }));
 
-      console.log('Updated cars after save:', updatedCars);
+      //console.log('Updated cars after save:', updatedCars);
       setCars(updatedCars);
 
       const newCar = updatedCars.find(
@@ -164,11 +172,10 @@ export default function DrivePage() {
           c.model === payload.model
       );
       setSelectedVehicle(newCar || null);
-
       handleCloseModal();
 
     } catch (error) {
-      console.error('Error saving car:', error);
+      //console.error('Error saving car:', error);
     }
   }
 
@@ -177,16 +184,17 @@ export default function DrivePage() {
       <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
         <div className="d-flex flex-column">
 
-          {/* Center self icon */}
-          <div className="position-relative d-flex justify-content-end mb-2">
-            <Button
-              type="button"
-              className="btn btn-light rounded-circle shadow d-flex justify-content-center align-items-center interactive"
-              onClick={centerMapOnLocations}
-              style={{ width: "40px", height: "40px" }}>
-              <i className="bi bi-geo-alt-fill text-black fs-5 dynamic-map-center-icon"></i>
-            </Button>
-          </div>
+          {/* Buttons */}
+          <SmakMapButton
+            onClick={centerMapOnLocations}
+            icon="bi-geo-alt-fill"
+            iconClassName="fs-5 dynamic-map-home-icon"
+          />
+          <SmakMapButton
+            onClick={handleClearInputs}
+            icon="bi-x"
+            iconClassName="fs-2 dynamic-map-cross-icon"
+          />
 
           {/* Form */}
           <form onSubmit={handleSubmit}>

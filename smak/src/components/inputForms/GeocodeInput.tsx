@@ -19,6 +19,10 @@ export default function GeocodeInput({
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
+    setQuery(value?.name || "");
+  }, [value]);
+
+  useEffect(() => {
     if (!query || query.length < 2) {
       setSuggestions([]);
       return;
