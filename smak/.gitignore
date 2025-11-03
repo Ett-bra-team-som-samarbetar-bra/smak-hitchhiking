@@ -23,3 +23,5 @@ dev-dist
 *.sln
 *.sw?
 
+backend/App_Data/
+
