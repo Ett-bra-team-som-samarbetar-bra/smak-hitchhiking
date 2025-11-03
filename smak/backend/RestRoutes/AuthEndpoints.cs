@@ -165,6 +165,35 @@ public static class AuthEndpoints
             });
         });
 
+        // GET /api/auth/user/{userId} - Get user by ID
+        app.MapGet("/api/auth/user/{userId}", async (
+            string userId,
+            [FromServices] UserManager<IUser> userManager) =>
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return Results.NotFound(new { error = "User not found" });
+            }
+
+            var u = user as User;
+
+            return Results.Ok(new
+            {
+                id = u?.UserId,
+                username = user.UserName,
+                email = u?.Email,
+                phoneNumber = u?.PhoneNumber,
+                firstName = u?.Properties?["FirstName"]?.ToString(),
+                lastName = u?.Properties?["LastName"]?.ToString(),
+                description = u?.Properties?["Description"]?.ToString(),
+                rating = u?.Properties?["Rating"]?.ToString(),
+                tripCount = u?.Properties?["TripCount"]?.ToString(),
+                preferences = u?.Properties?["Preferences"]?.AsArray()
+            });
+        });
+
         // DELETE /api/auth/login - Logout
         app.MapDelete("/api/auth/login", async (
             [FromServices] SignInManager<IUser> signInManager) =>
