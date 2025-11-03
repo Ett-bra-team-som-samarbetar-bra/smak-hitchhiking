@@ -14,17 +14,18 @@ import type Car from "../../interfaces/Cars";
 export default function ProfilePage() {
   const { userId } = useParams();
   const { user, refreshUser } = useAuth();
-  const { profileImage, refreshProfileImage } = useProfileImage(
-    user?.id || null
-  );
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
-
   const isOwnProfile = !userId;
-
   const isAlreadyFriend = false;
 
+  const [profileUser, setProfileUser] = useState<User | null>(null);
   const [cars, setCars] = useState<Car[]>([]);
+
+  const { profileImage, refreshProfileImage } = useProfileImage(
+    profileUser?.id || null
+  );
+
   const [showUserModal, setShowUserModal] = useState(false);
   const [userPayload, setUserPayload] = useState<{ user: User } | null>(null);
   const [showCarModal, setShowCarModal] = useState(false);
@@ -37,19 +38,37 @@ export default function ProfilePage() {
     seats: 0,
   });
 
+
+  // Set the profile user based on whether it's own profile or someone else
   useEffect(() => {
-    if (!user?.id) return;
+    if (isOwnProfile && user) {
+      setProfileUser(user);
+    } else if (userId) {
+      async function fetchUserById() {
+        try {
+          const response = await fetch(`/api/auth/user/${userId}`);
+          if (!response.ok) throw new Error('Failed to fetch user');
+          const fetchedUser = await response.json();
+          setProfileUser(fetchedUser);
+        } catch (error) {
+          console.error('Error fetching user:', error);
+        }
+      }
+
+      fetchUserById();
+    }
+  }, [userId, user, isOwnProfile]);
+
+  useEffect(() => {
+    if (!profileUser?.id) return;
 
     async function fetchCars() {
       try {
-
         const response = await fetch(`/api/Car`);
         if (!response.ok) throw new Error('Failed to fetch cars');
         const allCars = await response.json();
-        console.log('ALL cars:', allCars);
-        console.log('User ID to match:', user!.id);
         const userCars = allCars
-          .filter((car: any) => car.userId === user!.id)
+          .filter((car: any) => car.userId === profileUser!.id)
           .map((car: any) => ({
             id: car.id || '',
             brand: car.brand || '',
@@ -59,7 +78,6 @@ export default function ProfilePage() {
             seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
             userId: car.userId
           }));
-        console.log('Filtered user cars:', userCars);
 
         setCars(userCars);
       } catch (error) {
@@ -68,26 +86,26 @@ export default function ProfilePage() {
     }
 
     fetchCars();
-  }, [user]);
+  }, [profileUser]);
 
   useEffect(() => {
-    if (user) {
+    if (profileUser) {
       setUserPayload({
         user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          phoneNumber: user.phoneNumber,
-          description: user.description,
-          rating: user.rating,
-          tripCount: user.tripCount,
-          preferences: user.preferences,
+          id: profileUser.id,
+          username: profileUser.username,
+          email: profileUser.email,
+          firstName: profileUser.firstName,
+          lastName: profileUser.lastName,
+          phoneNumber: profileUser.phoneNumber,
+          description: profileUser.description,
+          rating: profileUser.rating,
+          tripCount: profileUser.tripCount,
+          preferences: profileUser.preferences,
         },
       });
     }
-  }, [user]);
+  }, [profileUser]);
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -283,23 +301,23 @@ export default function ProfilePage() {
 
   return (
     <>
-      {user! && (
+      {profileUser && (
         <ProfileCard
-          user={user!}
+          user={profileUser}
           profileImage={profileImage}
           isOwnProfile={isOwnProfile}
           isAlreadyFriend={isAlreadyFriend}
           onEdit={() =>
             handleEditUser({
-              id: user?.id,
-              username: user?.username,
-              email: user?.email,
-              firstName: user?.firstName,
-              lastName: user?.lastName,
-              phoneNumber: user?.phoneNumber,
-              description: user?.description,
-              rating: user?.rating,
-              tripCount: user?.tripCount,
+              id: profileUser.id,
+              username: profileUser.username,
+              email: profileUser.email,
+              firstName: profileUser.firstName,
+              lastName: profileUser.lastName,
+              phoneNumber: profileUser.phoneNumber,
+              description: profileUser.description,
+              rating: profileUser.rating,
+              tripCount: profileUser.tripCount,
               preferences: preferences,
             })
           }

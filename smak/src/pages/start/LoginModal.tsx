@@ -23,6 +23,7 @@ export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalP
     email: "",
     password: ""
   });
+  const initialPayload = { email: "", password: "" };
 
   function setUserProp(event: React.ChangeEvent) {
     let { name, value }: { name: string, value: string | null } = event.target as HTMLInputElement;
@@ -45,6 +46,11 @@ export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalP
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function handleCancel() {
+    onClose();
+    setUserPayload(initialPayload);
   }
 
   return (
@@ -88,7 +94,7 @@ export default function LoginModal({ isOpen, onClose, setshowPage }: LoginModalP
         <SmakButton
           color="secondary"
           className="mt-2"
-          onClick={onClose}>
+          onClick={handleCancel}>
           Avbryt
         </SmakButton>
       </SmakCard>

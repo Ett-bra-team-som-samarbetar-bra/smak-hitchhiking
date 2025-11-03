@@ -32,8 +32,8 @@ export default function ProfileCard({
             isOwnProfile
               ? "bi-pencil-fill"
               : isAlreadyFriend
-              ? "bi-trash"
-              : "bi-person-add"
+                ? "bi-trash"
+                : "bi-person-add"
           }
           onClick={() => {
             if (isOwnProfile && onEdit) onEdit();

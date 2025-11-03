@@ -5,8 +5,7 @@ export interface RegisterPayload {
     password: string;
     firstName: string;
     lastName: string;
-    phoneNumber: number;
+    phone: string;
     description: string;
     preferences: string[];
-    /* preferences: PreferenceOption[]; */
 }

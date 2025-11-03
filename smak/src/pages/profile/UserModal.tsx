@@ -4,9 +4,9 @@ import InputFormText from "../../components/inputForms/InputFormText";
 import InputFormEmail from "../../components/inputForms/InputFormEmail";
 import InputFormImage from "../../components/inputForms/InputformImage";
 import SmakButton from "../../components/SmakButton";
-import InputFormRadioGroups from "../../components/inputForms/InputFormRadioGroups";
 import type User from "../../interfaces/User";
 import preferenceOptions from "../../interfaces/PreferenceOptions";
+import InputFormPreferences from "../../components/inputForms/InputFormPreferences";
 
 interface UserModalProps {
   show: boolean;
@@ -35,7 +35,11 @@ export default function UserModal({
 }: UserModalProps) {
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const [preferences, setPreferences] = useState<string[]>(
-    payload.user.preferences || []
+    Array.isArray(payload.user.preferences)
+      ? payload.user.preferences.map((val, i) =>
+        val === preferenceOptions[i].options[0] ? "Ja" : "Nej"
+      )
+      : preferenceOptions.map(() => "Nej")
   );
 
   function handleChange(
@@ -58,17 +62,17 @@ export default function UserModal({
     <SmakModal
       title={isEdit ? "Redigera profil" : "Användarprofil"}
       show={show}
-      onClose={onClose}
-    >
+      onClose={onClose}>
+
       <InputFormEmail
-        placeholder="email"
-        label="Email"
+        placeholder="E-postadress"
+        label="E-postadress"
         value={payload.user.email}
         setFormProp={handleChange}
         disabled={true}
       />
       <InputFormText
-        placeholder="förnamn"
+        placeholder="Förnamn"
         label="Förnamn"
         value={payload.user.firstName}
         setFormProp={handleChange}
@@ -77,61 +81,76 @@ export default function UserModal({
       />
 
       <InputFormText
-        placeholder="efternamn"
+        placeholder="Efternamn"
         label="Efternamn"
         value={payload.user.lastName}
         setFormProp={handleChange}
         typeName="lastName"
         disabled={!isOwnProfile}
       />
+
       <InputFormText
-        placeholder="telefonnummer"
+        placeholder="Telefonnummer"
         label="Telefonnummer"
         value={payload.user.phoneNumber}
         setFormProp={handleChange}
         typeName="phone"
         disabled={!isOwnProfile}
       />
+
       <InputFormText
-        placeholder="beskrivning"
+        placeholder="Beskrivning"
         label="Beskrivning"
-        isTextArea={true}
+        isTextArea={false}
         maxLength={40}
         value={payload.user.description}
         setFormProp={handleChange}
         typeName="description"
         disabled={!isOwnProfile}
       />
-      <InputFormRadioGroups
+
+      <InputFormImage
+        className="mt-3"
+        setFormProp={setProfileFile}
+        label={"Profilbild"} />
+
+      <InputFormPreferences
+        className="mt-4 mb-3"
         preferences={preferenceOptions}
         selectedValues={preferences}
         setPreferences={setPreferences}
       />
-      <InputFormImage setFormProp={setProfileFile} label={"Profilbild"} />
+
+      <hr className="mt-4 mb-3" />
 
       {isOwnProfile && (
         <div className="d-flex gap-3 w-100 pt-2">
+
           <SmakButton
             className="text-nowrap"
             onClick={() => {
               if (onSave) {
+                // Map "Ja"/"Nej" back to the actual preference values
+                const mappedPreferences = preferences.map((val, i) =>
+                  val === "Ja" ? preferenceOptions[i].options[0] : preferenceOptions[i].options[1]
+                );
                 const updatedUser = {
                   ...payload.user,
-                  preferences: preferences,
+                  preferences: mappedPreferences,
                 };
                 onSave(updatedUser, profileFile);
               }
-            }}
-          >
+            }}>
             Spara ändringar
           </SmakButton>
+
           <SmakButton
             className="text-nowrap"
             onClick={onClose}
-            color="secondary"
-          >
+            color="secondary">
             Avbryt
           </SmakButton>
+
         </div>
       )}
     </SmakModal>
