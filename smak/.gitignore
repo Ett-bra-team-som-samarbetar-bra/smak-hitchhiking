@@ -24,4 +24,4 @@ dev-dist
 *.sw?
 
 backend/App_Data/
-
+!backend/App_Data.seed/
