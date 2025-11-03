@@ -53,7 +53,7 @@ export default function GeocodeInput({
       <i className={`bi bi-geo-alt-fill dynamic-map-input-icons fs-5`} />
       <input
         type="text"
-        className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline"
+        className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline cursor-pointer"
         placeholder={placeholder}
         value={query}
         onChange={(e) => {
@@ -66,7 +66,7 @@ export default function GeocodeInput({
           }
         }}
         onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)} />
+        onBlur={() => setShowSuggestions(false)} />
 
       {showSuggestions && suggestions.length > 0 && (
         <ul
