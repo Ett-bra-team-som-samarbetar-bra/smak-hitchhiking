@@ -24,12 +24,12 @@ export default defineConfig({
         categories: ['travel', 'social'],
         icons: [
           {
-            src: '/assets/Logo4.png',
+            src: '/assets/logo-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/assets/Logo5.png',
+            src: '/assets/logo-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }

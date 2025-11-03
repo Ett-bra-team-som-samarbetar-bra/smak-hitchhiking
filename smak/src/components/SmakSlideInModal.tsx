@@ -22,12 +22,26 @@ export default function SmakSlideInModal({ isOpen, children, className = "" }: S
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, [isOpen]);
+
   if (!isVisible) return null;
 
   return (
-    <div className={`interactive slide-in-modal-backdrop ${isAnimating ? 'active' : ''} ${className} `}>
-      <div className={`slide-in-modal ${isAnimating ? 'slide-in' : ''}`}>
-        <div className="p-3 slide-in-modal-content-scroll">
+    <div className={`non-interactive slide-in-modal-backdrop ${isAnimating ? 'active' : ''} ${className}`}>
+      <div className={`slide-in-modal ${isAnimating ? 'slide-in' : ''} interactive`}>
+        <div className="p-3 slide-in-modal-content-scroll interactive">
           {children}
         </div>
       </div>

@@ -3,20 +3,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import routes from "../routes";
 
 export default function Footer() {
-  let allowedPaths = [
-    "/profile",
-    "/drive",
-    "/",
-    "/history",
-    "/coming-trips",
-  ];
+  const isOnTrip = false; // TODO trip provider
 
-  /* if pågående resa todo
-  allowedPaths = [
-    "/profile",
-    "/trips-current",
-    "/contact",
-  ]; */
+  let allowedPaths = ["/profile", "/drive", "/", "/history", "/coming-trips"];
+  if (isOnTrip) {
+    allowedPaths = ["/profile", "/trips-current", "/coming-trips",];
+  }
 
   const pathName = useLocation().pathname;
   const isActive = (path: string) => pathName === path;

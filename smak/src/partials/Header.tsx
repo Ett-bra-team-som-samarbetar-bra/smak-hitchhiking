@@ -10,18 +10,15 @@ export default function Header() {
     <header className="header bg-white border-bottom d-flex justify-content-center">
       <div className="whole-app-horizontal-width d-flex align-items-center justify-content-between px-3 py-2 w-100">
 
-        {/* Debug or Hidden spacer */}
-        {config.showDebugPages ? (
-          <div>
-            <ReturnButton />
-            <NavLink
-              to={"/debug"}
-              className="text-danger ms-2">
-              <i className="bi bi-gear-fill nav-icon-size" />
-            </NavLink>
-          </div>
-        ) : (
-          <i className="bi-people-fill nav-icon-size" style={{ visibility: "hidden" }} />
+        <ReturnButton />
+
+        {/* Debug */}
+        {config.showDebugPages && (
+          <NavLink
+            to={"/debug"}
+            className="text-danger ms-2">
+            <i className="bi bi-gear-fill nav-icon-size" />
+          </NavLink>
         )}
 
         {/* Logo */}

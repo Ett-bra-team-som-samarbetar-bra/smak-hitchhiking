@@ -47,12 +47,6 @@ const routes: Route[] = [
     icon: "geo-alt-fill ",
   },
   {
-    element: <ProtectedRoute><ComingTripsPage /></ProtectedRoute>,
-    path: "/coming-trips",
-    menuLabel: "Bokade",
-    icon: "calendar-check-fill",
-  },
-  {
     element: <ProtectedRoute><HistoryPage /></ProtectedRoute>,
     path: "/history",
     menuLabel: "Historik",
@@ -61,8 +55,14 @@ const routes: Route[] = [
   {
     element: <ProtectedRoute><TripsCurrentPage /></ProtectedRoute>,
     path: "/trips-current",
-    menuLabel: "Pågående",
-    icon: "car-front",
+    menuLabel: "Pågående resa",
+    icon: "car-front-fill",
+  },
+  {
+    element: <ProtectedRoute><ComingTripsPage /></ProtectedRoute>,
+    path: "/coming-trips",
+    menuLabel: "Bokade",
+    icon: "calendar-check-fill",
   },
   {
     element: <ProtectedRoute><TripsFoundPage /></ProtectedRoute>,

@@ -14,6 +14,7 @@ jobs:
       BACKEND_SRC: smak/backend
       FRONTEND_DEST: /var/www/smak
       BACKEND_DEST: /var/www/backend
+      SCRIPT_SRC: smak/scripts
 
     steps:
       - name: Checkout repository
@@ -59,4 +60,12 @@ jobs:
           sudo mkdir -p "${BACKEND_DEST}"
           sudo rm -rf "${BACKEND_DEST:?}/"*
           sudo cp -r "${BACKEND_SRC}/out/"* "${BACKEND_DEST}/"
-          sudo systemctl restart "${BACKEND_SERVICE_NAME}"
+
+      - name: Restore seeded App_Data
+        working-directory: ${{ env.SCRIPT_SRC }}
+        run: |
+          echo "Restoring seeded App_Data..."
+          node restore-seed.js
+
+      - name: Restart backend service
+        run: sudo systemctl restart "${BACKEND_SERVICE_NAME}"
