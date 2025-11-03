@@ -6,7 +6,7 @@ interface PreferenceOption {
   options: [string, string];
 }
 
-interface InputFormRadioGroupProps {
+interface InputFormPreferences {
   preferences: PreferenceOption[];
   setPreferences: (selected: string[]) => void;
   selectedValues: string[];
@@ -18,7 +18,7 @@ export default function InputFormPreferences({
   setPreferences,
   selectedValues,
   className = ""
-}: InputFormRadioGroupProps) {
+}: InputFormPreferences) {
   const options = ["Ja", "Nej"];
 
   const handleChange = (categoryIndex: number, value: string) => {

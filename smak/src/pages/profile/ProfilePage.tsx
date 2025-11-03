@@ -19,9 +19,7 @@ export default function ProfilePage() {
   );
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
-
   const isOwnProfile = !userId;
-
   const isAlreadyFriend = false;
 
   const [cars, setCars] = useState<Car[]>([]);

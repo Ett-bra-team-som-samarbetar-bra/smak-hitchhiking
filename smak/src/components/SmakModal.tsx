@@ -31,7 +31,7 @@ export default function SmakModal({
       onHide={onClose}
       centered
       dialogClassName={`${dialogClassName}`}
-      contentClassName={`${contentClassName}`}
+      contentClassName={`${contentClassName} bg-white`}
       className={`${className}`}>
 
       {showHeader && (

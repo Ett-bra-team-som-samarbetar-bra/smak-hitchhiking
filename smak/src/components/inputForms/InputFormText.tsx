@@ -7,6 +7,7 @@ interface InputFormTextProps {
   label: string;
   placeholder: string;
   maxLength?: number;
+  minLength?: number;
   typeName?: string;
   value?: string;
   isTextArea?: boolean;
@@ -20,6 +21,7 @@ export default function InputFormText({
   label,
   placeholder,
   maxLength = 100,
+  minLength = 0,
   typeName = "name",
   value = "",
   isTextArea = false,
@@ -39,7 +41,7 @@ export default function InputFormText({
             autoComplete="off"
             placeholder={placeholder}
             maxLength={maxLength}
-            minLength={2}
+            minLength={minLength}
             as={isTextArea ? "textarea" : "input"}
             required={isRequired}
             value={value ?? ""}

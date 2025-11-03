@@ -7,7 +7,6 @@ import InputFormText from "../../components/inputForms/InputFormText";
 import SubmitButton from "../../components/SubmitButton";
 import InputFormEmail from "../../components/inputForms/InputFormEmail";
 import preferenceOptions from "../../interfaces/PreferenceOptions";
-import InputFormPhoneNumber from "../../components/inputForms/InputFormPhoneNumber";
 import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SmakCard from "../../components/SmakCard";
 import SmakButton from "../../components/SmakButton";
@@ -31,7 +30,7 @@ export default function RegisterModal({ isOpen, onClose, setshowRegisterMessage 
     password: "",
     firstName: "",
     lastName: "",
-    phoneNumber: 0,
+    phone: "",
     description: "",
     preferences: [],
   });
@@ -46,6 +45,20 @@ export default function RegisterModal({ isOpen, onClose, setshowRegisterMessage 
       ...prev,
       preferences: newPreferences,
     }));
+  }
+
+  function resetForm() {
+    setRegisterPayload({
+      userName: "",
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
+      description: "",
+      preferences: [],
+    });
+    setPreferencesState(preferenceOptions.map(() => "Ja"));
   }
 
   function setRegisterProp(event: React.ChangeEvent) {
@@ -65,6 +78,7 @@ export default function RegisterModal({ isOpen, onClose, setshowRegisterMessage 
     try {
       await register({ ...registerPayload, preferences: mappedPreferences });
       onClose();
+      resetForm();
 
       setTimeout(() => {
         setshowRegisterMessage(true);
@@ -129,12 +143,15 @@ export default function RegisterModal({ isOpen, onClose, setshowRegisterMessage 
             isRequired={true}
             typeName="lastName" />
 
-          <InputFormPhoneNumber
+          <InputFormText
             placeholder="Ange ditt telefonnummer"
             label="Telefonnummer"
-            value={registerPayload.phoneNumber}
+            maxLength={12}
+            minLength={6}
+            isRequired={true}
+            value={registerPayload.phone}
             setFormProp={setRegisterProp}
-            typeName="phoneNumber" />
+            typeName="phone" />
 
           <InputFormText
             label="Beskrivning"
@@ -165,7 +182,10 @@ export default function RegisterModal({ isOpen, onClose, setshowRegisterMessage 
         <SmakButton
           color="secondary"
           className="mt-2 mb-2"
-          onClick={onClose}>
+          onClick={() => {
+            onClose();
+            resetForm();
+          }}>
           Avbryt
         </SmakButton>
       </SmakCard>
