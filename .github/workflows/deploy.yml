@@ -66,11 +66,12 @@ jobs:
           sudo chown -R thoernve:thoernve "${FRONTEND_DEST}"
           sudo chown -R thoernve:thoernve "${BACKEND_DEST}"
 
-      - name: Restore seeded App_Data
-        working-directory: ${{ env.SCRIPT_SRC }}
+      - name: Restore seeded App_Data on target
         run: |
-          echo "Restoring seeded App_Data..."
-          node restore-seed.js
+          echo "Restoring seeded App_Data directly into backend destination..."
+          sudo rm -rf "${BACKEND_DEST}/App_Data"
+          sudo cp -r "smak/backend/App_Data.seed" "${BACKEND_DEST}/App_Data"
+          sudo chown -R thoernve:thoernve "${BACKEND_DEST}/App_Data"
 
       - name: Restart backend service
         run: sudo systemctl restart "${BACKEND_SERVICE_NAME}"
