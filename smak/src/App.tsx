@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./hooks/useAuth";
+import { TripCountProvider, useTripCount } from "./context/TripCountProvider";
 import { SmakTopAlertProvider } from "./context/SmakTopAlertProvider";
+import { getAllTrips } from "./utils/MockData";
+import { getTripDateTime } from "./utils/DateUtils";
 import DynamicMapProvider, { useDynamicMap } from "./context/DynamicMapProvider";
 import AuthProvider from "./context/AuthProvider";
 import Main from "./partials/Main";
@@ -13,13 +16,30 @@ import DynamicMap from "./partials/DynamicMap";
 function AppContent() {
   const { user } = useAuth();
   const { setIsLoginPage } = useDynamicMap();
+  const { setHistoryCount, setComingCount } = useTripCount();
+
   const [isPwa, setIsPwa] = useState(false);
   const [showHeaderFooter, setShowHeaderFooter] = useState(false);
+
   const isLoggedIn = !!user;
   const mapActivePaths = ["/", "/drive"];
   const shouldShowMap = mapActivePaths.includes(location.pathname);
 
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+
+
+
+  // Set inital counters on footer badges
+  useEffect(() => {
+    const allTrips = getAllTrips(); // todo real data
+    const today = new Date();
+    const historyTrips = allTrips.filter(trip => getTripDateTime(trip) < today);
+    const comingTrips = allTrips.filter(trip => getTripDateTime(trip) > today);
+
+    setHistoryCount(historyTrips.length);
+    setComingCount(comingTrips.length);
+  }, [setHistoryCount, setComingCount]);
 
   // DynamicMap
   useEffect(() => {
@@ -79,7 +99,9 @@ export default function App() {
     <AuthProvider>
       <SmakTopAlertProvider>
         <DynamicMapProvider>
-          <AppContent />
+          <TripCountProvider>
+            <AppContent />
+          </TripCountProvider>
         </DynamicMapProvider>
       </SmakTopAlertProvider>
     </AuthProvider>

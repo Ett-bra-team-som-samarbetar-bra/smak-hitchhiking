@@ -6,8 +6,11 @@ import DividerLine from "../DividerLine";
 import TripCardButton from "./TripCardButton";
 import StaticMap from "./StaticMap";
 import "../../components/trip/TripCard.scss";
+import { useTripCount } from "../../context/TripCountProvider";
 
 export default function TripCardBig(props: TripCardProps) {
+  const { comingCount, setComingCount } = useTripCount();
+
   const {
     firstName = "Okänd",
     lastName = "användare",
@@ -30,12 +33,24 @@ export default function TripCardBig(props: TripCardProps) {
   } = props;
 
   const userName = `${firstName} ${lastName}`;
+
   const buttonText =
     cardButtonType === "book"
       ? "Boka"
       : cardButtonType === "cancel"
         ? "Avboka"
         : "";
+
+  // Update state on footer badges
+  const handleOnButtonClick = () => {
+    if (cardButtonType === "book") {
+      setComingCount(comingCount + 1);
+    } else if (cardButtonType === "cancel") {
+      setComingCount(Math.max(comingCount - 1, 0));
+    }
+
+    if (onButtonClick) onButtonClick();
+  }
 
   return (
     <SmakCard className={`${className} pb-0`}>
@@ -74,7 +89,7 @@ export default function TripCardBig(props: TripCardProps) {
               {cardButtonType !== "none" && (
                 <TripCardButton
                   label={buttonText}
-                  onClick={onButtonClick}
+                  onClick={handleOnButtonClick}
                 ></TripCardButton>
               )}
             </div>

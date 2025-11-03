@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
 import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
@@ -18,7 +17,12 @@ export default function FindTrip() {
     e.preventDefault();
 
     if (!from || !to) {
-      console.log("Some fields empty");
+      showAlert({
+        message: "Alla fält måste vara ifyllda.",
+        backgroundColor: "warning",
+        textColor: "white",
+        duration: 3000,
+      });
       return;
     }
 

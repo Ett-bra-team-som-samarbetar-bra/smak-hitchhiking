@@ -8,10 +8,12 @@ import SubmitButton from "../../components/SubmitButton";
 import CarModal from "../profile/CarModal";
 import type Car from "../../interfaces/Cars";
 import SmakMapButton from "../../components/SmakMapButton";
+import { useTripCount } from "../../context/TripCountProvider";
 
 export default function DrivePage() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
   const { showAlert } = useSmakTopAlert();
+  const { comingCount, setComingCount } = useTripCount();
   const { user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -47,6 +49,8 @@ export default function DrivePage() {
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1400));
+
+      setComingCount(comingCount + 1); // update footer counters
       showAlert({
         message: "Resa skapad!",
         backgroundColor: "success",
@@ -210,14 +214,11 @@ export default function DrivePage() {
                 onBlur={() => setShowVehicleDropdown(false)}
                 autoComplete="off"
               />
+
               {showVehicleDropdown && (
                 <ul
                   className="list-group position-absolute w-100 mt-1 rounded-4"
-                  style={{
-                    zIndex: 1050,
-                    maxHeight: "200px",
-                    overflowY: "auto",
-                  }}>
+                  style={{ zIndex: 1050, maxHeight: "200px", overflowY: "auto" }}>
 
                   {cars.length > 0 && cars.map((car, idx) => (
                     <li
