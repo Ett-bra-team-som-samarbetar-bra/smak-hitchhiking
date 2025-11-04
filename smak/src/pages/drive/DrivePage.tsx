@@ -3,12 +3,12 @@ import { useDynamicMap } from "../../context/DynamicMapProvider";
 import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 import { useAuth } from "../../hooks/useAuth";
 import { Button } from "react-bootstrap";
+import { useTripCount } from "../../context/TripCountProvider";
 import GeocodeInput from "../../components/inputForms/GeocodeInput";
 import SubmitButton from "../../components/SubmitButton";
 import CarModal from "../profile/CarModal";
 import type Car from "../../interfaces/Cars";
 import SmakMapButton from "../../components/SmakMapButton";
-import { useTripCount } from "../../context/TripCountProvider";
 
 export default function DrivePage() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
@@ -29,7 +29,6 @@ export default function DrivePage() {
     licensePlate: "",
     seats: 0,
   });
-
 
   // TODO calender
   const handleSubmit = async (e: React.FormEvent) => {

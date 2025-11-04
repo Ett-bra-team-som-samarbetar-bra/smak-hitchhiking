@@ -19,11 +19,11 @@ export default function useProfileImage(userId: string | null) {
           if (res.ok) {
             setProfileImage(`/media/_Users/${userId}/${userId}`);
           } else {
-            setProfileImage(`/images/harold.png`);
+            setProfileImage(`/images/user-placeholder.jpg`);
           }
         } catch (err) {
           console.error("Error fetching profile image:", err);
-          setProfileImage(`/images/harold.png`);
+          setProfileImage(`/images/user-placeholder.jpg`);
         }
       };
 
