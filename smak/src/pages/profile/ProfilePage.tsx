@@ -38,7 +38,6 @@ export default function ProfilePage() {
     seats: 0,
   });
 
-
   // Set the profile user based on whether it's own profile or someone else
   useEffect(() => {
     if (isOwnProfile && user) {
@@ -47,11 +46,11 @@ export default function ProfilePage() {
       async function fetchUserById() {
         try {
           const response = await fetch(`/api/auth/user/${userId}`);
-          if (!response.ok) throw new Error('Failed to fetch user');
+          if (!response.ok) throw new Error("Failed to fetch user");
           const fetchedUser = await response.json();
           setProfileUser(fetchedUser);
         } catch (error) {
-          console.error('Error fetching user:', error);
+          console.error("Error fetching user:", error);
         }
       }
 
@@ -65,23 +64,26 @@ export default function ProfilePage() {
     async function fetchCars() {
       try {
         const response = await fetch(`/api/Car`);
-        if (!response.ok) throw new Error('Failed to fetch cars');
+        if (!response.ok) throw new Error("Failed to fetch cars");
         const allCars = await response.json();
         const userCars = allCars
           .filter((car: any) => car.userId === profileUser!.id)
           .map((car: any) => ({
-            id: car.id || '',
-            brand: car.brand || '',
-            model: car.model || '',
-            color: car.color || '',
-            licensePlate: car.licensePlate || '',
-            seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-            userId: car.userId
+            id: car.id || "",
+            brand: car.brand || "",
+            model: car.model || "",
+            color: car.color || "",
+            licensePlate: car.licensePlate || "",
+            seats:
+              typeof car.seats === "number"
+                ? car.seats
+                : parseInt(car.seats) || 0,
+            userId: car.userId,
           }));
 
         setCars(userCars);
       } catch (error) {
-        console.error('Error fetching cars:', error);
+        console.error("Error fetching cars:", error);
       }
     }
 
@@ -102,6 +104,7 @@ export default function ProfilePage() {
           rating: profileUser.rating,
           tripCount: profileUser.tripCount,
           preferences: profileUser.preferences,
+          roles: profileUser.roles,
         },
       });
     }
@@ -122,6 +125,7 @@ export default function ProfilePage() {
         rating: user.rating ?? 0,
         tripCount: user.tripCount ?? 0,
         preferences: preferences || [],
+        roles: user.roles || [],
       },
     });
     setIsEdit(true);
@@ -142,6 +146,7 @@ export default function ProfilePage() {
         rating: 0,
         tripCount: 0,
         preferences: [],
+        roles: [],
       },
     });
   }
@@ -195,7 +200,14 @@ export default function ProfilePage() {
   // Car stuff
 
   function handleAddCar() {
-    setCarPayload({ id: "", brand: "", model: "", color: "", licensePlate: "", seats: 0 });
+    setCarPayload({
+      id: "",
+      brand: "",
+      model: "",
+      color: "",
+      licensePlate: "",
+      seats: 0,
+    });
     setIsEdit(false);
     setShowCarModal(true);
   }
@@ -215,7 +227,14 @@ export default function ProfilePage() {
 
   function handleCloseModal() {
     setShowCarModal(false);
-    setCarPayload({ id: "", brand: "", model: "", color: "", licensePlate: "", seats: 0 });
+    setCarPayload({
+      id: "",
+      brand: "",
+      model: "",
+      color: "",
+      licensePlate: "",
+      seats: 0,
+    });
   }
 
   async function handleSaveCar(car: typeof carPayload) {
@@ -239,12 +258,12 @@ export default function ProfilePage() {
 
     console.log("Payload being sent to API:", payload);
 
-    const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
+    const url = isCreating ? "/api/Car" : `/api/Car/${car.id}`;
 
     try {
       const response = await fetch(url, {
-        method: isCreating ? 'POST' : 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: isCreating ? "POST" : "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
@@ -258,44 +277,52 @@ export default function ProfilePage() {
       const updatedCars = allCars
         .filter((car: any) => car.userId === user.id)
         .map((car: any) => ({
-          id: car.id || '',
-          brand: car.brand || '',
-          model: car.model || '',
-          color: car.color || '',
-          licensePlate: car.licensePlate || '',
-          seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-          userId: car.userId
+          id: car.id || "",
+          brand: car.brand || "",
+          model: car.model || "",
+          color: car.color || "",
+          licensePlate: car.licensePlate || "",
+          seats:
+            typeof car.seats === "number"
+              ? car.seats
+              : parseInt(car.seats) || 0,
+          userId: car.userId,
         }));
-      console.log('Updated cars after save:', updatedCars);
+      console.log("Updated cars after save:", updatedCars);
       setCars(updatedCars);
       handleCloseModal();
     } catch (error) {
-      console.error('Error saving car:', error);
+      console.error("Error saving car:", error);
     }
   }
 
   async function handleDeleteCar(car: typeof carPayload) {
     try {
-      const deleteResponse = await fetch(`/api/Car/${car.id}`, { method: 'DELETE' });
-      if (!deleteResponse.ok) throw new Error('Failed to delete car');
+      const deleteResponse = await fetch(`/api/Car/${car.id}`, {
+        method: "DELETE",
+      });
+      if (!deleteResponse.ok) throw new Error("Failed to delete car");
 
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
         .filter((c: any) => c.userId === user?.id)
         .map((car: any) => ({
-          id: car.id || '',
-          brand: car.brand || '',
-          model: car.model || '',
-          color: car.color || '',
-          licensePlate: car.licensePlate || '',
-          seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-          userId: car.userId
+          id: car.id || "",
+          brand: car.brand || "",
+          model: car.model || "",
+          color: car.color || "",
+          licensePlate: car.licensePlate || "",
+          seats:
+            typeof car.seats === "number"
+              ? car.seats
+              : parseInt(car.seats) || 0,
+          userId: car.userId,
         }));
       setCars(updatedCars);
       handleCloseModal();
     } catch (error) {
-      console.error('Error deleting car:', error);
+      console.error("Error deleting car:", error);
     }
   }
 
@@ -330,7 +357,12 @@ export default function ProfilePage() {
           <p className="text-muted">Inga fordon tillagda</p>
         ) : (
           cars.map((car) => (
-            <CarCard key={car.id} car={car} isOwnProfile={isOwnProfile} onEdit={() => handleEditCar(car)} />
+            <CarCard
+              key={car.id}
+              car={car}
+              isOwnProfile={isOwnProfile}
+              onEdit={() => handleEditCar(car)}
+            />
           ))
         )}
         {userPayload && (
