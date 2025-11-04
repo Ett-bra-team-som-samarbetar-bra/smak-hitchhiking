@@ -9,4 +9,5 @@ export default interface User {
   rating?: number;
   tripCount?: number;
   preferences?: string[];
+  roles: string[];
 }

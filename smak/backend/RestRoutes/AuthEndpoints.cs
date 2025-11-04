@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Users;
 using OrchardCore.Users.Models;
 using OrchardCore.Users.Services;
+using OrchardCore.Users.Indexes;
 using System.Text.Json.Nodes;
 using System.Security.Claims;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using YesSql;
 
 public static class AuthEndpoints
 {
@@ -191,6 +193,42 @@ public static class AuthEndpoints
                 rating = u?.Properties?["Rating"]?.ToString(),
                 tripCount = u?.Properties?["TripCount"]?.ToString(),
                 preferences = u?.Properties?["Preferences"]?.AsArray()
+            });
+        });
+
+        app.MapGet("/api/auth/user/", async ([FromServices] ISession session, [FromServices] UserManager<IUser> userManager, [FromQuery] int page = 1, [FromQuery] int pageSize = 10) =>
+        {
+            if (page < 1) page = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+            var totalUsers = await session.Query<User, UserIndex>().CountAsync();
+
+            var users = await session.Query<User, UserIndex>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ListAsync();
+
+            var result = users.Select(u => new
+            {
+                id = u?.UserId,
+                username = u?.UserName,
+                email = u?.Email,
+                phoneNumber = u?.PhoneNumber,
+                firstName = u?.Properties?["FirstName"]?.ToString(),
+                lastName = u?.Properties?["LastName"]?.ToString(),
+                description = u?.Properties?["Description"]?.ToString(),
+                rating = u?.Properties?["Rating"]?.ToString(),
+                tripCount = u?.Properties?["TripCount"]?.ToString(),
+                preferences = u?.Properties?["Preferences"]?.AsArray()
+            });
+
+            return Results.Ok(new
+            {
+                page,
+                pageSize,
+                totalUsers,
+                totalPages = (int)Math.Ceiling((double)totalUsers / pageSize),
+                users = result
             });
         });
 
