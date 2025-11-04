@@ -12,8 +12,8 @@ import SmakMapButton from "../../components/SmakMapButton";
 
 export default function DrivePage() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
-  const { showAlert } = useSmakTopAlert();
   const { comingCount, setComingCount } = useTripCount();
+  const { showAlert } = useSmakTopAlert();
   const { user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +49,7 @@ export default function DrivePage() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1400));
 
-      setComingCount(comingCount + 1); // update footer counters
+      setComingCount(comingCount + 1); // Update footer counters
       showAlert({
         message: "Resa skapad!",
         backgroundColor: "success",

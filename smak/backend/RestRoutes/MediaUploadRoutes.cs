@@ -17,7 +17,7 @@ public static class MediaUploadRoutes
 
     private static readonly bool USE_USER_SUBFOLDERS = true;
 
-    private static readonly int MAX_FILE_SIZE_MB = 10; // Maximum file size in megabytes
+    private static readonly int MAX_FILE_SIZE_MB = 20; // Maximum file size in megabytes
 
     public static void MapMediaUploadRoutes(this WebApplication app)
     {
