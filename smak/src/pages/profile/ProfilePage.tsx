@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 import SmakButton from "../../components/SmakButton";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
@@ -14,6 +15,7 @@ import type Car from "../../interfaces/Cars";
 export default function ProfilePage() {
   const { userId } = useParams();
   const { user, refreshUser } = useAuth();
+  const { showAlert } = useSmakTopAlert();
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
   const isOwnProfile = !userId;
@@ -51,7 +53,12 @@ export default function ProfilePage() {
           const fetchedUser = await response.json();
           setProfileUser(fetchedUser);
         } catch (error) {
-          console.error('Error fetching user:', error);
+          showAlert({
+            message: "Okänt fel. Försök igen.",
+            backgroundColor: "danger",
+            textColor: "white",
+            duration: 5000,
+          });
         }
       }
 
@@ -81,7 +88,12 @@ export default function ProfilePage() {
 
         setCars(userCars);
       } catch (error) {
-        console.error('Error fetching cars:', error);
+        showAlert({
+          message: "Okänt fel. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
       }
     }
 
@@ -187,7 +199,12 @@ export default function ProfilePage() {
         setUserPayload({ user: savedUser });
         setShowUserModal(false);
       } catch (error) {
-        console.error("Error saving user:", error);
+        showAlert({
+          message: "Okänt fel. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
       }
     }
   }
@@ -249,8 +266,13 @@ export default function ProfilePage() {
       });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Failed to save car: ${errText}`);
+        showAlert({
+          message: "Kunde inte spara bil. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
+        return;
       }
 
       const allCarsResponse = await fetch(`/api/Car`);
@@ -269,8 +291,14 @@ export default function ProfilePage() {
       console.log('Updated cars after save:', updatedCars);
       setCars(updatedCars);
       handleCloseModal();
+
     } catch (error) {
-      console.error('Error saving car:', error);
+      showAlert({
+        message: "Okänt fel. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
 
@@ -295,7 +323,12 @@ export default function ProfilePage() {
       setCars(updatedCars);
       handleCloseModal();
     } catch (error) {
-      console.error('Error deleting car:', error);
+      showAlert({
+        message: "Okänt fel. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
 

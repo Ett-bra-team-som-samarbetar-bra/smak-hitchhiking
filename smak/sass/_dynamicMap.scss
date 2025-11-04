@@ -84,6 +84,7 @@
   height: 30px;
   width: 110px;
   background-color: #2E4C6B;
+  pointer-events: all;
 }
 
 .right-watermark {
@@ -91,9 +92,10 @@
   height: 20px;
   width: 290px;
   background-color: #2E4C6B;
+  pointer-events: all;
 
   @media (max-width: 640px) {
     height: 40px;
-    width: 50px;
+    width: 60px;
   }
 }

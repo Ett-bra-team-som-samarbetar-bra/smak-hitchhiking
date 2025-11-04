@@ -2,21 +2,30 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
 import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
+import { addDays } from "date-fns";
+import { Button } from "react-bootstrap";
+import { registerLocale } from "react-datepicker";
+import { sv } from "date-fns/locale/sv";
 import SubmitButton from "../../components/SubmitButton";
 import GeocodeInput from "../../components/inputForms/GeocodeInput";
 import SmakMapButton from "../../components/SmakMapButton";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function FindTrip() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
   const { showAlert } = useSmakTopAlert();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [date, setDate] = useState<Date | null>(null);
+  const [open, setOpen] = useState(false);
 
-  // TODO calender
+  registerLocale("sv", sv);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!from || !to) {
+    if (!from || !to || !date) {
       showAlert({
         message: "Alla fält måste vara ifyllda.",
         backgroundColor: "warning",
@@ -30,6 +39,8 @@ export default function FindTrip() {
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1400));
+      handleClearInputs();
+      // TODO fetch post
       navigate("/trips-found");
 
     } catch (error) {
@@ -48,10 +59,8 @@ export default function FindTrip() {
   const handleClearInputs = () => {
     setFrom(null);
     setTo(null);
-  };
-
-  const handleOnCalenderClick = async () => {
-    console.log("OnCalenderClick");
+    setDate(null);
+    setOpen(false);
   };
 
   return (
@@ -82,14 +91,36 @@ export default function FindTrip() {
             onChange={setTo}
             placeholder="Till" />
 
-          <div className="position-relative interactive">
+          {/* Calender */}
+          <div className="position-relative interactive w-100" >
             <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
-            <button
+            <Button
               type="button"
               className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
-              onClick={handleOnCalenderClick}>
-              Avgång
-            </button>
+              onClick={() => setOpen(true)}>
+              {date ? date.toLocaleDateString() : "Avgång"}
+            </Button>
+
+            <div className="datepicker-popup">
+              <DatePicker
+                open={open}
+                calendarClassName="bg-white rounded-3 overflow-hidden interactive cursor-pointer"
+                locale="sv"
+                placeholderText="Avgång"
+                popperPlacement="top"
+                showIcon={false}
+                selected={date}
+                minDate={new Date()}
+                maxDate={addDays(new Date(), 14)}
+                disabledKeyboardNavigation={true}
+                showPopperArrow={false}
+                showTimeInput={false}
+                autoComplete={"off"}
+                onChange={d => { setDate(d); }}
+                onClickOutside={() => setOpen(false)}
+                customInput={<span style={{ display: "none" }} />}
+              />
+            </div>
           </div>
 
           <SubmitButton
@@ -99,7 +130,7 @@ export default function FindTrip() {
             Sök resa
           </SubmitButton>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

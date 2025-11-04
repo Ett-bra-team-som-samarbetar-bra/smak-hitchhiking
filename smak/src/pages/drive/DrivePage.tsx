@@ -4,11 +4,16 @@ import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 import { useAuth } from "../../hooks/useAuth";
 import { Button } from "react-bootstrap";
 import { useTripCount } from "../../context/TripCountProvider";
+import { registerLocale } from "react-datepicker";
+import { sv } from "date-fns/locale/sv";
+import { addDays } from "date-fns";
+import type Car from "../../interfaces/Cars";
 import GeocodeInput from "../../components/inputForms/GeocodeInput";
 import SubmitButton from "../../components/SubmitButton";
 import CarModal from "../profile/CarModal";
-import type Car from "../../interfaces/Cars";
 import SmakMapButton from "../../components/SmakMapButton";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function DrivePage() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
@@ -20,6 +25,8 @@ export default function DrivePage() {
   const [showVehicleDropdown, setShowVehicleDropdown] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Car | null>(null);
   const [showCarModal, setShowCarModal] = useState(false);
+  const [date, setDate] = useState<Date | null>(null);
+  const [open, setOpen] = useState(false);
   const [cars, setCars] = useState<Car[]>([]);
   const [carPayload, setCarPayload] = useState({
     id: "",
@@ -30,11 +37,12 @@ export default function DrivePage() {
     seats: 0,
   });
 
-  // TODO calender
+  registerLocale("sv", sv);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!from || !to || !selectedVehicle) {
+    if (!from || !to || !selectedVehicle || !date) {
       showAlert({
         message: "Alla fält måste vara ifyllda.",
         backgroundColor: "warning",
@@ -47,6 +55,7 @@ export default function DrivePage() {
     setIsLoading(true);
 
     try {
+      // TODO fetch post
       await new Promise(resolve => setTimeout(resolve, 1400));
 
       setComingCount(comingCount + 1); // Update footer counters
@@ -70,14 +79,12 @@ export default function DrivePage() {
     }
   };
 
-  const handleOnCalenderClick = async () => {
-    console.log("OnCalenderClick");
-  };
-
   const handleClearInputs = () => {
     setSelectedVehicle(null);
     setFrom(null);
     setTo(null);
+    setDate(null);
+    setOpen(false);
   };
 
   const handleAddVehicle = () => {
@@ -112,18 +119,21 @@ export default function DrivePage() {
 
         setCars(userCars);
       } catch (error) {
-        //console.error('Error fetching cars:', error);
+        showAlert({
+          message: "Okänt fel. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
       }
     }
     fetchCars();
   }, [user]);
 
-
   async function handleSaveCar(car: typeof carPayload) {
     const isCreating = true;
 
     if (!user?.id) {
-      //console.error("Cannot save car: user ID is missing");
       return;
     }
 
@@ -136,7 +146,6 @@ export default function DrivePage() {
       userId: user.id,
     };
 
-
     const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
 
     try {
@@ -147,8 +156,13 @@ export default function DrivePage() {
       });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Failed to save car: ${errText}`);
+        showAlert({
+          message: "Kunde inte spara bil. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
+        return;
       }
 
       const allCarsResponse = await fetch(`/api/Car`);
@@ -165,7 +179,6 @@ export default function DrivePage() {
           userId: car.userId
         }));
 
-      //console.log('Updated cars after save:', updatedCars);
       setCars(updatedCars);
 
       const newCar = updatedCars.find(
@@ -178,7 +191,12 @@ export default function DrivePage() {
       handleCloseModal();
 
     } catch (error) {
-      //console.error('Error saving car:', error);
+      showAlert({
+        message: "Okänt fel. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
 
@@ -257,13 +275,36 @@ export default function DrivePage() {
               onChange={setTo}
               placeholder="Till" />
 
-            <div className="position-relative">
+            {/* Calender */}
+            <div className="position-relative interactive w-100" >
               <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
               <Button
-                className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline interactive"
-                onClick={handleOnCalenderClick}>
-                Avgång
+                type="button"
+                className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
+                onClick={() => setOpen(true)}>
+                {date ? date.toLocaleDateString() : "Avgång"}
               </Button>
+
+              <div className="datepicker-popup">
+                <DatePicker
+                  open={open}
+                  calendarClassName="bg-white rounded-3 overflow-hidden interactive cursor-pointer"
+                  locale="sv"
+                  placeholderText="Avgång"
+                  popperPlacement="top"
+                  showIcon={false}
+                  selected={date}
+                  minDate={new Date()}
+                  maxDate={addDays(new Date(), 14)}
+                  disabledKeyboardNavigation={true}
+                  showPopperArrow={false}
+                  showTimeInput={false}
+                  autoComplete={"off"}
+                  onChange={d => { setDate(d); }}
+                  onClickOutside={() => setOpen(false)}
+                  customInput={<span style={{ display: "none" }} />}
+                />
+              </div>
             </div>
 
             <SubmitButton
