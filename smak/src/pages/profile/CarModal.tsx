@@ -53,15 +53,16 @@ export default function CarModal({
 
       show={show} onClose={onClose}>
       <InputFormText
-        placeholder="märke"
+        placeholder="Märke"
         label="Märke"
+        isRequired={true}
         value={payload.brand}
         setFormProp={handleChange}
         typeName="brand"
         disabled={!isOwnProfile}
       />
       <InputFormText
-        placeholder="modell"
+        placeholder="Modell"
         label="Modell"
         value={payload.model}
         setFormProp={handleChange}
@@ -69,7 +70,7 @@ export default function CarModal({
         disabled={!isOwnProfile}
       />
       <InputFormText
-        placeholder="färg"
+        placeholder="Färg"
         label="Färg"
         value={payload.color}
         setFormProp={handleChange}
@@ -77,7 +78,7 @@ export default function CarModal({
         disabled={!isOwnProfile}
       />
       <InputFormText
-        placeholder="registreringsskylt"
+        placeholder="Registreringsskylt"
         label="Registreringsskylt"
         value={payload.licensePlate}
         setFormProp={handleChange}
@@ -85,7 +86,7 @@ export default function CarModal({
         disabled={!isOwnProfile}
       />
       <InputFormText
-        placeholder="antal säten"
+        placeholder="Antal säten"
         label="Antal säten"
         value={payload.seats ? payload.seats.toString() : ""}
         setFormProp={handleChange}

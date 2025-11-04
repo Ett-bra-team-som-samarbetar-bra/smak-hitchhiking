@@ -6,8 +6,11 @@ import DividerLine from "../DividerLine";
 import TripCardButton from "./TripCardButton";
 import StaticMap from "./StaticMap";
 import "../../components/trip/TripCard.scss";
+import { useTripCount } from "../../context/TripCountProvider";
 
 export default function TripCardBig(props: TripCardProps) {
+  const { comingCount, setComingCount } = useTripCount();
+
   const {
     firstName = "Okänd",
     lastName = "användare",
@@ -30,12 +33,24 @@ export default function TripCardBig(props: TripCardProps) {
   } = props;
 
   const userName = `${firstName} ${lastName}`;
+
   const buttonText =
     cardButtonType === "book"
       ? "Boka"
       : cardButtonType === "cancel"
         ? "Avboka"
         : "";
+
+  // Update state on footer badges
+  const handleOnButtonClick = () => {
+    if (cardButtonType === "book") {
+      setComingCount(comingCount + 1);
+    } else if (cardButtonType === "cancel") {
+      setComingCount(Math.max(comingCount - 1, 0));
+    }
+
+    if (onButtonClick) onButtonClick();
+  }
 
   return (
     <SmakCard className={`${className} pb-0`}>
@@ -50,11 +65,14 @@ export default function TripCardBig(props: TripCardProps) {
           className="trip-card-map-image w-100" />
 
         <div className="position-absolute trip-card-profil-image-container">
-          <img
-            onClick={onUserClick}
-            src={profileImage}
-            alt="Profil"
-            className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer" />
+          <div className="d-flex justify-content-center">
+            <img
+              onClick={onUserClick}
+              src={profileImage}
+              alt="Profil"
+              className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer"
+            />
+          </div>
 
           <div className="position-relative d-flex align-items-center flex-column mt-2">
             <div className="text-primary text-center m-0 fw-semibold medium-font-size">
@@ -71,7 +89,7 @@ export default function TripCardBig(props: TripCardProps) {
               {cardButtonType !== "none" && (
                 <TripCardButton
                   label={buttonText}
-                  onClick={onButtonClick}
+                  onClick={handleOnButtonClick}
                 ></TripCardButton>
               )}
             </div>

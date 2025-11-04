@@ -1,8 +1,10 @@
 import { Row, Col } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import routes from "../routes";
+import { useTripCount } from "../context/TripCountProvider";
 
 export default function Footer() {
+  const { historyCount, comingCount } = useTripCount();
   const isOnTrip = false; // TODO trip provider
 
   let allowedPaths = ["/profile", "/drive", "/", "/history", "/coming-trips"];
@@ -24,12 +26,25 @@ export default function Footer() {
                 <NavLink
                   to={route.path}
                   key={i}
-                  className={`${isActive(route.path) ? "text-primary text-grow" : "text-secondary"} 
-                            text-decoration-none d-flex flex-column justify-content-center nav-link-set-width`}>
+                  className={`position-relative text-decoration-none ${isActive(route.path) ? "text-primary text-grow" : "text-secondary"} d-flex flex-column align-items-center justify-content-center nav-link-set-width`}>
                   <i className={`bi bi-${route.icon} text-center nav-icon-size`} />
                   <p className={`text-center nav-link-size m-0`} key={i}>
                     {route.menuLabel}
                   </p>
+
+                  {/* Badge for /history */}
+                  {route.path === "/history" && (
+                    <span className="badge bg-primary footer-badge non-interactive">
+                      {historyCount}
+                    </span>
+                  )}
+
+                  {/* Badge for /coming-trips */}
+                  {route.path === "/coming-trips" && (
+                    <span className="badge bg-primary footer-badge non-interactive">
+                      {comingCount}
+                    </span>
+                  )}
                 </NavLink>
               ))}
           </Col>
