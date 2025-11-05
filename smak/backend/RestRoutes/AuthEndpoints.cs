@@ -232,6 +232,65 @@ public static class AuthEndpoints
             });
         });
 
+        // Submit rating
+        app.MapPut("/api/auth/user/{userId}/rating", async (
+            string userId,
+            [FromBody] RatingRequest request,
+            [FromServices] UserManager<IUser> userManager) =>
+        {
+            var user = await userManager.FindByIdAsync(userId) as User;
+
+            if (user == null)
+            {
+                return Results.NotFound(new { error = "User not found" });
+            }
+
+            // Validate rating 
+            if (request.Rating < 1 || request.Rating > 5)
+            {
+                return Results.BadRequest(new { error = "Rating must be between 1 and 5" });
+            }
+
+            var props = user.Properties ?? new JsonObject();
+
+            // get rating and trip count
+            var currentRating = double.TryParse(props["Rating"]?.ToString(), out var rating) ? rating : 0;
+            var totalTrips = int.TryParse(props["TripCount"]?.ToString(), out var count) ? count : 0;
+
+            if (totalTrips <= 0)
+            {
+                return Results.BadRequest(new { error = "Trip count must be greater than 0 before rating." });
+            }
+
+            // Calculate new average rating 
+            var newRating = ((currentRating * (totalTrips - 1)) + request.Rating) / totalTrips;
+            var roundedRating = Math.Round(newRating, 1);
+
+            props["Rating"] = roundedRating.ToString("0.0");
+
+            user.Properties = props;
+
+            var result = await userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return Results.BadRequest(new
+                {
+                    error = "Failed to update user rating",
+                    details = result.Errors.Select(e => e.Description).ToList()
+                });
+            }
+
+            return Results.Ok(new
+            {
+                message = "Rating updated successfully",
+                id = user.UserId,
+                rating = roundedRating
+            });
+        })
+        .RequireAuthorization()
+        .DisableAntiforgery();
+
         // DELETE /api/auth/login - Logout
         app.MapDelete("/api/auth/login", async (
             [FromServices] SignInManager<IUser> signInManager) =>
@@ -299,6 +358,7 @@ public static class AuthEndpoints
     }
 }
 
+public record RatingRequest(int Rating);
 public record RegisterRequest(
     string Username,
     string Email,
