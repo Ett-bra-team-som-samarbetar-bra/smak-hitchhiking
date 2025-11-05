@@ -9,21 +9,15 @@ import useFetchUser from "../../hooks/useFetchUser";
 import useProfileImage from "../../hooks/useProfileImage";
 
 export default function TripCardSmall(props: TripCardProps) {
-  const {
-    trip,
-    endTime = "00:00",
-    rating = 0,
-    distance = 0,
-    className = "",
-    onSmallTripCardClick,
-  } = props;
+  const { trip, className = "", onSmallTripCardClick } = props;
 
   const { profileImage } = useProfileImage(trip.driverId[0].id);
 
-  const { startPosition, endPosition } = trip;
-  const { startTime } = getTripDateAndTime(trip);
+  const { startPosition, endPosition, distance } = trip;
+  const { startTime, endTime } = getTripDateAndTime(trip);
   const userId = trip.driverId[0].id;
   const user = useFetchUser(userId);
+  const rating = user?.rating;
 
   const firstName = user?.firstName || "Okänd";
   const lastName = user?.lastName || "Användare";

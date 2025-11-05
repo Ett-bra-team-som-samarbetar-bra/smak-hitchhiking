@@ -23,5 +23,5 @@ export default function ComingTripsPage() {
     setComingCount(upcomingTrips.length);
   }, [upcomingTrips]);
 
-  return <TripGroupList groupedTrips={groupedUpcomingTrips} />;
+  return <TripGroupList groupedTrips={groupedUpcomingTrips} isBooked={true} />;
 }

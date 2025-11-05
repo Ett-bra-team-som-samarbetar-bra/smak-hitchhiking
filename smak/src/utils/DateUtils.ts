@@ -28,12 +28,17 @@ export function formatDate(daysFromNow: number) {
 
 export function getTripDateAndTime(trip: Trip) {
   const departure = new Date(trip.departureTime);
+  const arrival = new Date(trip.arrivalTime);
 
   const date = departure.toISOString().split("T")[0];
   const startTime = departure.toLocaleTimeString("sv-SE", {
     hour: "2-digit",
     minute: "2-digit",
   });
+  const endTime = arrival.toLocaleTimeString("sv-SE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-  return { date, startTime };
+  return { date, startTime, endTime };
 }
