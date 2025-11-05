@@ -7,23 +7,19 @@ import TripCardButton from "./TripCardButton";
 import StaticMap from "./StaticMap";
 import "../../components/trip/TripCard.scss";
 import { useTripCount } from "../../context/TripCountProvider";
+import { getTripDateAndTime } from "../../utils/DateUtils";
+import useFetchUser from "../../hooks/useFetchUser";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
 
   const {
-    firstName = "Okänd",
-    lastName = "användare",
-    startCity = "Okänd stad",
-    endCity = "Okänd stad",
-    startTime = "00:00",
+    trip,
     endTime = "00:00",
     rating = 0,
     distance = 0,
-    date = "?",
     profileImage = "/images/development/user2.png",
     vehicleInfo = "Okänd bil",
-    numOfSeats = "?",
     className = "",
     cardButtonType = "none",
     onButtonClick,
@@ -31,6 +27,12 @@ export default function TripCardBig(props: TripCardProps) {
     onCarClick,
     onBigTripCardClick,
   } = props;
+  const { startPosition, endPosition, seats, driverId } = trip;
+  const { date, startTime } = getTripDateAndTime(trip);
+
+  const user = useFetchUser(driverId[0].id);
+  const firstName = user?.firstName || "Okänd";
+  const lastName = user?.lastName || "Användare";
 
   const userName = `${firstName} ${lastName}`;
 
@@ -38,8 +40,8 @@ export default function TripCardBig(props: TripCardProps) {
     cardButtonType === "book"
       ? "Boka"
       : cardButtonType === "cancel"
-        ? "Avboka"
-        : "";
+      ? "Avboka"
+      : "";
 
   // Update state on footer badges
   const handleOnButtonClick = () => {
@@ -50,19 +52,21 @@ export default function TripCardBig(props: TripCardProps) {
     }
 
     if (onButtonClick) onButtonClick();
-  }
+  };
 
   return (
     <SmakCard className={`${className} pb-0`}>
       <div
         className="position-relative pb-5 cursor-pointer"
-        onClick={onBigTripCardClick}>
+        onClick={onBigTripCardClick}
+      >
         <StaticMap
-          from={startCity}
-          to={endCity}
+          from={startPosition}
+          to={endPosition}
           width="740"
           height="400"
-          className="trip-card-map-image w-100" />
+          className="trip-card-map-image w-100"
+        />
 
         <div className="position-absolute trip-card-profil-image-container">
           <div className="d-flex justify-content-center">
@@ -120,8 +124,8 @@ export default function TripCardBig(props: TripCardProps) {
 
             <Col className="d-flex ps-0 flex-grow-1">
               <div>
-                <p className="fw-bold text-primary">{startCity}</p>
-                <p className="fw-bold text-primary">{endCity}</p>
+                <p className="fw-bold text-primary">{startPosition}</p>
+                <p className="fw-bold text-primary">{endPosition}</p>
               </div>
             </Col>
           </Row>
@@ -130,7 +134,8 @@ export default function TripCardBig(props: TripCardProps) {
 
       <div
         id="trip-card-button-desktop-hide"
-        className="mb-2 trip-card-button-width w-100">
+        className="mb-2 trip-card-button-width w-100"
+      >
         <div className="d-flex justify-content-end me-3">
           {cardButtonType !== "none" && (
             <TripCardButton
@@ -148,10 +153,7 @@ export default function TripCardBig(props: TripCardProps) {
           <i className="bi bi-car-front-fill me-2 text-black"></i>
           <span className="text-black fw-semibold">
             {vehicleInfo}
-            <span className="text-secondary fw-normal">
-              {" "}
-              - {numOfSeats} säten
-            </span>
+            <span className="text-secondary fw-normal"> - {seats} säten</span>
           </span>
         </Col>
 

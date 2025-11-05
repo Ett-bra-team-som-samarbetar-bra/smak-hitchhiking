@@ -1,16 +1,14 @@
+import type Trip from "../interfaces/Trips";
+
 export default interface TripCardProps {
+  trip: Trip;
   firstName?: string;
   lastName?: string;
-  startCity?: string;
-  endCity?: string;
-  startTime?: string;
   endTime?: string;
   rating?: number;
   distance?: number;
-  date?: string;
   profileImage?: string;
   vehicleInfo?: string;
-  numOfSeats?: string;
   className?: string;
   cardButtonType?: "book" | "cancel" | "none";
   onSmallTripCardClick?: () => void;
