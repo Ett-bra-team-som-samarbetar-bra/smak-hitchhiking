@@ -7,7 +7,6 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
   user: {
     firstName: string;
     lastName: string;
-    profileImage: string;
     rating: number;
     description: string;
   }
@@ -29,7 +28,7 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
 
         <Col className="col-auto d-flex align-items-center">
           <img
-            src={user.profileImage}
+            src={"/images/development/user2.png"}
             alt="Profile"
             className=""
             style={{
