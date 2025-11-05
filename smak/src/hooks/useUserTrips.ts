@@ -3,7 +3,7 @@ import type Trip from "../interfaces/Trips";
 import type UserTrip from "../interfaces/UserTrips";
 
 export default function useUserTrips(userId: string, allTrips: Trip[]) {
-  const [userTrips, setUserTrips] = useState<Trip[]>();
+  const [userTrips, setUserTrips] = useState<Trip[]>([]);
 
   useEffect(() => {
     if (!userId || !allTrips.length) return;
@@ -16,7 +16,7 @@ export default function useUserTrips(userId: string, allTrips: Trip[]) {
 
         const userTripIds = data
           .filter((tu) => tu.userId[0].id === userId)
-          .map((tu) => tu.tripId);
+          .map((tu) => tu.tripIdId);
 
         const filteredTrips = allTrips.filter(
           (trip) =>
@@ -30,6 +30,6 @@ export default function useUserTrips(userId: string, allTrips: Trip[]) {
     }
 
     getUserTrips();
-  }, []);
+  }, [userId, allTrips]);
   return userTrips;
 }

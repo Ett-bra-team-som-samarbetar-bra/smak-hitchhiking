@@ -3,12 +3,17 @@ import { TripGroupList } from "../../components/TripListRender";
 import { useTripCount } from "../../context/TripCountProvider";
 import { useEffect } from "react";
 import useAllTrips from "../../hooks/useAllTrips";
+import useUserTrips from "../../hooks/useUserTrips";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function HistoryPage() {
   const { setHistoryCount } = useTripCount();
-
+  const { user } = useAuth();
+  if (!user) return;
   const allTrips = useAllTrips();
-  const sortedTrips = [...allTrips].sort(
+  const filteredTrips = useUserTrips(user?.id, allTrips);
+
+  const sortedTrips = filteredTrips.sort(
     (a, b) =>
       new Date(b.arrivalTime).getTime() - new Date(a.arrivalTime).getTime()
   );
