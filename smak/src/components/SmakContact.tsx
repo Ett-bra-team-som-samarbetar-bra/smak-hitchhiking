@@ -1,10 +1,12 @@
 import { renderRatingStars } from "../utils/Utils";
+import { Col, Row } from "react-bootstrap";
 import IconButton from "./IconButton";
 import SmakCard from "./SmakCard";
-import { Col, Row } from "react-bootstrap";
+import useProfileImage from "../hooks/useProfileImage";
 
 export default function SmakContact({ user, isDriver = false, isAddedToTrip = false, className = "", onClick, onAccept, onDeny, onRemove }: {
   user: {
+    id: string;
     firstName: string;
     lastName: string;
     rating: number;
@@ -19,7 +21,11 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
   onRemove?: () => void;
 
 }) {
-  
+
+  const { profileImage } = useProfileImage(
+    user?.id || null
+  );
+
   return (
     <SmakCard className={`${className}`}>
       <Row
@@ -28,7 +34,7 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
 
         <Col className="col-auto d-flex align-items-center">
           <img
-            src={"/images/development/user2.png"}
+            src={profileImage}
             alt="Profile"
             className=""
             style={{

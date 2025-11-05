@@ -10,7 +10,7 @@ export default interface TripCardProps {
   profileImage?: string;
   vehicleInfo?: string;
   className?: string;
-  cardButtonType?: "book" | "cancel" | "none";
+  cardButtonType?: "userBook" | "userCancel" | "driverStart" | "driverDone" | "none";
   onSmallTripCardClick?: () => void;
   onBigTripCardClick?: () => void;
   onUserClick?: () => void;

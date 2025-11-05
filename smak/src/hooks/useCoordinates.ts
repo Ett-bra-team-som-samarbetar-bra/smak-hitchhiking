@@ -17,9 +17,7 @@ export default function useCoordinates(city: string) {
         const data = await resFrom.json();
         const coords = data.features?.[0]?.geometry.coordinates ?? null;
         setCoordinates(coords);
-        console.log("fetched coords:", coords);
       } catch (err) {
-        console.error("Error fetching coordinates:", err);
         setCoordinates(null);
       }
     };

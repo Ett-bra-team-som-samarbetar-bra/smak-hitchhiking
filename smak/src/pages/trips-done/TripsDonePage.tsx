@@ -14,11 +14,11 @@ export default function TripsDonePage() {
   const [driver, setDriver] = useState<User | null>(null);
   const [passengers, setPassengers] = useState<User[]>([]);
   const [allParticipants, setAllParticipants] = useState<User[]>([]);
-  
+
 
   const allTrips = getAllTrips();
   const firstTrip = allTrips[0];
-  
+
   const { user } = useAuth();
   const currentUserId = user!.id;
 
@@ -45,9 +45,8 @@ export default function TripsDonePage() {
         const allUsers = [parsedDriver, ...[]];
         const othersOnTrip = allUsers.filter(u => u.id !== currentUserId);
         setAllParticipants(othersOnTrip);
-        
+
       } catch (error) {
-        console.error("Failed to fetch trip participants:", error);
       }
     };
     fetchTripParticipants();
@@ -76,7 +75,6 @@ export default function TripsDonePage() {
 
       setIsRated(true);
     } catch (error) {
-      console.error("Failed to submit rating:", error);
     }
   };
 
@@ -147,6 +145,7 @@ export default function TripsDonePage() {
             <SmakContact
               key={user.id}
               user={{
+                id: user.id,
                 firstName: user.firstName || '',
                 lastName: user.lastName || '',
                 rating: user.rating || 0,

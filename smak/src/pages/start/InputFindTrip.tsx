@@ -12,13 +12,13 @@ import SmakMapButton from "../../components/SmakMapButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function FindTrip() {
+export default function InputFindTrip() {
   const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
   const { showAlert } = useSmakTopAlert();
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   const [date, setDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   registerLocale("sv", sv);
 
@@ -38,9 +38,10 @@ export default function FindTrip() {
     setIsLoading(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1400));
-      handleClearInputs();
       // TODO fetch post
+      await new Promise(resolve => setTimeout(resolve, 1400));
+
+      clearInputs();
       navigate("/trips-found");
 
     } catch (error) {
@@ -56,7 +57,7 @@ export default function FindTrip() {
     }
   };
 
-  const handleClearInputs = () => {
+  const clearInputs = () => {
     setFrom(null);
     setTo(null);
     setDate(null);
@@ -74,7 +75,7 @@ export default function FindTrip() {
           iconClassName="fs-5 dynamic-map-home-icon"
         />
         <SmakMapButton
-          onClick={handleClearInputs}
+          onClick={clearInputs}
           icon="bi-x"
           iconClassName="fs-2 dynamic-map-cross-icon"
         />

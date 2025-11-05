@@ -27,9 +27,6 @@ function AppContent() {
 
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
-
-
-
   // Set inital counters on footer badges
   useEffect(() => {
     const allTrips = getAllTrips(); // todo real data
@@ -88,7 +85,6 @@ function AppContent() {
       <div className={`footer-container ${showHeaderFooter ? "footer-visible" : "footer-hidden"}`}>
         <Footer />
       </div>
-
       <DynamicMap className={`dynamic-map-container ${shouldShowMap ? "" : "dynamic-map-hidden"}`} />
     </>
   );

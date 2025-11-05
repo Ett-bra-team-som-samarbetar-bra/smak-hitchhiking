@@ -52,6 +52,7 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
   const [triggerLoginZoom, setTriggerLoginZoom] = useState(false);
   const [hasLoginAnimationCompleted, setHasLoginAnimationCompleted] = useState(false);
   const mapRef = useRef<MapRef>(null);
+  const bearingRef = useRef(190); // Spin animation start pos @ EU
   const mapPadding = 140;
 
   // Zoom in animation when user logs in
@@ -116,10 +117,10 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
         const res = await fetch(routeUrl);
         const data = await res.json();
 
-        if (!data.routes?.length) {
-          console.warn("No route found");
+        if (!data.routes?.length)
           return;
-        }
+
+        //TODO return distance and duration
 
         const geometry = data.routes[0].geometry;
         setRoute(geometry);
@@ -133,17 +134,13 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
         ];
         mapRef.current?.fitBounds(bounds, { padding: mapPadding, duration: 1000 });
       } catch (err) {
-        console.error("Error fetching route:", err);
       }
     };
 
     fetchRoute();
   }, [from, to]);
 
-
   // Spin globe animation
-  const bearingRef = useRef(190); // start at EU
-
   useEffect(() => {
     if (!config.enableGlobeAnimation) return;
 
@@ -173,6 +170,7 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
         stopSpin();
       }
     }
+
     function onTouchStart() {
       stopSpin();
     }

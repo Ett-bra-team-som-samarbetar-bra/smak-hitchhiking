@@ -34,6 +34,7 @@ export function getMockCars() {
 export function getMockUsers() {
   return [
     {
+      id: "1",
       firstName: "Lennart",
       lastName: "Glassman",
       profileImage: "/images/harold.png",
@@ -44,6 +45,7 @@ export function getMockUsers() {
       preferences: ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"]
     },
     {
+      id: "1",
       firstName: "Lorem",
       lastName: "Ipsumsson",
       profileImage: "/images/development/user2.png",
@@ -54,6 +56,7 @@ export function getMockUsers() {
       preferences: ["Rökfri", "Inga pälsdjur", "Pratglad", "Gillar glass"]
     },
     {
+      id: "1",
       firstName: "Kent",
       lastName: "Stark",
       profileImage: "/images/harold.png",
@@ -64,6 +67,7 @@ export function getMockUsers() {
       preferences: ["Rökfri", "Gillar musik"]
     },
     {
+      id: "1",
       firstName: "Anaconda",
       lastName: "Snake",
       profileImage: "/images/development/user2.png",

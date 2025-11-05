@@ -12,7 +12,6 @@ import TungisPage from "./pages/debugPages/TungisPage";
 import NotFoundPage from "./pages/notFound/NotFound";
 import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
 import DebugPagePage from "./pages/debugPages/debugPage";
-import PaymentPage from "./pages/payment/PaymentPage";
 import ProtectedRoute from "./utils/ProtectedRoutes";
 import AdminPage from "./pages/admin/AdminPage";
 import TripsDonePage from "./pages/trips-done/TripsDonePage";
@@ -111,15 +110,6 @@ const routes: Route[] = [
     ),
     path: "/contacts",
     icon: "people-fill",
-  },
-  {
-    element: (
-      <ProtectedRoute>
-        <PaymentPage />
-      </ProtectedRoute>
-    ),
-    path: "/payment",
-    icon: "stripe",
   },
   {
     element: (

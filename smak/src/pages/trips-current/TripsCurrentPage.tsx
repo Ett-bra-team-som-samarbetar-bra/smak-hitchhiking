@@ -2,7 +2,7 @@ import { useState } from "react";
 import TripCardBig from "../../components/trip/TripCardBig";
 import SmakContact from "../../components/SmakContact";
 import { getAllTrips, getMockUsers, getMockUser } from "../../utils/MockData";
-/* import { useAuth } from "../../hooks/useAuth"; */
+//import { useAuth } from "../../hooks/useAuth";
 import CarModal from "../profile/CarModal";
 import { useNavigate } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
@@ -12,10 +12,9 @@ export default function TripsCurrentPage() {
   const allTrips = getAllTrips();
   const firstTrip = allTrips[0];
 
-  // const { user } = useAuth();
-  // When backend is ready: const isDriver = user?.id === firstTrip.driverId;
+  //const { user } = useAuth();
+  //const isDriver = user?.id === firstTrip.driverId; TODO
   const [isDriver, setIsDriver] = useState(true);
-
   const [requests, setRequests] = useState(getMockUsers());
   const [passengers, setPassengers] = useState<typeof requests>([]);
 
@@ -62,11 +61,6 @@ export default function TripsCurrentPage() {
 
   return (
     <>
-      {/* lil toggle todo: remove*/}
-      <button onClick={() => setIsDriver(!isDriver)} className="btn btn-sm btn-primary mb-3">
-        byt till: {isDriver ? "Passagerare" : "Förare"}
-      </button>
-
       <Accordion defaultActiveKey={["0", "1", "2"]} alwaysOpen className="mb-4 custom-accordion">
 
         <Accordion.Item eventKey="0">
