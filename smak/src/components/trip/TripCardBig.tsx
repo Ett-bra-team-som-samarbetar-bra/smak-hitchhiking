@@ -17,9 +17,6 @@ export default function TripCardBig(props: TripCardProps) {
 
   const {
     trip,
-    endTime = "00:00",
-    rating = 0,
-    distance = 0,
     className = "",
     cardButtonType = "none",
     onButtonClick,
@@ -28,17 +25,18 @@ export default function TripCardBig(props: TripCardProps) {
     onBigTripCardClick,
     isBooked,
   } = props;
-  const { startPosition, endPosition, seats, driverId } = trip;
-  const { date, startTime } = getTripDateAndTime(trip);
+  const { startPosition, endPosition, seats, driverId, distance } = trip;
+  const { date, startTime, endTime } = getTripDateAndTime(trip);
   const { profileImage } = useProfileImage(trip.driverId[0].id);
 
   const user = useFetchUser(driverId[0].id);
+  const rating = user?.rating;
   const firstName = user?.firstName || "Okänd";
   const lastName = user?.lastName || "Användare";
   const vehicle = useFetchCar(trip.carIdId);
   const vehicleInfo = isBooked
-    ? `${vehicle?.model}`
-    : `${vehicle?.model} ${vehicle?.licensePlate}`;
+    ? `${vehicle?.model} ${vehicle?.licensePlate}`
+    : `${vehicle?.model}`;
 
   let buttonText = "";
   switch (cardButtonType) {

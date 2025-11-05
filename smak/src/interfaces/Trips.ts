@@ -5,5 +5,7 @@ export default interface Trip {
   startPosition: string;
   endPosition: string;
   departureTime: Date;
+  arrivalTime: Date;
+  distance: number;
   seats: number;
 }

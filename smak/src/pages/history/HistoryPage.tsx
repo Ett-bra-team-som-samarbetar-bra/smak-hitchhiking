@@ -1,26 +1,26 @@
-
-import { getTripDateTime, groupTripsByDate } from "../../utils/DateUtils";
-import { getAllTrips } from "../../utils/MockData";
+import { groupTripsByDate } from "../../utils/DateUtils";
 import { TripGroupList } from "../../components/TripListRender";
 import { useTripCount } from "../../context/TripCountProvider";
 import { useEffect } from "react";
+import useAllTrips from "../../hooks/useAllTrips";
 
 export default function HistoryPage() {
   const { setHistoryCount } = useTripCount();
 
-  const allTrips = getAllTrips();
+  const allTrips = useAllTrips();
   const sortedTrips = [...allTrips].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    (a, b) =>
+      new Date(b.arrivalTime).getTime() - new Date(a.arrivalTime).getTime()
   );
-  const today = new Date();
-  const pastTrips = sortedTrips.filter(trip => getTripDateTime(trip, true) < today);
+  const pastTrips = sortedTrips.filter((trip) => {
+    if (!trip.arrivalTime) return false;
+    return new Date(trip.arrivalTime).getTime() < Date.now();
+  });
   const groupedPastTrips = groupTripsByDate(pastTrips);
 
   useEffect(() => {
     setHistoryCount(pastTrips.length);
   }, [pastTrips]);
 
-  return (
-    <TripGroupList groupedTrips={groupedPastTrips} />
-  );
+  return <TripGroupList groupedTrips={groupedPastTrips} isBooked={true} />;
 }

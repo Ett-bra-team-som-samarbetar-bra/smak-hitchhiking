@@ -5,9 +5,13 @@ import type Trip from "../interfaces/Trips";
 
 interface TripGroupListProps {
   groupedTrips: Record<string, Trip[]>;
+  isBooked?: boolean;
 }
 
-export function TripGroupList({ groupedTrips }: TripGroupListProps) {
+export function TripGroupList({
+  groupedTrips,
+  isBooked = false,
+}: TripGroupListProps) {
   const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
 
   const toggleCard = (index: string) => {
@@ -32,12 +36,14 @@ export function TripGroupList({ groupedTrips }: TripGroupListProps) {
                 key={cardKey}
                 trip={trip}
                 onBigTripCardClick={() => toggleCard(cardKey)}
+                isBooked={isBooked}
               />
             ) : (
               <TripCardSmall
                 key={cardKey}
                 trip={trip}
                 onSmallTripCardClick={() => toggleCard(cardKey)}
+                isBooked={isBooked}
               />
             );
           })}
