@@ -66,6 +66,10 @@ export default function DrivePage() {
         duration: 4000,
       });
 
+      setSelectedVehicle(null);
+      setDate(null);
+      setOpen(false);
+
     } catch (error) {
       showAlert({
         message: "Ett fel uppstod vid skapandet av resan. Försök igen.",
@@ -79,7 +83,7 @@ export default function DrivePage() {
     }
   };
 
-  const handleClearInputs = () => {
+  const clearInputs = () => {
     setSelectedVehicle(null);
     setFrom(null);
     setTo(null);
@@ -212,7 +216,7 @@ export default function DrivePage() {
             iconClassName="fs-5 dynamic-map-home-icon"
           />
           <SmakMapButton
-            onClick={handleClearInputs}
+            onClick={clearInputs}
             icon="bi-x"
             iconClassName="fs-2 dynamic-map-cross-icon"
           />

@@ -19,7 +19,7 @@ export default function SmakTopAlert({
   className = "",
 }: SmakTopAlertProps) {
   return (
-    <Alert className={`bg-${backgroundColor} border-0 text-center text-${textColor} smak-top-alert${show ? " visible" : ""} ${className}`}>
+    <Alert className={`bg-${backgroundColor} border-0 text-center text-${textColor} smak-top-alert${show ? " visible" : ""} ${className} non-interactive`}>
       {children}
     </Alert>
   );

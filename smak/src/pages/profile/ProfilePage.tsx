@@ -5,27 +5,26 @@ import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { uploadMedia } from "../../components/fileUpload/MediaUploader";
 import UserModal from "./UserModal";
 import type User from "../../interfaces/User";
-import { uploadMedia } from "../../components/fileUpload/MediaUploader";
 import useProfileImage from "../../hooks/useProfileImage";
 import type Car from "../../interfaces/Cars";
 
 export default function ProfilePage() {
   const { userId } = useParams();
   const { user, refreshUser, logout } = useAuth();
+  const { profileImage, refreshProfileImage } = useProfileImage(
+    user?.id || null
+  );
 
   const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
   const isOwnProfile = !userId;
   const [isAlreadyFriend, setIsAlreadyFriend] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [cars, setCars] = useState<Car[]>([]);
 
-  const { profileImage, refreshProfileImage } = useProfileImage(
-    profileUser?.id || null
-  );
 
   const [showUserModal, setShowUserModal] = useState(false);
   const [userPayload, setUserPayload] = useState<{ user: User } | null>(null);
@@ -52,7 +51,6 @@ export default function ProfilePage() {
           const fetchedUser = await response.json();
           setProfileUser(fetchedUser);
         } catch (error) {
-          console.error('Error fetching user:', error);
         }
       }
 
@@ -78,7 +76,6 @@ export default function ProfilePage() {
 
         setIsAlreadyFriend(isFriend);
       } catch (error) {
-        console.error('Error checking friendship:', error);
       }
     }
 
@@ -107,7 +104,6 @@ export default function ProfilePage() {
 
         setCars(userCars);
       } catch (error) {
-        console.error('Error fetching cars:', error);
       }
     }
 
@@ -177,8 +173,6 @@ export default function ProfilePage() {
 
   async function handleSaveUser(updatedUser: User, profileFile?: File | null) {
     {
-      console.log("Saving user:", updatedUser);
-
       const payloadToSend = {
         username: updatedUser.username,
         email: updatedUser.email,
@@ -203,10 +197,8 @@ export default function ProfilePage() {
         }
 
         const savedUser = await response.json();
-        console.log("User saved successfully:", savedUser);
 
         if (profileFile) {
-          console.log("Uploading profile image file:", profileFile);
           await uploadMedia(profileFile);
           refreshProfileImage();
         }
@@ -216,13 +208,11 @@ export default function ProfilePage() {
         setUserPayload({ user: savedUser });
         setShowUserModal(false);
       } catch (error) {
-        console.error("Error saving user:", error);
       }
     }
   }
 
   // Car stuff
-
   function handleAddCar() {
     setCarPayload({ id: "", brand: "", model: "", color: "", licensePlate: "", seats: 0 });
     setIsEdit(false);
@@ -248,10 +238,7 @@ export default function ProfilePage() {
   }
 
   async function handleSaveCar(car: typeof carPayload) {
-    console.log("Saving car payload:", car);
-
     if (!user?.id) {
-      console.error("Cannot save car: user ID is missing");
       return;
     }
 
@@ -265,8 +252,6 @@ export default function ProfilePage() {
       seats: Number(car.seats),
       userId: user.id,
     };
-
-    console.log("Payload being sent to API:", payload);
 
     const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
 
@@ -295,11 +280,10 @@ export default function ProfilePage() {
           seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
           userId: car.userId
         }));
-      console.log('Updated cars after save:', updatedCars);
+
       setCars(updatedCars);
       handleCloseModal();
     } catch (error) {
-      console.error('Error saving car:', error);
     }
   }
 
@@ -324,12 +308,10 @@ export default function ProfilePage() {
       setCars(updatedCars);
       handleCloseModal();
     } catch (error) {
-      console.error('Error deleting car:', error);
     }
   }
 
   /* friendship stuff */
-
   async function handleAddFriend() {
     if (!user?.id || !profileUser?.id) return;
 
@@ -354,9 +336,6 @@ export default function ProfilePage() {
         }
       };
 
-
-      console.log("Adding friend with payload:", payload);
-
       const response = await fetch('/api/Contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -364,17 +343,12 @@ export default function ProfilePage() {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log("Friend added successfully:", result);
         setIsAlreadyFriend(true);
       } else {
-        console.error("Failed to add friend:", response.status, await response.text());
       }
     } catch (error) {
-      console.error("Error adding friend:", error);
     }
   }
-
 
   async function handleRemoveFriend() {
     if (!user?.id || !profileUser?.id) return;
@@ -394,12 +368,10 @@ export default function ProfilePage() {
         });
 
         if (response.ok) {
-          console.log("Friend removed successfully");
           setIsAlreadyFriend(false);
         }
       }
     } catch (error) {
-      console.error("Error removing friend:", error);
     }
   }
   const handleLogout = () => {

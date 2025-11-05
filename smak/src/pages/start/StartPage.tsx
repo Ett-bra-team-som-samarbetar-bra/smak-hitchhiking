@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Row } from "react-bootstrap";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
-import FindTrip from "./FindTrip";
+import InputFindTrip from "./InputFindTrip";
 import LoginOrRegister from "./LoginOrRegister";
 import config from "../../config/Config";
 
@@ -27,7 +27,7 @@ export default function StartPage() {
     <div className="position-relative h-100 z-index-fix non-interactive">
       {isLoggedIn ? (
         <div className={`find-trip ${showStart ? "fade-in" : ""}`}>
-          <FindTrip />
+          <InputFindTrip />
         </div>
       ) : (
         <LoginOrRegister />

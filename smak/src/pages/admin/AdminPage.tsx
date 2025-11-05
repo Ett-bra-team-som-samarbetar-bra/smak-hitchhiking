@@ -32,7 +32,6 @@ export default function AdminPage() {
         setTotalPages(data.totalPages);
         setTotalUsers(data.totalUsers);
       } catch (error) {
-        console.error("Error fetching user list:", error);
       }
     }
     fetchUserList();
@@ -78,9 +77,9 @@ export default function AdminPage() {
           <SmakContact
             key={user.id}
             user={{
+              id: user.id,
               firstName: user.firstName || user.username,
               lastName: user.lastName || "",
-              profileImage: `/media/_Users/${user.id}/${user.id}`,
               rating: user.rating || 0,
               description: user.description || "",
             }}

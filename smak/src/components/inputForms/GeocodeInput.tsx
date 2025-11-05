@@ -9,11 +9,7 @@ interface GeocodeInputProps {
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-export default function GeocodeInput({
-  value,
-  onChange,
-  placeholder,
-}: GeocodeInputProps) {
+export default function GeocodeInput({ value, onChange, placeholder }: GeocodeInputProps) {
   const [query, setQuery] = useState(value?.name || "");
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);

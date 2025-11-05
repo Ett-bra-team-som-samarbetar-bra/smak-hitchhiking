@@ -79,7 +79,6 @@ export default function ContactPage() {
         setContacts(contactsWithUserData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching contacts:', error);
         setLoading(false);
       }
     }
@@ -105,10 +104,11 @@ export default function ContactPage() {
           <SmakContact
             key={contact.id}
             user={{
-              firstName: contact.firstName || '',
-              lastName: contact.lastName || '',
+              id: contact.id,
+              firstName: contact.firstName || "",
+              lastName: contact.lastName || "",
               rating: contact.rating || 0,
-              description: contact.description || ''
+              description: contact.description || ""
             }}
             onClick={() => handleUserClick(contact)}
           />

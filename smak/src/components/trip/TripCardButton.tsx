@@ -12,7 +12,7 @@ export default function TripCardButton({ className, onClick, label }: TripCardBu
   return (
     <Button
       type="button"
-      className={`btn btn-primary rounded-5 trip-card-button-width p-1  ${className || ''}`}
+      className={`btn btn-primary rounded-5 trip-card-button-width p-1 ${className || ''}`}
       onClick={onClick}>
       <span className="fw-bold medium-font-size">
         {label}

@@ -22,7 +22,6 @@ export default function useProfileImage(userId: string | null) {
             setProfileImage(`/images/user-placeholder.jpg`);
           }
         } catch (err) {
-          console.error("Error fetching profile image:", err);
           setProfileImage(`/images/user-placeholder.jpg`);
         }
       };

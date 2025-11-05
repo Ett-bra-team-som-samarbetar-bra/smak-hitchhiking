@@ -1,12 +1,12 @@
 import { Col, Row } from "react-bootstrap";
 import { renderRatingStars } from "../../utils/Utils";
+import { useTripCount } from "../../context/TripCountProvider";
 import type TripCardProps from "../../interfaces/TripCardProps";
 import SmakCard from "../SmakCard";
 import DividerLine from "../DividerLine";
 import TripCardButton from "./TripCardButton";
 import StaticMap from "./StaticMap";
 import "../../components/trip/TripCard.scss";
-import { useTripCount } from "../../context/TripCountProvider";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -21,7 +21,7 @@ export default function TripCardBig(props: TripCardProps) {
     rating = 0,
     distance = 0,
     date = "?",
-    profileImage = "/images/development/user2.png",
+    profileImage = "/images/user-placeholder.jpg",
     vehicleInfo = "Okänd bil",
     numOfSeats = "?",
     className = "",
@@ -32,22 +32,41 @@ export default function TripCardBig(props: TripCardProps) {
     onBigTripCardClick,
   } = props;
 
-  const userName = `${firstName} ${lastName}`;
+  let buttonText = "";
+  switch (cardButtonType) {
+    // Passenger 
+    case "userBook":
+      buttonText = "Boka";
+      break;
+    case "userCancel":
+      buttonText = "Avboka";
+      break;
 
-  const buttonText =
-    cardButtonType === "book"
-      ? "Boka"
-      : cardButtonType === "cancel"
-        ? "Avboka"
-        : "";
+    // Driver
+    case "driverStart":
+      buttonText = "Starta resa";
+      break;
+    case "driverDone":
+      buttonText = "Avsluta resa";
+      break;
 
-  // Update state on footer badges
+    default:
+      buttonText = "";
+      break;
+  }
+
+  // Update tripCount on footer badges
   const handleOnButtonClick = () => {
-    if (cardButtonType === "book") {
+    // Passenger
+    if (cardButtonType === "userBook")
       setComingCount(comingCount + 1);
-    } else if (cardButtonType === "cancel") {
+    else if (cardButtonType === "userCancel")
       setComingCount(Math.max(comingCount - 1, 0));
-    }
+
+    // Driver
+    if (cardButtonType === "driverStart")
+      setComingCount(Math.max(comingCount - 1, 0));
+    // TODO also remove this trip from /coming-trips
 
     if (onButtonClick) onButtonClick();
   }
@@ -76,7 +95,7 @@ export default function TripCardBig(props: TripCardProps) {
 
           <div className="position-relative d-flex align-items-center flex-column mt-2">
             <div className="text-primary text-center m-0 fw-semibold medium-font-size">
-              {userName}
+              {`${firstName} ${lastName}`}
             </div>
             <div className="d-flex small-font-size">
               {renderRatingStars(rating)}
