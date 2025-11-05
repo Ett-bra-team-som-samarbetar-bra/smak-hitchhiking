@@ -10,10 +10,16 @@ export default interface TripCardProps {
   profileImage?: string;
   vehicleInfo?: string;
   className?: string;
-  cardButtonType?: "userBook" | "userCancel" | "driverStart" | "driverDone" | "none";
+  cardButtonType?:
+    | "userBook"
+    | "userCancel"
+    | "driverStart"
+    | "driverDone"
+    | "none";
   onSmallTripCardClick?: () => void;
   onBigTripCardClick?: () => void;
   onUserClick?: () => void;
   onCarClick?: () => void;
   onButtonClick?: () => void;
+  isBooked?: boolean;
 }

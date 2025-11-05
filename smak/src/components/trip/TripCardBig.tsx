@@ -9,6 +9,8 @@ import "../../components/trip/TripCard.scss";
 import { useTripCount } from "../../context/TripCountProvider";
 import { getTripDateAndTime } from "../../utils/DateUtils";
 import useFetchUser from "../../hooks/useFetchUser";
+import useFetchCar from "../../hooks/useFetchCar";
+import useProfileImage from "../../hooks/useProfileImage";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -18,25 +20,29 @@ export default function TripCardBig(props: TripCardProps) {
     endTime = "00:00",
     rating = 0,
     distance = 0,
-    profileImage = "/images/user-placeholder.jpg",
-    vehicleInfo = "Okänd bil",
     className = "",
     cardButtonType = "none",
     onButtonClick,
     onUserClick,
     onCarClick,
     onBigTripCardClick,
+    isBooked,
   } = props;
   const { startPosition, endPosition, seats, driverId } = trip;
   const { date, startTime } = getTripDateAndTime(trip);
+  const { profileImage } = useProfileImage(trip.driverId[0].id);
 
   const user = useFetchUser(driverId[0].id);
   const firstName = user?.firstName || "Okänd";
   const lastName = user?.lastName || "Användare";
+  const vehicle = useFetchCar(trip.carIdId);
+  const vehicleInfo = isBooked
+    ? `${vehicle?.model}`
+    : `${vehicle?.model} ${vehicle?.licensePlate}`;
 
   let buttonText = "";
   switch (cardButtonType) {
-    // Passenger 
+    // Passenger
     case "userBook":
       buttonText = "Boka";
       break;
@@ -60,8 +66,7 @@ export default function TripCardBig(props: TripCardProps) {
   // Update tripCount on footer badges
   const handleOnButtonClick = () => {
     // Passenger
-    if (cardButtonType === "userBook")
-      setComingCount(comingCount + 1);
+    if (cardButtonType === "userBook") setComingCount(comingCount + 1);
     else if (cardButtonType === "userCancel")
       setComingCount(Math.max(comingCount - 1, 0));
 

@@ -1,7 +1,7 @@
 export default interface Trip {
   id: string;
   driverId: [{ id: string; username: string }];
-  carId: string;
+  carIdId: string;
   startPosition: string;
   endPosition: string;
   departureTime: Date;

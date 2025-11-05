@@ -16,7 +16,7 @@ export default function useFetchUser(userId: string) {
     }
 
     getUser();
-  }, []);
+  }, [userId]);
 
   return fetchedUser;
 }

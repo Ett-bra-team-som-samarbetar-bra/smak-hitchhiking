@@ -6,6 +6,7 @@ import DividerLine from "../DividerLine";
 import "../../components/trip/TripCard.scss";
 import { getTripDateAndTime } from "../../utils/DateUtils";
 import useFetchUser from "../../hooks/useFetchUser";
+import useProfileImage from "../../hooks/useProfileImage";
 
 export default function TripCardSmall(props: TripCardProps) {
   const {
@@ -13,10 +14,11 @@ export default function TripCardSmall(props: TripCardProps) {
     endTime = "00:00",
     rating = 0,
     distance = 0,
-    profileImage = "/images/development/user2.png",
     className = "",
     onSmallTripCardClick,
   } = props;
+
+  const { profileImage } = useProfileImage(trip.driverId[0].id);
 
   const { startPosition, endPosition } = trip;
   const { startTime } = getTripDateAndTime(trip);
