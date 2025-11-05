@@ -34,9 +34,11 @@ export default function TripCardBig(props: TripCardProps) {
   const firstName = user?.firstName || "Okänd";
   const lastName = user?.lastName || "Användare";
   const vehicle = useFetchCar(trip.carIdId);
-  const vehicleInfo = isBooked
-    ? `${vehicle?.model} ${vehicle?.licensePlate}`
-    : `${vehicle?.model}`;
+  const vehicleInfo = vehicle
+    ? isBooked
+      ? `${vehicle.model} ${vehicle.licensePlate}`
+      : `${vehicle.model}`
+    : "Okänd bil";
 
   let buttonText = "";
   switch (cardButtonType) {

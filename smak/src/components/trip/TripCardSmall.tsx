@@ -22,8 +22,6 @@ export default function TripCardSmall(props: TripCardProps) {
   const firstName = user?.firstName || "Okänd";
   const lastName = user?.lastName || "Användare";
 
-  const userName = `${firstName} ${lastName}`;
-
   return (
     <SmakCard className={`${className} pb-0`}>
       <div className="cursor-pointer" onClick={onSmallTripCardClick}>
@@ -75,7 +73,7 @@ export default function TripCardSmall(props: TripCardProps) {
                 height="38"
                 style={{ objectFit: "cover" }}
               />
-              <p className="text-primary mb-0 fw-semibold">{userName}</p>
+              <p className="text-primary mb-0 fw-semibold">{`${firstName} ${lastName}`}</p>
             </div>
 
             <div className="d-flex">{renderRatingStars(rating)}</div>

@@ -111,11 +111,10 @@ export default function DrivePage() {
         if (!response.ok)
           throw new Error('Failed to fetch cars');
 
-
-
         const allCars = await response.json();
+
         const userCars = allCars
-          .filter((car: any) => car.userId === user!.id)
+          .filter((car: any) => car.userId[0].id === user!.id) // lul
           .map((car: any) => ({
             id: car.id || '',
             brand: car.brand || '',
@@ -177,7 +176,7 @@ export default function DrivePage() {
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((car: any) => car.userId === user.id)
+        .filter((car: any) => car.userId[0].id === user.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
