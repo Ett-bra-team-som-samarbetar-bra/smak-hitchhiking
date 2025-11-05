@@ -6,13 +6,36 @@ import type User from "../../interfaces/User";
 
 interface Contact {
   id: string;
-  userId: {
-    userIds: string[];
-  };
-  contactId: {
-    userIds: string[];
-  };
+  title: string | null;
+  userId: Array<{
+    id: string;
+    username: string;
+    email?: string;
+    phone?: string;
+    firstName?: string;
+    lastName?: string;
+    description?: string;
+    rating?: number;
+    tripCount?: number;
+    preferences?: Array<string>;
+    roles?: Array<string>;
+
+  }>;
+  contactId: Array<{
+    id: string;
+    username: string;
+    email?: string;
+    phone?: string;
+    firstName?: string;
+    lastName?: string;
+    description?: string;
+    rating?: number;
+    tripCount?: number;
+    preferences?: Array<string>;
+    roles?: Array<string>;
+  }>;
 }
+
 
 export default function ContactPage() {
   const navigate = useNavigate();
@@ -25,19 +48,31 @@ export default function ContactPage() {
 
     async function fetchContacts() {
       try {
-        const response = await fetch(`/api/Contact`);
+        const response = await fetch(`/api/expand/Contact`);
         if (!response.ok) throw new Error('Failed to fetch contacts');
         const allContacts: Contact[] = await response.json();
-        
-        const userContacts = allContacts.filter(contact => 
-          contact.userId.userIds[0] === user!.id
+
+        const userContacts = allContacts.filter(contact =>
+          contact.userId?.[0]?.id === user!.id && contact.contactId?.[0]
         );
 
         const contactsWithUserData = await Promise.all(
           userContacts.map(async (contact) => {
-            const userResponse = await fetch(`/api/auth/user/${contact.contactId.userIds[0]}`);
-            const userData = await userResponse.json();
-            return userData;
+            const contactUser = contact.contactId[0];
+
+            return {
+              id: contactUser.id,
+              username: contactUser.username,
+              email: contactUser.email || '',
+              firstName: contactUser.firstName || '',
+              lastName: contactUser.lastName || '',
+              phoneNumber: contactUser.phone || '',
+              description: contactUser.description || '',
+              rating: contactUser.rating || 0,
+              tripCount: contactUser.tripCount || 0,
+              preferences: contactUser.preferences || [],
+              roles: contactUser.roles || [],
+            };
           })
         );
 
@@ -51,6 +86,7 @@ export default function ContactPage() {
 
     fetchContacts();
   }, [user]);
+
 
   const handleUserClick = (contact: User) => {
     navigate(`/profile/${contact.id}`, { state: { user: contact } });
@@ -66,16 +102,15 @@ export default function ContactPage() {
         <p className="text-muted">Inga kontakter ännu</p>
       ) : (
         contacts.map((contact) => (
-          <SmakContact 
-            key={contact.id} 
+          <SmakContact
+            key={contact.id}
             user={{
-              firstName: contact.firstName || contact.username,
+              firstName: contact.firstName || '',
               lastName: contact.lastName || '',
-              profileImage: `/media/_Users/${contact.id}/${contact.id}`,
               rating: contact.rating || 0,
               description: contact.description || ''
             }}
-            onClick={() => handleUserClick(contact)} 
+            onClick={() => handleUserClick(contact)}
           />
         ))
       )}

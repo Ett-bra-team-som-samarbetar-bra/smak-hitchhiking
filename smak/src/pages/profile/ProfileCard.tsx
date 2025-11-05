@@ -7,6 +7,8 @@ interface ProfileCardProps {
   isOwnProfile?: boolean;
   isAlreadyFriend?: boolean;
   onEdit?: () => void;
+  onAddFriend?: () => void;
+  onRemoveFriend?: () => void;
 }
 
 export default function ProfileCard({
@@ -15,6 +17,8 @@ export default function ProfileCard({
   isOwnProfile = true,
   isAlreadyFriend = false,
   onEdit,
+  onAddFriend,
+  onRemoveFriend,
 }: ProfileCardProps) {
   return (
     <div
@@ -37,8 +41,8 @@ export default function ProfileCard({
           }
           onClick={() => {
             if (isOwnProfile && onEdit) onEdit();
-            else if (isAlreadyFriend) console.log("Remove friend");
-            else console.log("Add friend");
+            else if (isAlreadyFriend && onRemoveFriend) onRemoveFriend();
+            else if (onAddFriend) onAddFriend();
           }}
           className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
         />
@@ -50,24 +54,25 @@ export default function ProfileCard({
 
       <div className="d-flex justify-content-between mt-2 mb-4">
         <div className="text-center">
-          <p className="mb-1 fw-bold">{user.tripCount}</p>
+          <p className="mb-1 fw-bold">{user.tripCount || 0}</p>
           <p className="mb-0 text-black-50">Rutter</p>
         </div>
 
         <div className="text-center">
-          <p className="mb-1 fw-bold">{user.rating}/5</p>
+          <p className="mb-1 fw-bold">{user.rating || 0}/5</p>
           <p className="mb-0 text-black-50">Betyg</p>
         </div>
 
-        <div className="text-center">
-          <p className="mb-1 fw-bold">{user.tripCount}</p>
+        <div className="text-center"> {/* Years Active */}
+          <p className="mb-1 fw-bold">{user.tripCount || 0}</p>
           <p className="mb-0 text-black-50">År</p>
         </div>
       </div>
 
-      <div className="d-inline-flex flex-row align-items-center justify-content-center gap-2 my-2 border-bottom border-black w-100">
-        <i className="bi bi-rocket-takeoff-fill"></i>
-        <p className="my-2">Jag gillar</p>
+      <div className="d-flex align-items-center mb-2">
+        <div className="flex-grow-1 border-bottom"></div>
+        <span className="mx-3 text-nowrap">Preferenser</span>
+        <div className="flex-grow-1 border-bottom"></div>
       </div>
 
       <div className="d-flex flex-column mt-2">
