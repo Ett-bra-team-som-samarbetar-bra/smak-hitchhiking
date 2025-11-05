@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function InputFindTrip() {
-  const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
+  const { from, setFrom, to, setTo, distance, setDistance, duration, setDuration, centerMapOnLocations } = useDynamicMap();
   const { showAlert } = useSmakTopAlert();
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState<Date | null>(null);
@@ -25,7 +25,7 @@ export default function InputFindTrip() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!from || !to || !date) {
+    if (!from || !to || !date || !distance || !duration) {
       showAlert({
         message: "Alla fält måste vara ifyllda.",
         backgroundColor: "warning",
@@ -39,6 +39,7 @@ export default function InputFindTrip() {
 
     try {
       // TODO fetch post
+      console.log(`Distans: ${Math.round(distance / 1000)}km \nTidsestimat: ${(duration / 60 / 60).toFixed(1)}h`);
       await new Promise(resolve => setTimeout(resolve, 1400));
 
       clearInputs();
@@ -61,6 +62,8 @@ export default function InputFindTrip() {
     setFrom(null);
     setTo(null);
     setDate(null);
+    setDistance(null);
+    setDuration(null);
     setOpen(false);
   };
 

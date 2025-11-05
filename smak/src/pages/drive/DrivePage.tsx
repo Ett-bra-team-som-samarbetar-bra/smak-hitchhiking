@@ -16,7 +16,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function DrivePage() {
-  const { from, setFrom, to, setTo, centerMapOnLocations } = useDynamicMap();
+  const { from, setFrom, to, setTo, distance, setDistance, duration, setDuration, centerMapOnLocations } = useDynamicMap();
   const { comingCount, setComingCount } = useTripCount();
   const { showAlert } = useSmakTopAlert();
   const { user } = useAuth();
@@ -42,7 +42,7 @@ export default function DrivePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!from || !to || !selectedVehicle || !date) {
+    if (!from || !to || !selectedVehicle || !date || !distance || !duration) {
       showAlert({
         message: "Alla fält måste vara ifyllda.",
         backgroundColor: "warning",
@@ -56,6 +56,7 @@ export default function DrivePage() {
 
     try {
       // TODO fetch post
+      console.log(`Distans: ${Math.round(distance / 1000)}km \nTidsestimat: ${(duration / 60 / 60).toFixed(1)}h`);
       await new Promise(resolve => setTimeout(resolve, 1400));
 
       setComingCount(comingCount + 1); // Update footer counters
@@ -87,6 +88,8 @@ export default function DrivePage() {
     setSelectedVehicle(null);
     setFrom(null);
     setTo(null);
+    setDistance(null);
+    setDuration(null);
     setDate(null);
     setOpen(false);
   };
@@ -109,8 +112,9 @@ export default function DrivePage() {
           throw new Error('Failed to fetch cars');
 
         const allCars = await response.json();
+
         const userCars = allCars
-          .filter((car: any) => car.userId === user!.id)
+          .filter((car: any) => car.userId[0].id === user!.id) // lul
           .map((car: any) => ({
             id: car.id || '',
             brand: car.brand || '',
@@ -172,7 +176,7 @@ export default function DrivePage() {
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((car: any) => car.userId === user.id)
+        .filter((car: any) => car.userId[0].id === user.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',

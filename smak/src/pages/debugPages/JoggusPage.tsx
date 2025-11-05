@@ -24,6 +24,7 @@ export default function JoggusPage() {
   }
 
   const user = {
+    id: "1",
     firstName: "Jocke",
     lastName: "Kek",
     profileImage: "/images/development/user2.png",
@@ -107,7 +108,7 @@ export default function JoggusPage() {
         date="13/03 25"
         vehicleInfo="Keken"
         numOfSeats="42"
-        cardButtonType="book" />
+        cardButtonType="userBook" />
 
       <SmakContact
         user={user}

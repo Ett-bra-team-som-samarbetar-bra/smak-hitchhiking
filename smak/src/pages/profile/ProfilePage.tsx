@@ -10,10 +10,12 @@ import UserModal from "./UserModal";
 import type User from "../../interfaces/User";
 import useProfileImage from "../../hooks/useProfileImage";
 import type Car from "../../interfaces/Cars";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 
 export default function ProfilePage() {
   const { userId } = useParams();
   const { user, refreshUser, logout } = useAuth();
+  const { showAlert } = useSmakTopAlert();
   const { profileImage, refreshProfileImage } = useProfileImage(
     user?.id || null
   );
@@ -88,10 +90,12 @@ export default function ProfilePage() {
     async function fetchCars() {
       try {
         const response = await fetch(`/api/Car`);
-        if (!response.ok) throw new Error('Failed to fetch cars');
+        if (!response.ok)
+          throw new Error('Failed to fetch cars');
+
         const allCars = await response.json();
         const userCars = allCars
-          .filter((car: any) => car.userId === profileUser!.id)
+          .filter((car: any) => car.userId[0].id === profileUser!.id) // lul
           .map((car: any) => ({
             id: car.id || '',
             brand: car.brand || '',
@@ -104,6 +108,12 @@ export default function ProfilePage() {
 
         setCars(userCars);
       } catch (error) {
+        showAlert({
+          message: "Okänt fel.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 3000,
+        });
       }
     }
 
@@ -129,8 +139,6 @@ export default function ProfilePage() {
       });
     }
   }, [profileUser]);
-
-
 
   function handleEditUser(user: Partial<User>) {
     setUserPayload({
@@ -208,6 +216,12 @@ export default function ProfilePage() {
         setUserPayload({ user: savedUser });
         setShowUserModal(false);
       } catch (error) {
+        showAlert({
+          message: "Kunde inte spara ändringarna. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
       }
     }
   }
@@ -270,7 +284,7 @@ export default function ProfilePage() {
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((car: any) => car.userId === user.id)
+        .filter((car: any) => car.userId[0].id === user.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
@@ -283,19 +297,28 @@ export default function ProfilePage() {
 
       setCars(updatedCars);
       handleCloseModal();
+
     } catch (error) {
+      showAlert({
+        message: "Kunde inte spara bil. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
 
   async function handleDeleteCar(car: typeof carPayload) {
     try {
       const deleteResponse = await fetch(`/api/Car/${car.id}`, { method: 'DELETE' });
-      if (!deleteResponse.ok) throw new Error('Failed to delete car');
+
+      if (!deleteResponse.ok)
+        throw new Error('Failed to delete car');
 
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((c: any) => c.userId === user?.id)
+        .filter((c: any) => c.userId[0].id === user?.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
@@ -305,9 +328,17 @@ export default function ProfilePage() {
           seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
           userId: car.userId
         }));
+
       setCars(updatedCars);
       handleCloseModal();
+
     } catch (error) {
+      showAlert({
+        message: "Kunde inte ta bort bil. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
 
@@ -347,6 +378,12 @@ export default function ProfilePage() {
       } else {
       }
     } catch (error) {
+      showAlert({
+        message: "Okänt fel. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
 
@@ -372,8 +409,15 @@ export default function ProfilePage() {
         }
       }
     } catch (error) {
+      showAlert({
+        message: "Okänt fel. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
+
   const handleLogout = () => {
     logout();
   };
