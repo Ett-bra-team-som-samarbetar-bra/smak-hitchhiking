@@ -15,6 +15,7 @@ import DebugPagePage from "./pages/debugPages/debugPage";
 import PaymentPage from "./pages/payment/PaymentPage";
 import ProtectedRoute from "./utils/ProtectedRoutes";
 import AdminPage from "./pages/admin/AdminPage";
+import TripsDonePage from "./pages/trips-done/TripsDonePage";
 
 interface Route {
   element: JSX.Element;
@@ -34,6 +35,11 @@ const routes: Route[] = [
     path: "/profile",
     menuLabel: "Profil",
     icon: "person-fill-check",
+  },
+  {
+    element: <ProtectedRoute><TripsDonePage /></ProtectedRoute>,
+    path: "/trips-done",
+    icon: "car-front-fill",
   },
   {
     element: (
