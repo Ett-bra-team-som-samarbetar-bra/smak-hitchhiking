@@ -19,7 +19,6 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
   onAccept?: () => void;
   onDeny?: () => void;
   onRemove?: () => void;
-
 }) {
 
   const { profileImage } = useProfileImage(

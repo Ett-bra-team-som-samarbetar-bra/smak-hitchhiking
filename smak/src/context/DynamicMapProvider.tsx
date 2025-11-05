@@ -5,6 +5,8 @@ import config from '../config/Config';
 interface DynamicMapContextType {
   from: { name: string; coordinates: [number, number] } | null;
   to: { name: string; coordinates: [number, number] } | null;
+  distance: number | null;
+  duration: number | null;
   route: any;
   className: string;
   centerOnFrom: boolean;
@@ -16,6 +18,8 @@ interface DynamicMapContextType {
   // Setters
   setFrom: (from: { name: string; coordinates: [number, number] } | null) => void;
   setTo: (to: { name: string; coordinates: [number, number] } | null) => void;
+  setDistance: (distance: number | null) => void;
+  setDuration: (duration: number | null) => void;
   setClassName: (className: string) => void;
   setCenterOnFrom: (center: boolean) => void;
   setIsLoginPage: (isLogin: boolean) => void;
@@ -45,15 +49,19 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 export default function DynamicMapProvider({ children }: DynamicMapProviderProps) {
   const [from, setFrom] = useState<{ name: string; coordinates: [number, number] } | null>(null);
   const [to, setTo] = useState<{ name: string; coordinates: [number, number] } | null>(null);
+  const [distance, setDistance] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
   const [route, setRoute] = useState<any>(null);
   const [className, setClassName] = useState("");
   const [centerOnFrom, setCenterOnFrom] = useState(false);
   const [isLoginPage, setIsLoginPage] = useState(true);
   const [triggerLoginZoom, setTriggerLoginZoom] = useState(false);
   const [hasLoginAnimationCompleted, setHasLoginAnimationCompleted] = useState(false);
+
   const mapRef = useRef<MapRef>(null);
   const bearingRef = useRef(190); // Spin animation start pos @ EU
   const mapPadding = 140;
+
 
   // Zoom in animation when user logs in
   useEffect(() => {
@@ -120,9 +128,9 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
         if (!data.routes?.length)
           return;
 
-        //TODO return distance and duration
-
         const geometry = data.routes[0].geometry;
+        setDistance(data.routes[0].distance);
+        setDuration(data.routes[0].duration);
         setRoute(geometry);
 
         const coords = geometry.coordinates;
@@ -245,6 +253,8 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
   const resetMap = () => {
     setFrom(null);
     setTo(null);
+    setDistance(null);
+    setDuration(null);
     setRoute(null);
     setCenterOnFrom(false);
     setTriggerLoginZoom(false);
@@ -267,6 +277,8 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
   const value = {
     from,
     to,
+    distance,
+    duration,
     route,
     className,
     centerOnFrom,
@@ -278,6 +290,8 @@ export default function DynamicMapProvider({ children }: DynamicMapProviderProps
     // Setters
     setFrom,
     setTo,
+    setDistance,
+    setDuration,
     setClassName,
     setCenterOnFrom,
     setIsLoginPage,
