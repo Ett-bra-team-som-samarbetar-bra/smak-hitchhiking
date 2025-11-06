@@ -1,5 +1,6 @@
 import IconButton from "../../components/IconButton";
 import type User from "../../interfaces/User";
+import { renderRatingStars } from "../../utils/Utils";
 
 interface ProfileCardProps {
   user: User;
@@ -22,7 +23,7 @@ export default function ProfileCard({
 }: ProfileCardProps) {
   return (
     <div
-      className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-5 position-relative`}
+      className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-3 position-relative`}
     >
       <div className="profile-image-container">
         <img
@@ -44,29 +45,19 @@ export default function ProfileCard({
             else if (isAlreadyFriend && onRemoveFriend) onRemoveFriend();
             else if (onAddFriend) onAddFriend();
           }}
-          className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
+          bg="bg-primary"
+          className={`${isOwnProfile ? "edit-icon" : "add-icon"} text-white`}
         />
       </div>
 
-      <h2>
+      <h2 className="m-0">
         {user.firstName} {user.lastName}
       </h2>
 
-      <div className="d-flex justify-content-between mt-2 mb-4">
-        <div className="text-center">
-          <p className="mb-1 fw-bold">{user.tripCount || 0}</p>
-          <p className="mb-0 text-black-50">Rutter</p>
-        </div>
+      <div className="text-center mb-3 ">{renderRatingStars(user.rating)}</div>
 
-        <div className="text-center">
-          <p className="mb-1 fw-bold">{user.rating || 0}/5</p>
-          <p className="mb-0 text-black-50">Betyg</p>
-        </div>
-
-        <div className="text-center"> {/* Years Active */}
-          <p className="mb-1 fw-bold">{user.tripCount || 0}</p>
-          <p className="mb-0 text-black-50">År</p>
-        </div>
+      <div className="mb-4">
+        <p className="text-center mb-1 text-secondary fst-italic">{user.description || ""}</p>
       </div>
 
       <div className="d-flex align-items-center mb-2">
