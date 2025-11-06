@@ -14,7 +14,6 @@ import useProfileImage from "../../hooks/useProfileImage";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
-
   const {
     trip,
     className = "",
@@ -25,15 +24,22 @@ export default function TripCardBig(props: TripCardProps) {
     onBigTripCardClick,
     isBooked,
   } = props;
+
+  if (!trip || !trip.driverId?.length) {
+    return <div> Laddar resa...</div>;
+  }
+
   const { startPosition, endPosition, seats, driverId, distance } = trip;
   const { date, startTime, endTime } = getTripDateAndTime(trip);
-  const { profileImage } = useProfileImage(trip.driverId[0].id);
 
-  const user = useFetchUser(driverId[0].id);
+  const { profileImage } = useProfileImage(trip.driverId[0].id ?? null);
+
+  const user = useFetchUser(driverId[0].id ?? null);
+  const vehicle = useFetchCar(trip.carIdId ?? null);
+
   const rating = user?.rating;
   const firstName = user?.firstName || "Okänd";
   const lastName = user?.lastName || "Användare";
-  const vehicle = useFetchCar(trip.carIdId);
   const vehicleInfo = vehicle
     ? isBooked
       ? `${vehicle.model} ${vehicle.licensePlate}`

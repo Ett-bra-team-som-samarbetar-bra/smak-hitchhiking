@@ -4,14 +4,23 @@ import IconButton from "./IconButton";
 import SmakCard from "./SmakCard";
 import useProfileImage from "../hooks/useProfileImage";
 
-export default function SmakContact({ user, isDriver = false, isAddedToTrip = false, className = "", onClick, onAccept, onDeny, onRemove }: {
+export default function SmakContact({
+  user,
+  isDriver = false,
+  isAddedToTrip = false,
+  className = "",
+  onClick,
+  onAccept,
+  onDeny,
+  onRemove,
+}: {
   user: {
     id: string;
     firstName: string;
     lastName: string;
     rating: number;
     description: string;
-  }
+  };
   className?: string;
   isDriver?: boolean;
   isAddedToTrip?: boolean;
@@ -20,17 +29,11 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
   onDeny?: () => void;
   onRemove?: () => void;
 }) {
-
-  const { profileImage } = useProfileImage(
-    user?.id || null
-  );
+  const { profileImage } = useProfileImage(user?.id || null);
 
   return (
     <SmakCard className={`${className}`}>
-      <Row
-        className="cursor-pointer"
-        onClick={onClick}>
-
+      <Row className="cursor-pointer" onClick={onClick}>
         <Col className="col-auto d-flex align-items-center">
           <img
             src={profileImage}
@@ -46,7 +49,9 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
         </Col>
 
         <Col className="d-flex flex-column justify-content-start py-1 px-0 flex-grow-1">
-          <h6 className="m-0 mb-1 text-primary fw-bold">{user.firstName} {user.lastName}</h6>
+          <h6 className="m-0 mb-1 text-primary fw-bold">
+            {user.firstName} {user.lastName}
+          </h6>
           {isDriver ? (
             <div className="d-flex align-items-center gap-1 small text-black-50">
               {renderRatingStars(user.rating)}
@@ -80,6 +85,6 @@ export default function SmakContact({ user, isDriver = false, isAddedToTrip = fa
           )}
         </Col>
       </Row>
-    </SmakCard >
+    </SmakCard>
   );
 }

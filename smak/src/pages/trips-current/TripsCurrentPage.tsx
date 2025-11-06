@@ -1,38 +1,21 @@
 import { useState } from "react";
 import TripCardBig from "../../components/trip/TripCardBig";
 import SmakContact from "../../components/SmakContact";
-import { getAllTrips, getMockUsers, getMockUser } from "../../utils/MockData";
+import { getMockUsers } from "../../utils/MockData";
 //import { useAuth } from "../../hooks/useAuth";
 import CarModal from "../profile/CarModal";
 import { useNavigate } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
+import { useAuth } from "../../hooks/useAuth";
+import useAllTrips from "../../hooks/useAllTrips";
 
 export default function TripsCurrentPage() {
-  const currentUser = getMockUser();
-  const allTrips = getAllTrips();
-  const firstTrip = allTrips[0];
+  const { user } = useAuth();
+  const allTrips = useAllTrips();
+  const navigate = useNavigate();
 
-  //const { user } = useAuth();
-  //const isDriver = user?.id === firstTrip.driverId; TODO
-  const [isDriver, setIsDriver] = useState(true);
   const [requests, setRequests] = useState(getMockUsers());
   const [passengers, setPassengers] = useState<typeof requests>([]);
-
-  const handleAcceptRequest = (user: any) => {
-    setPassengers([...passengers, user]);
-    setRequests(requests.filter(r => r !== user));
-  };
-
-  const handleDenyRequest = (user: any) => {
-    setRequests(requests.filter(r => r !== user));
-  };
-
-  const handleRemovePassenger = (user: any) => {
-    setPassengers(passengers.filter(p => p !== user));
-  };
-
-  /* car stuff */
-
   const [showCarModal, setShowCarModal] = useState(false);
   const [carPayload, setCarPayload] = useState({
     id: "",
@@ -40,8 +23,28 @@ export default function TripsCurrentPage() {
     model: "V60",
     color: "svart",
     licensePlate: "ABC123",
-    seats: 3
+    seats: 3,
   });
+
+  if (!allTrips || allTrips.length === 0) return <p>Inga resor hittades</p>;
+  const firstTrip = allTrips[0];
+  if (!user) return;
+  const isDriver = user.id === firstTrip.driverId[0].id;
+
+  const handleAcceptRequest = (passenger: any) => {
+    setPassengers([...passengers, passenger]);
+    setRequests(requests.filter((r) => r !== passenger));
+  };
+
+  const handleDenyRequest = (passenger: any) => {
+    setRequests(requests.filter((r) => r !== passenger));
+  };
+
+  const handleRemovePassenger = (passenger: any) => {
+    setPassengers(passengers.filter((p) => p !== passenger));
+  };
+
+  /* car stuff */
 
   const handleCarClick = () => {
     setShowCarModal(true);
@@ -53,16 +56,17 @@ export default function TripsCurrentPage() {
 
   /* user > */
 
-  const navigate = useNavigate();
-
   const handleUserClick = (user: any) => {
     navigate(`/profile/${user.id}`, { state: { user } });
   };
 
   return (
     <>
-      <Accordion defaultActiveKey={["0", "1", "2"]} alwaysOpen className="mb-4 custom-accordion">
-
+      <Accordion
+        defaultActiveKey={["0", "1", "2"]}
+        alwaysOpen
+        className="mb-4 custom-accordion"
+      >
         <Accordion.Item eventKey="0">
           <Accordion.Header className="py-1">
             <span className="fs-5 fw-semibold">Förare</span>
@@ -70,27 +74,18 @@ export default function TripsCurrentPage() {
           </Accordion.Header>
           <Accordion.Body>
             <TripCardBig
-              startTime={firstTrip.startTime}
-              endTime={firstTrip.endTime}
-              startCity={firstTrip.startCity}
-              endCity={firstTrip.endCity}
-              distance={firstTrip.distance}
-              date={firstTrip.date}
-              firstName={currentUser.firstName}
-              lastName={currentUser.lastName}
-              profileImage={currentUser.profileImage}
-              rating={currentUser.rating}
-              vehicleInfo="Volvo V60"
-              numOfSeats="3"
+              trip={firstTrip}
               onCarClick={handleCarClick}
-              onUserClick={() => handleUserClick(currentUser)}
+              onUserClick={() => handleUserClick(user)}
             />
           </Accordion.Body>
         </Accordion.Item>
 
         <Accordion.Item eventKey="1">
           <Accordion.Header className="py-1">
-            <span className="fs-5 fw-semibold">{isDriver ? "Passagerare" : "Övriga passagerare"}</span>
+            <span className="fs-5 fw-semibold">
+              {isDriver ? "Passagerare" : "Övriga passagerare"}
+            </span>
             <i className="bi bi-caret-down-fill ms-2"></i>
           </Accordion.Header>
           <Accordion.Body>
@@ -105,7 +100,9 @@ export default function TripsCurrentPage() {
                     isDriver={isDriver}
                     isAddedToTrip={true}
                     onClick={() => handleUserClick(user)}
-                    onRemove={isDriver ? () => handleRemovePassenger(user) : undefined}
+                    onRemove={
+                      isDriver ? () => handleRemovePassenger(user) : undefined
+                    }
                   />
                 ))}
               </div>
@@ -152,5 +149,5 @@ export default function TripsCurrentPage() {
         isOwnProfile={false}
       />
     </>
-  )
+  );
 }
