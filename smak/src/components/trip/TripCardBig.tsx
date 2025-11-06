@@ -14,6 +14,7 @@ import useFetchCar from "../../hooks/useFetchCar";
 import useProfileImage from "../../hooks/useProfileImage";
 import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
+import type User from "../../interfaces/User";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -109,10 +110,9 @@ export default function TripCardBig(props: TripCardProps) {
     setShowCarModal(true);
   };
 
-  /* const handleUserClick = (user: User) => {
-    TODO
+  const handleUserClick = (user: User) => {
     navigate(`/profile/${user.id}`, { state: { user } });
-  }; */
+  };
 
   return (
     <>
@@ -132,7 +132,9 @@ export default function TripCardBig(props: TripCardProps) {
           <div className="position-absolute trip-card-profil-image-container">
             <div className="d-flex justify-content-center">
               <img
-                onClick={() => {  /* TODO */ }}
+                onClick={() => {
+                  handleUserClick;
+                }}
                 src={profileImage}
                 alt="Profil"
                 className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer"
@@ -229,7 +231,7 @@ export default function TripCardBig(props: TripCardProps) {
         show={showCarModal}
         onClose={() => setShowCarModal(false)}
         payload={carPayload}
-        setPayload={() => { }}
+        setPayload={() => {}}
         isEdit={false}
         isOwnProfile={false}
       />
