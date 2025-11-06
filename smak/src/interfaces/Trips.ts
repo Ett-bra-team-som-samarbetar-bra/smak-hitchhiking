@@ -1,5 +1,5 @@
 export default interface Trip {
-  id: string;
+  id?: string;
   driverId: [{ id: string; username: string }];
   carIdId: string;
   startPosition: string;
