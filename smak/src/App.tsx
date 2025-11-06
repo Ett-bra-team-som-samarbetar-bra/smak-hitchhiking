@@ -20,10 +20,10 @@ import useUserTrips from "./hooks/useUserTrips";
 function AppContent() {
   const { user } = useAuth();
   const { setIsLoginPage } = useDynamicMap();
+  const { setHistoryCount, setComingCount } = useTripCount();
 
   const [isPwa, setIsPwa] = useState(false);
   const [showHeaderFooter, setShowHeaderFooter] = useState(false);
-  const { setHistoryCount, setComingCount } = useTripCount();
 
   const isLoggedIn = !!user;
   const mapActivePaths = ["/", "/drive"];
@@ -45,7 +45,7 @@ function AppContent() {
     );
     setHistoryCount(pastTrips.length);
 
-    // Coming 
+    // Coming
     const today = new Date();
     const upcomingTrips = userTrips.filter(
       (trip) => getTripDateTime(trip) > today

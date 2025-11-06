@@ -8,10 +8,11 @@ import useUserTrips from "../../hooks/useUserTrips";
 
 export default function ComingTripsPage() {
   const { setComingCount } = useTripCount();
-  const allTrips = useAllTrips();
   const { user } = useAuth();
 
   if (!user) return null;
+
+  const allTrips = useAllTrips();
   const userTrips = useUserTrips(user?.id, allTrips);
 
   const sortedTrips = [...userTrips].sort(
@@ -24,6 +25,7 @@ export default function ComingTripsPage() {
   );
   const groupedUpcomingTrips = groupTripsByDate(upcomingTrips);
 
+  // Update counter
   useEffect(() => {
     setComingCount(upcomingTrips.length);
   }, [upcomingTrips]);
