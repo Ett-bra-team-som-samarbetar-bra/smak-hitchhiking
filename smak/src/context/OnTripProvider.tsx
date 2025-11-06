@@ -63,7 +63,7 @@ const OnTripProvider = ({ children }: OnTripProviderProps) => {
 
     //navigate to TripDone when currentTrip is over
     if (prevTrip && !currentTrip) {
-      navigate("/trips/done", { state: { completedTrip: prevTrip } });
+      navigate("/trips-done", { state: { completedTrip: prevTrip } });
     }
 
     previousTripRef.current = currentTrip;
