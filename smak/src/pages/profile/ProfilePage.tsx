@@ -71,10 +71,9 @@ export default function ProfilePage() {
         const contacts = await response.json();
 
         const isFriend = contacts.some((contact: any) =>
-          contact.userId[0]?.id === user!.id &&
-          contact.contactId[0]?.id === profileUser!.id
+          contact.user?.[0]?.id === user!.id &&
+          contact.contact?.[0]?.id === profileUser!.id
         );
-
 
         setIsAlreadyFriend(isFriend);
       } catch (error) {
@@ -83,6 +82,7 @@ export default function ProfilePage() {
 
     checkFriendship();
   }, [user, profileUser, isOwnProfile]);
+
 
   useEffect(() => {
     if (!profileUser?.id) return;
@@ -95,7 +95,7 @@ export default function ProfilePage() {
 
         const allCars = await response.json();
         const userCars = allCars
-          .filter((car: any) => car.userId[0].id === profileUser!.id) // lul
+          .filter((car: any) => car.user[0].id === profileUser!.id)
           .map((car: any) => ({
             id: car.id || '',
             brand: car.brand || '',
@@ -103,7 +103,7 @@ export default function ProfilePage() {
             color: car.color || '',
             licensePlate: car.licensePlate || '',
             seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-            userId: car.userId
+            user: car.user
           }));
 
         setCars(userCars);
@@ -263,12 +263,16 @@ export default function ProfilePage() {
     const isCreating = !isEdit;
 
     const payload = {
+      title: `${user.lastName} - ${car.brand} ${car.model}`,
       brand: car.brand,
       model: car.model,
       color: car.color,
       licensePlate: car.licensePlate,
       seats: Number(car.seats),
-      userId: user.id,
+      user: [{
+        id: user.id,
+        username: user.username
+      }],
     };
 
     const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
@@ -288,7 +292,7 @@ export default function ProfilePage() {
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((car: any) => car.userId[0].id === user.id)
+        .filter((car: any) => car.user[0].id === user.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
@@ -296,7 +300,7 @@ export default function ProfilePage() {
           color: car.color || '',
           licensePlate: car.licensePlate || '',
           seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-          userId: car.userId
+          userId: car.user
         }));
 
       setCars(updatedCars);
@@ -322,7 +326,7 @@ export default function ProfilePage() {
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((c: any) => c.userId[0].id === user?.id)
+        .filter((c: any) => c.user[0].id === user?.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
@@ -330,7 +334,7 @@ export default function ProfilePage() {
           color: car.color || '',
           licensePlate: car.licensePlate || '',
           seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-          userId: car.userId
+          userId: car.user
         }));
 
       setCars(updatedCars);
@@ -347,28 +351,21 @@ export default function ProfilePage() {
   }
 
   /* friendship stuff */
+
   async function handleAddFriend() {
     if (!user?.id || !profileUser?.id) return;
 
     try {
       const payload = {
-        title: `${user.username} - ${profileUser.username}`,
-        userId: {
+        title: `${user.firstName} ${user.lastName} - ${profileUser.firstName} ${profileUser.lastName}`,
+        user: [{
           id: user.id,
-          username: user.username,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          description: user.description
-        },
-        contactId: {
+          username: user.username
+        }],
+        contact: [{
           id: profileUser.id,
-          username: profileUser.username,
-          email: profileUser.email,
-          firstName: profileUser.firstName,
-          lastName: profileUser.lastName,
-          description: profileUser.description
-        }
+          username: profileUser.username
+        }]
       };
 
       const response = await fetch('/api/Contact', {
@@ -379,9 +376,24 @@ export default function ProfilePage() {
 
       if (response.ok) {
         setIsAlreadyFriend(true);
+        showAlert({
+          message: "Kontakt tillagd!",
+          backgroundColor: "success",
+          textColor: "white",
+          duration: 3000,
+        });
       } else {
+        const error = await response.json();
+        console.error('Error adding friend:', error);
+        showAlert({
+          message: "Kunde inte lägga till kontakt. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
       }
     } catch (error) {
+      console.error('Error adding friend:', error);
       showAlert({
         message: "Okänt fel. Försök igen.",
         backgroundColor: "danger",
@@ -399,8 +411,8 @@ export default function ProfilePage() {
       const contacts = await contactsResponse.json();
 
       const contact = contacts.find((c: any) =>
-        c.userId[0]?.id === user.id &&
-        c.contactId[0]?.id === profileUser.id
+        c.user?.[0]?.id === user.id &&
+        c.contact?.[0]?.id === profileUser.id
       );
 
       if (contact) {
@@ -410,9 +422,16 @@ export default function ProfilePage() {
 
         if (response.ok) {
           setIsAlreadyFriend(false);
+          showAlert({
+            message: "Kontakt borttagen!",
+            backgroundColor: "success",
+            textColor: "white",
+            duration: 3000,
+          });
         }
       }
     } catch (error) {
+      console.error('Error removing friend:', error);
       showAlert({
         message: "Okänt fel. Försök igen.",
         backgroundColor: "danger",
