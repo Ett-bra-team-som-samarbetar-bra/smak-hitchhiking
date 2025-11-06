@@ -17,7 +17,7 @@ export default function ProfilePage() {
   const { user, refreshUser, logout } = useAuth();
   const { showAlert } = useSmakTopAlert();
   const { profileImage, refreshProfileImage } = useProfileImage(
-    user?.id || null
+    userId || user?.id || null
   );
 
   const [isAlreadyFriend, setIsAlreadyFriend] = useState(false);

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useRef, type ReactNode } from "react";
+import { useEffect } from "react";
 import SmakTopAlert from "../components/SmakTopAlert";
 
 type AlertType = "success" | "danger" | "warning";
@@ -51,6 +52,22 @@ export function SmakTopAlertProvider({ children }: { children: ReactNode }) {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => setShow(false), duration);
   };
+
+  // Hide on any click
+  useEffect(() => {
+    if (!show) return;
+
+    const handleClose = () => setShow(false);
+
+    document.addEventListener("mousedown", handleClose);
+    document.addEventListener("touchstart", handleClose);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClose);
+      document.removeEventListener("touchstart", handleClose);
+    };
+  }, [show]);
+
 
   return (
     <SmakTopAlertContext.Provider value={{ showAlert }}>
