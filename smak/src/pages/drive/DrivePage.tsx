@@ -114,7 +114,7 @@ export default function DrivePage() {
         const allCars = await response.json();
 
         const userCars = allCars
-          .filter((car: any) => car.userId[0].id === user!.id) // lul
+          .filter((car: any) => car.user[0].id === user!.id) // lul
           .map((car: any) => ({
             id: car.id || '',
             brand: car.brand || '',
@@ -122,7 +122,7 @@ export default function DrivePage() {
             color: car.color || '',
             licensePlate: car.licensePlate || '',
             seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-            userId: car.userId
+            user: car.user
           }));
 
         setCars(userCars);
@@ -151,7 +151,10 @@ export default function DrivePage() {
       color: car.color,
       licensePlate: car.licensePlate,
       seats: Number(car.seats),
-      userId: user.id,
+      user: [{
+        id: user.id,
+        username: user.username
+      }],
     };
 
     const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
@@ -176,7 +179,7 @@ export default function DrivePage() {
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((car: any) => car.userId[0].id === user.id)
+        .filter((car: any) => car.user[0].id === user.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
@@ -184,7 +187,7 @@ export default function DrivePage() {
           color: car.color || '',
           licensePlate: car.licensePlate || '',
           seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-          userId: car.userId
+          user: car.user
         }));
 
       setCars(updatedCars);
