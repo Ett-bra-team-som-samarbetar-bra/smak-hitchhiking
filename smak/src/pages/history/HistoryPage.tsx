@@ -9,7 +9,8 @@ import useUserTrips from "../../hooks/useUserTrips";
 export default function HistoryPage() {
   const { setHistoryCount } = useTripCount();
   const { user } = useAuth();
-  if (!user) return;
+
+  if (!user) return null;
   const allTrips = useAllTrips();
   const filteredTrips = useUserTrips(user?.id, allTrips);
 
@@ -25,7 +26,7 @@ export default function HistoryPage() {
 
   useEffect(() => {
     setHistoryCount(pastTrips.length);
-  }, [pastTrips]);
+  }, [pastTrips.length, setHistoryCount]);
 
   return <TripGroupList groupedTrips={groupedPastTrips} isBooked={true} />;
 }

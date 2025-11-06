@@ -10,7 +10,8 @@ export default function ComingTripsPage() {
   const { setComingCount } = useTripCount();
   const allTrips = useAllTrips();
   const { user } = useAuth();
-  if (!user) return;
+
+  if (!user) return null;
   const userTrips = useUserTrips(user?.id, allTrips);
 
   const sortedTrips = [...userTrips].sort(

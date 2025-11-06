@@ -6,7 +6,7 @@ import useOnTrip from "../hooks/useOnTrip";
 
 export default function Footer() {
   const { historyCount, comingCount } = useTripCount();
-  const { onTrip } = useOnTrip(); // TODO trip provider
+  const { onTrip } = useOnTrip();
 
   let allowedPaths = ["/profile", "/drive", "/", "/history", "/coming-trips"];
   if (onTrip) {
@@ -29,11 +29,10 @@ export default function Footer() {
                 <NavLink
                   to={route.path}
                   key={i}
-                  className={`position-relative text-decoration-none ${
-                    isActive(route.path)
-                      ? "text-primary text-grow"
-                      : "text-secondary"
-                  } d-flex flex-column align-items-center justify-content-center nav-link-set-width`}
+                  className={`position-relative text-decoration-none ${isActive(route.path)
+                    ? "text-primary text-grow"
+                    : "text-secondary"
+                    } d-flex flex-column align-items-center justify-content-center nav-link-set-width`}
                 >
                   <i
                     className={`bi bi-${route.icon} text-center nav-icon-size`}
