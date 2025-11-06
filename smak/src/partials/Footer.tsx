@@ -2,14 +2,15 @@ import { Row, Col } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import routes from "../routes";
 import { useTripCount } from "../context/TripCountProvider";
+import useOnTrip from "../hooks/useOnTrip";
 
 export default function Footer() {
   const { historyCount, comingCount } = useTripCount();
-  const isOnTrip = false; // TODO trip provider
+  const { onTrip } = useOnTrip(); // TODO trip provider
 
   let allowedPaths = ["/profile", "/drive", "/", "/history", "/coming-trips"];
-  if (isOnTrip) {
-    allowedPaths = ["/profile", "/trips-current", "/coming-trips",];
+  if (onTrip) {
+    allowedPaths = ["/profile", "/trips-current", "/coming-trips"];
   }
 
   const pathName = useLocation().pathname;
@@ -21,13 +22,22 @@ export default function Footer() {
         <Row className="m-0 pb-3">
           <Col className="d-flex align-items-center justify-content-between pt-2 pb-3">
             {routes
-              .filter(route => route.menuLabel && allowedPaths.includes(route.path))
+              .filter(
+                (route) => route.menuLabel && allowedPaths.includes(route.path)
+              )
               .map((route, i) => (
                 <NavLink
                   to={route.path}
                   key={i}
-                  className={`position-relative text-decoration-none ${isActive(route.path) ? "text-primary text-grow" : "text-secondary"} d-flex flex-column align-items-center justify-content-center nav-link-set-width`}>
-                  <i className={`bi bi-${route.icon} text-center nav-icon-size`} />
+                  className={`position-relative text-decoration-none ${
+                    isActive(route.path)
+                      ? "text-primary text-grow"
+                      : "text-secondary"
+                  } d-flex flex-column align-items-center justify-content-center nav-link-set-width`}
+                >
+                  <i
+                    className={`bi bi-${route.icon} text-center nav-icon-size`}
+                  />
                   <p className={`text-center nav-link-size m-0`} key={i}>
                     {route.menuLabel}
                   </p>
@@ -48,8 +58,8 @@ export default function Footer() {
                 </NavLink>
               ))}
           </Col>
-        </Row >
+        </Row>
       </div>
-    </footer >
+    </footer>
   );
 }

@@ -17,12 +17,6 @@ export default function TripsDonePage() {
   const [passengers, setPassengers] = useState<User[]>([]);
   const [allParticipants, setAllParticipants] = useState<User[]>([]);
 
-  if (!user)
-    return <p className="text-center text-muted">Ingen användare inloggad.</p>;
-
-  if (!allTrips || allTrips.length === 0)
-    return <p className="text-center text-muted">Inga resor hittades.</p>;
-
   const firstTrip = allTrips[0];
   const currentUserId = user!.id;
   const driverId = "4brsd0w5hsny30gm8ctd1kf1n9"; // TODO: get from trip data
@@ -52,6 +46,12 @@ export default function TripsDonePage() {
     };
     fetchTripParticipants();
   }, [driverId, currentUserId]);
+
+  if (!user)
+    return <p className="text-center text-muted">Ingen användare inloggad.</p>;
+
+  if (!allTrips || allTrips.length === 0)
+    return <p className="text-center text-muted">Inga resor hittades.</p>;
 
   const handleUserClick = (user: User) => {
     navigate(`/profile/${user.id}`, { state: { user } });

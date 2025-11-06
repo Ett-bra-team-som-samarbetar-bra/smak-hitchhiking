@@ -1,7 +1,11 @@
 import { createContext } from "react";
+import type Trip from "../interfaces/Trips";
 
 export interface OnTripContextType {
-    onTrip: boolean;
-    setOnTrip: (value: boolean) => void;
+  onTrip: boolean;
+  currentTrip: Trip | null;
+  refreshTripStatus: () => void;
 }
-export const OnTripContext = createContext<OnTripContextType | undefined>(undefined);
+export const OnTripContext = createContext<OnTripContextType | undefined>(
+  undefined
+);

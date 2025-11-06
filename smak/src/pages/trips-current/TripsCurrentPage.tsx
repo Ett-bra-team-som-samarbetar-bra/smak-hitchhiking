@@ -7,11 +7,11 @@ import CarModal from "../profile/CarModal";
 import { useNavigate } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
 import { useAuth } from "../../hooks/useAuth";
-import useAllTrips from "../../hooks/useAllTrips";
+import useOnTrip from "../../hooks/useOnTrip";
 
 export default function TripsCurrentPage() {
   const { user } = useAuth();
-  const allTrips = useAllTrips();
+  const { currentTrip } = useOnTrip();
   const navigate = useNavigate();
 
   const [requests, setRequests] = useState(getMockUsers());
@@ -25,11 +25,8 @@ export default function TripsCurrentPage() {
     licensePlate: "ABC123",
     seats: 3,
   });
-
-  if (!allTrips || allTrips.length === 0) return <p>Inga resor hittades</p>;
-  const firstTrip = allTrips[0];
-  if (!user) return;
-  const isDriver = user.id === firstTrip.driverId[0].id;
+  if (!user || !currentTrip) return;
+  const isDriver = user.id === currentTrip?.driverId[0].id;
 
   const handleAcceptRequest = (passenger: any) => {
     setPassengers([...passengers, passenger]);
@@ -74,7 +71,7 @@ export default function TripsCurrentPage() {
           </Accordion.Header>
           <Accordion.Body>
             <TripCardBig
-              trip={firstTrip}
+              trip={currentTrip}
               onCarClick={handleCarClick}
               onUserClick={() => handleUserClick(user)}
             />

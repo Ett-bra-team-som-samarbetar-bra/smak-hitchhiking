@@ -14,6 +14,7 @@ import Footer from "./partials/Footer";
 import DesktopPage from "./pages/desktop/DesktopPage";
 import config from "./config/Config";
 import DynamicMap from "./partials/DynamicMap";
+import OnTripProvider from "./context/OnTripProvider";
 
 function AppContent() {
   const { user } = useAuth();
@@ -117,7 +118,9 @@ export default function App() {
       <SmakTopAlertProvider>
         <DynamicMapProvider>
           <TripCountProvider>
-            <AppContent />
+            <OnTripProvider>
+              <AppContent />
+            </OnTripProvider>
           </TripCountProvider>
         </DynamicMapProvider>
       </SmakTopAlertProvider>
