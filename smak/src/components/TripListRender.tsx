@@ -13,6 +13,12 @@ export function TripGroupList({
   isBooked = false,
 }: TripGroupListProps) {
   const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
+  const [ready, setReady] = React.useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 75);
+    return () => clearTimeout(timer);
+  }, [groupedTrips]);
 
   const hasTrips = Object.keys(groupedTrips).length > 0;
 
@@ -23,6 +29,10 @@ export function TripGroupList({
       setSelectedIndex(index);
     }
   };
+
+  if (!ready) {
+    return <div />;
+  }
 
   return (
     <div className="d-flex flex-column gap-4">

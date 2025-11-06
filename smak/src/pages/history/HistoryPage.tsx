@@ -24,6 +24,7 @@ export default function HistoryPage() {
   });
   const groupedPastTrips = groupTripsByDate(pastTrips);
 
+  // Update counter
   useEffect(() => {
     setHistoryCount(pastTrips.length);
   }, [pastTrips.length, setHistoryCount]);

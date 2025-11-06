@@ -19,8 +19,8 @@ export default function TripCardSmall(props: TripCardProps) {
   const user = useFetchUser(userId);
   const rating = user?.rating;
 
-  const firstName = user?.firstName || "Okänd";
-  const lastName = user?.lastName || "Användare";
+  const firstName = user?.firstName || "";
+  const lastName = user?.lastName || "";
 
   return (
     <SmakCard className={`${className} pb-0`}>
