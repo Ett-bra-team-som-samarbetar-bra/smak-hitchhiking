@@ -4,39 +4,6 @@ import SmakContact from "../../components/SmakContact";
 import { useAuth } from "../../hooks/useAuth";
 import type User from "../../interfaces/User";
 
-interface Contact {
-  id: string;
-  title: string | null;
-  userId: Array<{
-    id: string;
-    username: string;
-    email?: string;
-    phone?: string;
-    firstName?: string;
-    lastName?: string;
-    description?: string;
-    rating?: number;
-    tripCount?: number;
-    preferences?: Array<string>;
-    roles?: Array<string>;
-
-  }>;
-  contactId: Array<{
-    id: string;
-    username: string;
-    email?: string;
-    phone?: string;
-    firstName?: string;
-    lastName?: string;
-    description?: string;
-    rating?: number;
-    tripCount?: number;
-    preferences?: Array<string>;
-    roles?: Array<string>;
-  }>;
-}
-
-
 export default function ContactPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -50,16 +17,12 @@ export default function ContactPage() {
       try {
         const response = await fetch(`/api/expand/Contact`);
         if (!response.ok) throw new Error('Failed to fetch contacts');
-        const allContacts: Contact[] = await response.json();
+        const allContacts: any[] = await response.json();
 
-        const userContacts = allContacts.filter(contact =>
-          contact.userId?.[0]?.id === user!.id && contact.contactId?.[0]
-        );
-
-        const contactsWithUserData = await Promise.all(
-          userContacts.map(async (contact) => {
-            const contactUser = contact.contactId[0];
-
+        const userContacts = allContacts
+          .filter(contact => contact.user?.[0]?.id === user!.id)
+          .map(contact => {
+            const contactUser = contact.contact[0];
             return {
               id: contactUser.id,
               username: contactUser.username,
@@ -73,12 +36,12 @@ export default function ContactPage() {
               preferences: contactUser.preferences || [],
               roles: contactUser.roles || [],
             };
-          })
-        );
+          });
 
-        setContacts(contactsWithUserData);
+        setContacts(userContacts);
         setLoading(false);
       } catch (error) {
+        console.error('Error fetching contacts:', error);
         setLoading(false);
       }
     }
