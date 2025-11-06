@@ -14,7 +14,6 @@ import useFetchCar from "../../hooks/useFetchCar";
 import useProfileImage from "../../hooks/useProfileImage";
 import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
-import type User from "../../interfaces/User";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -110,10 +109,6 @@ export default function TripCardBig(props: TripCardProps) {
     setShowCarModal(true);
   };
 
-  const handleUserClick = (user: User) => {
-    navigate(`/profile/${user.id}`, { state: { user } });
-  };
-
   return (
     <>
       <SmakCard className={`${className} pb-0`}>
@@ -133,7 +128,7 @@ export default function TripCardBig(props: TripCardProps) {
             <div className="d-flex justify-content-center">
               <img
                 onClick={() => {
-                  handleUserClick;
+                  navigate(`/profile/${user?.id}`, { state: { user } });
                 }}
                 src={profileImage}
                 alt="Profil"
