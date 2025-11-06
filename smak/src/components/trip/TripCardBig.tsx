@@ -14,10 +14,11 @@ import useFetchCar from "../../hooks/useFetchCar";
 import useProfileImage from "../../hooks/useProfileImage";
 import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
-
+  const { user } = useAuth();
   const navigate = useNavigate();
   const {
     trip,
@@ -37,7 +38,7 @@ export default function TripCardBig(props: TripCardProps) {
 
   const { profileImage } = useProfileImage(trip.driverId[0].id ?? null);
 
-  const user = useFetchUser(driverId[0].id ?? null);
+  const cardUser = useFetchUser(driverId[0].id ?? null);
   const vehicle = useFetchCar(trip.carIdId ?? null);
 
   const [showCarModal, setShowCarModal] = useState(false);
@@ -50,9 +51,9 @@ export default function TripCardBig(props: TripCardProps) {
     seats: 0,
   });
 
-  const rating = user?.rating;
-  const firstName = user?.firstName || "Okänd";
-  const lastName = user?.lastName || "Användare";
+  const rating = cardUser?.rating;
+  const firstName = cardUser?.firstName || "Okänd";
+  const lastName = cardUser?.lastName || "Användare";
   const vehicleInfo = vehicle
     ? isBooked
       ? `${vehicle.model} ${vehicle.licensePlate}`
@@ -109,6 +110,17 @@ export default function TripCardBig(props: TripCardProps) {
     setShowCarModal(true);
   };
 
+  const handleUserClick = () => {
+
+    if( cardUser?.id === user?.id) 
+    {
+      navigate(`/profile`);
+    }
+      else{
+      navigate(`/profile/${cardUser?.id}`, { state: { user: cardUser } });
+    }
+  }
+
   return (
     <>
       <SmakCard className={`${className} pb-0`}>
@@ -127,9 +139,7 @@ export default function TripCardBig(props: TripCardProps) {
           <div className="position-absolute trip-card-profil-image-container">
             <div className="d-flex justify-content-center">
               <img
-                onClick={() => {
-                  navigate(`/profile/${user?.id}`, { state: { user } });
-                }}
+                onClick={handleUserClick}
                 src={profileImage}
                 alt="Profil"
                 className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer"
