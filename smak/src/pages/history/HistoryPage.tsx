@@ -1,10 +1,10 @@
 import { groupTripsByDate } from "../../utils/DateUtils";
 import { TripGroupList } from "../../components/TripListRender";
 import { useTripCount } from "../../context/TripCountProvider";
+import { useAuth } from "../../hooks/useAuth";
 import { useEffect } from "react";
 import useAllTrips from "../../hooks/useAllTrips";
 import useUserTrips from "../../hooks/useUserTrips";
-import { useAuth } from "../../hooks/useAuth";
 
 export default function HistoryPage() {
   const { setHistoryCount } = useTripCount();

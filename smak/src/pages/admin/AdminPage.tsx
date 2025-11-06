@@ -62,14 +62,14 @@ export default function AdminPage() {
 
   return (
     <div className="d-flex flex-column gap-3">
-      <h1>Välkommen {user.firstName}!</h1>
+      <h1 className="text-center">Välkommen {user.firstName}!</h1>
       <InputFormNumber
         placeholder="0"
         label="Sidstorlek"
         value={pageSize}
         setFormProp={handlePageSizeChange}
       />
-      <p>
+      <p >
         Visar sida {page} med {pageSize} användare{" "}
       </p>
       {userList &&

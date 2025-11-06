@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./hooks/useAuth";
-import { TripCountProvider, useTripCount } from "./context/TripCountProvider";
+import { TripCountProvider } from "./context/TripCountProvider";
 import { SmakTopAlertProvider } from "./context/SmakTopAlertProvider";
-import useAllTrips from "./hooks/useAllTrips";
-import { getTripDateTime } from "./utils/DateUtils";
 import DynamicMapProvider, {
   useDynamicMap,
 } from "./context/DynamicMapProvider";
@@ -19,7 +17,6 @@ import OnTripProvider from "./context/OnTripProvider";
 function AppContent() {
   const { user } = useAuth();
   const { setIsLoginPage } = useDynamicMap();
-  const { setHistoryCount, setComingCount } = useTripCount();
 
   const [isPwa, setIsPwa] = useState(false);
   const [showHeaderFooter, setShowHeaderFooter] = useState(false);
@@ -29,21 +26,6 @@ function AppContent() {
   const shouldShowMap = mapActivePaths.includes(location.pathname);
 
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  const allTrips = useAllTrips();
-
-  // Set inital counters on footer badges
-  useEffect(() => {
-    const today = new Date();
-    const historyTrips = allTrips.filter(
-      (trip) => getTripDateTime(trip) < today
-    );
-    const comingTrips = allTrips.filter(
-      (trip) => getTripDateTime(trip) > today
-    );
-
-    setHistoryCount(historyTrips.length);
-    setComingCount(comingTrips.length);
-  }, [setHistoryCount, setComingCount]);
 
   // DynamicMap
   useEffect(() => {
@@ -89,24 +71,21 @@ function AppContent() {
   return (
     <>
       <div
-        className={`header-container ${
-          showHeaderFooter ? "header-visible" : "header-hidden"
-        }`}
+        className={`header-container ${showHeaderFooter ? "header-visible" : "header-hidden"
+          }`}
       >
         <Header />
       </div>
       <Main />
       <div
-        className={`footer-container ${
-          showHeaderFooter ? "footer-visible" : "footer-hidden"
-        }`}
+        className={`footer-container ${showHeaderFooter ? "footer-visible" : "footer-hidden"
+          }`}
       >
         <Footer />
       </div>
       <DynamicMap
-        className={`dynamic-map-container ${
-          shouldShowMap ? "" : "dynamic-map-hidden"
-        }`}
+        className={`dynamic-map-container ${shouldShowMap ? "" : "dynamic-map-hidden"
+          }`}
       />
     </>
   );
