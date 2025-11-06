@@ -13,7 +13,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function InputFindTrip() {
-  const { from, setFrom, to, setTo, distance, setDistance, duration, setDuration, centerMapOnLocations } = useDynamicMap();
+  const {
+    from,
+    setFrom,
+    to,
+    setTo,
+    distance,
+    setDistance,
+    duration,
+    setDuration,
+    centerMapOnLocations,
+  } = useDynamicMap();
   const { showAlert } = useSmakTopAlert();
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState<Date | null>(null);
@@ -39,12 +49,21 @@ export default function InputFindTrip() {
 
     try {
       // TODO fetch post
-      console.log(`Distans: ${Math.round(distance / 1000)}km \nTidsestimat: ${(duration / 60 / 60).toFixed(1)}h`);
-      await new Promise(resolve => setTimeout(resolve, 1400));
+      console.log(
+        `Distans: ${Math.round(distance / 1000)}km \nTidsestimat: ${(
+          duration /
+          60 /
+          60
+        ).toFixed(1)}h`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1400));
 
       clearInputs();
-      navigate("/trips-found");
-
+      navigate(
+        `/trips-found?from=${encodeURIComponent(
+          from.name
+        )}&date=${date.toISOString()}`
+      );
     } catch (error) {
       showAlert({
         message: "Ett fel uppstod vid sökningen av resor. Försök igen.",
@@ -52,7 +71,6 @@ export default function InputFindTrip() {
         textColor: "white",
         duration: 5000,
       });
-
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +88,6 @@ export default function InputFindTrip() {
   return (
     <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
       <div className="d-flex flex-column">
-
         {/* Buttons */}
         <SmakMapButton
           onClick={centerMapOnLocations}
@@ -85,23 +102,18 @@ export default function InputFindTrip() {
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-          <GeocodeInput
-            value={from}
-            onChange={setFrom}
-            placeholder="Från" />
+          <GeocodeInput value={from} onChange={setFrom} placeholder="Från" />
 
-          <GeocodeInput
-            value={to}
-            onChange={setTo}
-            placeholder="Till" />
+          <GeocodeInput value={to} onChange={setTo} placeholder="Till" />
 
           {/* Calender */}
-          <div className="position-relative interactive w-100" >
+          <div className="position-relative interactive w-100">
             <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
             <Button
               type="button"
               className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
-              onClick={() => setOpen(true)}>
+              onClick={() => setOpen(true)}
+            >
               {date ? date.toLocaleDateString() : "Avgång"}
             </Button>
 
@@ -120,7 +132,9 @@ export default function InputFindTrip() {
                 showPopperArrow={false}
                 showTimeInput={false}
                 autoComplete={"off"}
-                onChange={d => { setDate(d); }}
+                onChange={(d) => {
+                  setDate(d);
+                }}
                 onClickOutside={() => setOpen(false)}
                 customInput={<span style={{ display: "none" }} />}
               />
@@ -130,11 +144,12 @@ export default function InputFindTrip() {
           <SubmitButton
             isLoading={isLoading}
             className="mt-4 interactive"
-            color={"primary"}>
+            color={"primary"}
+          >
             Sök resa
           </SubmitButton>
         </form>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
