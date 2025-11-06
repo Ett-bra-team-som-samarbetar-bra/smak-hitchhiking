@@ -14,7 +14,8 @@ export default function CarCard({
 }: CarCardProps) {
     return (
         <SmakCard>
-            <div className="d-flex justify-content-between gap-3 align-items-center">
+
+            <div onClick={onEdit} className="d-flex justify-content-between gap-3 align-items-center">
                 <div className="d-flex align-items-center gap-3">
                     <i className="bi bi-car-front-fill fs-1 text-black"></i>
                     <div className="d-flex flex-column align-items-start">

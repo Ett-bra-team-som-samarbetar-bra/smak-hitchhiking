@@ -3,7 +3,7 @@ import SmakButton from "../../components/SmakButton";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { uploadMedia } from "../../components/fileUpload/MediaUploader";
 import UserModal from "./UserModal";
@@ -20,14 +20,10 @@ export default function ProfilePage() {
     user?.id || null
   );
 
-  const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
-  const isOwnProfile = !userId;
   const [isAlreadyFriend, setIsAlreadyFriend] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [cars, setCars] = useState<Car[]>([]);
-
-
   const [showUserModal, setShowUserModal] = useState(false);
   const [userPayload, setUserPayload] = useState<{ user: User } | null>(null);
   const [showCarModal, setShowCarModal] = useState(false);
@@ -40,6 +36,10 @@ export default function ProfilePage() {
     seats: 0,
   });
 
+  const navigate = useNavigate();
+  const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
+  const isOwnProfile = !userId;
+  const isAdmin = user?.roles.includes("Administrator") || false;
 
   // Set the profile user based on whether it's own profile or someone else
   useEffect(() => {
@@ -227,6 +227,10 @@ export default function ProfilePage() {
   }
 
   // Car stuff
+  const carTitle = isOwnProfile
+    ? (isEdit ? "Redigera fordon" : "Lägg till fordon")
+    : "Fordon";
+
   function handleAddCar() {
     setCarPayload({ id: "", brand: "", model: "", color: "", licensePlate: "", seats: 0 });
     setIsEdit(false);
@@ -422,6 +426,10 @@ export default function ProfilePage() {
     logout();
   };
 
+  const handleAdminClicked = () => {
+    navigate("/admin");
+  };
+
   return (
     <>
       {profileUser && (
@@ -448,7 +456,7 @@ export default function ProfilePage() {
           }
         />
       )}
-      <div className="d-flex flex-column gap-3">
+      <div className="d-flex flex-column gap-3 mt-4">
         <h2 className="m-0">Fordon</h2>
 
         {cars.length === 0 ? (
@@ -470,7 +478,7 @@ export default function ProfilePage() {
           />
         )}
         <CarModal
-          title={isEdit ? "Redigera fordon" : "Lägg till fordon"}
+          title={carTitle}
           show={showCarModal}
           onClose={handleCloseModal}
           payload={carPayload}
@@ -480,15 +488,27 @@ export default function ProfilePage() {
           onSave={() => handleSaveCar(carPayload)}
           onDelete={() => handleDeleteCar(carPayload)}
         />
+
         {isOwnProfile && (
-          <SmakButton className="my-2" onClick={handleAddCar}>
+          <SmakButton className="mt-2" onClick={handleAddCar}>
             Lägg till fordon
           </SmakButton>
         )}
 
-        <SmakButton className="my-2" onClick={handleLogout}>
-          Logga ut
-        </SmakButton>
+        {isOwnProfile && isAdmin && (
+          <SmakButton onClick={handleAdminClicked}>
+            Admin
+          </SmakButton>
+        )}
+
+        {isOwnProfile && (
+          <SmakButton
+            color="secondary"
+            className="mb-2"
+            onClick={handleLogout}>
+            Logga ut
+          </SmakButton>
+        )}
       </div>
     </>
   );

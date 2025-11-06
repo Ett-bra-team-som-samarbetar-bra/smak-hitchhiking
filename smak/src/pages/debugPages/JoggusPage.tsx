@@ -5,8 +5,6 @@ import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SubmitButton from "../../components/SubmitButton";
 import SmakCard from "../../components/SmakCard";
 import DividerLine from "../../components/DividerLine";
-import TripCardSmall from "../../components/trip/TripCardSmall";
-import TripCardBig from "../../components/trip/TripCardBig";
 import IconButton from "../../components/IconButton";
 import SmakButton from "../../components/SmakButton";
 import SmakContact from "../../components/SmakContact";
@@ -82,33 +80,6 @@ export default function JoggusPage() {
           placeholder="Text area"
           isTextArea={true} />
       </SmakCard>
-
-      <TripCardSmall
-        className=""
-        firstName="Lena"
-        lastName="Jansson"
-        profileImage="/images/development/user2.png"
-        startTime="15:00"
-        endTime="19:30"
-        startCity="Stockholm"
-        endCity="Malmö"
-        rating={4}
-        distance={420} />
-
-      <TripCardBig
-        className=""
-        firstName="Lena"
-        lastName="kekek"
-        startTime="15:00"
-        endTime="19:30"
-        startCity="Stockholm"
-        endCity="Malmö"
-        rating={4}
-        distance={420}
-        date="13/03 25"
-        vehicleInfo="Keken"
-        numOfSeats="42"
-        cardButtonType="userBook" />
 
       <SmakContact
         user={user}

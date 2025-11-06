@@ -30,7 +30,6 @@ interface CarModalProps {
   isOwnProfile?: boolean;
 }
 
-
 export default function CarModal({
   show,
   onClose,
@@ -99,28 +98,35 @@ export default function CarModal({
         disabled={!isOwnProfile}
       />
 
-      {isOwnProfile && (
-        <div className="d-flex gap-3 w-100 pt-2">
-          <SmakButton
-            className="text-nowrap"
-            onClick={onSave} color="primary">
-            {isEdit ? "Redigera bil" : "Spara bil"}
-          </SmakButton>
-          <SmakButton
-            className="text-nowrap"
-            onClick={onClose} color="secondary">Avbryt</SmakButton>
-
-          {isEdit && (
+      <div className="d-flex gap-3 w-100 pt-2">
+        {isOwnProfile && (
+          <>
             <SmakButton
               className="text-nowrap"
-              onClick={onDelete}
-              color="danger"
+              onClick={onSave}
+              color="primary"
             >
-              Ta bort bil
+              {isEdit ? "Redigera bil" : "Spara bil"}
             </SmakButton>
-          )}
-        </div>
-      )}
+
+            {isEdit && (
+              <SmakButton
+                className="text-nowrap"
+                onClick={onDelete}
+                color="danger"
+              >
+                Ta bort bil
+              </SmakButton>
+            )}
+          </>
+        )}
+        <SmakButton
+          className="text-nowrap"
+          onClick={onClose} color="secondary">
+          Avbryt
+        </SmakButton>
+      </div>
+
     </SmakModal>
   );
 }

@@ -30,7 +30,7 @@ export default function MapCircleButton({
     <div className="position-relative d-flex justify-content-end mb-2">
       <Button
         type="button"
-        className={`rounded-circle shadow d-flex justify-content-center align-items-center interactive border-0 ${className} ${clicked ? "bg-info" : "bg-light"}`}
+        className={`rounded-circle shadow d-flex justify-content-center align-items-center interactive border-0 ${className} ${clicked ? "bg-info" : "bg-light"} `}
         onClick={handleClick}
         style={{ width: "40px", height: "40px" }}
       >
