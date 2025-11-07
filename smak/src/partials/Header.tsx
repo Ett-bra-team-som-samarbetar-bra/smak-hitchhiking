@@ -1,5 +1,4 @@
 import { NavLink, useLocation } from "react-router-dom";
-import config from "../config/Config";
 import ReturnButton from "../components/ReturnButton";
 
 export default function Header() {
@@ -11,15 +10,6 @@ export default function Header() {
       <div className="whole-app-horizontal-width d-flex align-items-center justify-content-between px-3 py-2 w-100">
 
         <ReturnButton />
-
-        {/* Debug */}
-        {config.showDebugPages && (
-          <NavLink
-            to={"/debug"}
-            className="text-danger ms-2">
-            <i className="bi bi-gear-fill nav-icon-size" />
-          </NavLink>
-        )}
 
         {/* Logo */}
         <div className="d-flex align-items-center gap-1 justify-content-center mb-0 non-interactive">

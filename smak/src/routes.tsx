@@ -6,12 +6,8 @@ import HistoryPage from "./pages/history/HistoryPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import TripsCurrentPage from "./pages/trips-current/TripsCurrentPage";
 import ComingTripsPage from "./pages/trips-coming/ComingTripsPage";
-import JoggusPage from "./pages/debugPages/JoggusPage";
-import KalvPage from "./pages/debugPages/KalvPage";
-import TungisPage from "./pages/debugPages/TungisPage";
 import NotFoundPage from "./pages/notFound/NotFound";
 import TripsFoundPage from "./pages/trips-found/TripsFoundPage";
-import DebugPagePage from "./pages/debugPages/debugPage";
 import ProtectedRoute from "./utils/ProtectedRoutes";
 import AdminPage from "./pages/admin/AdminPage";
 import TripsDonePage from "./pages/trips-done/TripsDonePage";
@@ -126,45 +122,7 @@ const routes: Route[] = [
       </ProtectedRoute>
     ),
     path: "*",
-  },
-
-  // ############ Debug ############
-  {
-    element: (
-      <ProtectedRoute>
-        <DebugPagePage />
-      </ProtectedRoute>
-    ),
-    path: "/debug",
-    icon: "gear",
-  },
-  {
-    element: (
-      <ProtectedRoute>
-        <JoggusPage />
-      </ProtectedRoute>
-    ),
-    path: "/joggus",
-    icon: "apple-music",
-  },
-  {
-    element: (
-      <ProtectedRoute>
-        <KalvPage />
-      </ProtectedRoute>
-    ),
-    path: "/kalv",
-    icon: "android",
-  },
-  {
-    element: (
-      <ProtectedRoute>
-        <TungisPage />
-      </ProtectedRoute>
-    ),
-    path: "/tungis",
-    icon: "tux",
-  },
+  }
 ];
 
 export default routes;
