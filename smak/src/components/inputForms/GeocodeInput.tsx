@@ -6,11 +6,12 @@ interface GeocodeInputProps {
   onChange: (value: GeocodeSelection | null) => void;
   placeholder: string;
   excludeCity?: string;
+  icon: string;
 }
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-export default function GeocodeInput({ value, onChange, placeholder, excludeCity }: GeocodeInputProps) {
+export default function GeocodeInput({ value, onChange, placeholder, excludeCity, icon }: GeocodeInputProps) {
   const [query, setQuery] = useState(value?.name || "");
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -56,7 +57,7 @@ export default function GeocodeInput({ value, onChange, placeholder, excludeCity
 
   return (
     <div className="position-relative mb-1 interactive" >
-      <i className={`bi bi-geo-alt-fill dynamic-map-input-icons fs-5 non-interactive`} />
+      <i className={`bi ${icon} dynamic-map-input-icons fs-5 non-interactive`} />
       <input
         type="text"
         className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline cursor-pointer"

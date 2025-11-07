@@ -107,6 +107,7 @@ export default function InputFindTrip() {
             onChange={setFrom}
             placeholder="Från"
             excludeCity={to?.name}
+            icon="bi-pin-fill"
           />
 
           <GeocodeInput
@@ -114,11 +115,12 @@ export default function InputFindTrip() {
             onChange={setTo}
             placeholder="Till"
             excludeCity={from?.name}
+            icon="bi-flag-fill"
           />
 
           {/* Calender */}
           <div className="position-relative interactive w-100">
-            <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
+            <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5 non-interactive" />
             <Button
               type="button"
               className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
