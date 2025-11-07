@@ -102,9 +102,19 @@ export default function InputFindTrip() {
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-          <GeocodeInput value={from} onChange={setFrom} placeholder="Från" />
+          <GeocodeInput
+            value={from}
+            onChange={setFrom}
+            placeholder="Från"
+            excludeCity={to?.name}
+          />
 
-          <GeocodeInput value={to} onChange={setTo} placeholder="Till" />
+          <GeocodeInput
+            value={to}
+            onChange={setTo}
+            placeholder="Till"
+            excludeCity={from?.name}
+          />
 
           {/* Calender */}
           <div className="position-relative interactive w-100">

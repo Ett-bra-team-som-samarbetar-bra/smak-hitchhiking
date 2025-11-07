@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
 import InputFindTrip from "./InputFindTrip";
 import LoginOrRegister from "./LoginOrRegister";
 import config from "../../config/Config";
 import useOnTrip from "../../hooks/useOnTrip";
-import { useNavigate } from "react-router-dom";
 
 export default function StartPage() {
   const { user } = useAuth();

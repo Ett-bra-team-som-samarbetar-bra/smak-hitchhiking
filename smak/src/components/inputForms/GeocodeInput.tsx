@@ -5,11 +5,12 @@ interface GeocodeInputProps {
   value: GeocodeSelection | null;
   onChange: (value: GeocodeSelection | null) => void;
   placeholder: string;
+  excludeCity?: string;
 }
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-export default function GeocodeInput({ value, onChange, placeholder }: GeocodeInputProps) {
+export default function GeocodeInput({ value, onChange, placeholder, excludeCity }: GeocodeInputProps) {
   const [query, setQuery] = useState(value?.name || "");
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -48,6 +49,11 @@ export default function GeocodeInput({ value, onChange, placeholder }: GeocodeIn
     onChange(selection);
   };
 
+  // Don't allow same city in both from and to
+  const filteredSuggestions = excludeCity
+    ? suggestions.filter((s) => s.text !== excludeCity)
+    : suggestions;
+
   return (
     <div className="position-relative mb-1 interactive" >
       <i className={`bi bi-geo-alt-fill dynamic-map-input-icons fs-5 non-interactive`} />
@@ -68,7 +74,7 @@ export default function GeocodeInput({ value, onChange, placeholder }: GeocodeIn
         onFocus={() => setShowSuggestions(true)}
         onBlur={() => setShowSuggestions(false)} />
 
-      {showSuggestions && suggestions.length > 0 && (
+      {showSuggestions && filteredSuggestions.length > 0 && (
         <ul
           className="list-group position-absolute w-100 mt-1 rounded-4"
           style={{
@@ -77,7 +83,7 @@ export default function GeocodeInput({ value, onChange, placeholder }: GeocodeIn
             overflowY: "auto",
           }}>
 
-          {suggestions.map((s) => (
+          {filteredSuggestions.map((s) => (
             <li
               key={s.id}
               className="list-group-item list-group-item-action bg-white cursor-pointer dynamic-map-city-dropdown"

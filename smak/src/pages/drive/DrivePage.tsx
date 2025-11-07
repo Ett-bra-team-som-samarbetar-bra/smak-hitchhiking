@@ -346,9 +346,19 @@ export default function DrivePage() {
               )}
             </div>
 
-            <GeocodeInput value={from} onChange={setFrom} placeholder="Från" />
+            <GeocodeInput
+              value={from}
+              onChange={setFrom}
+              placeholder="Från"
+              excludeCity={to?.name}
+            />
 
-            <GeocodeInput value={to} onChange={setTo} placeholder="Till" />
+            <GeocodeInput
+              value={to}
+              onChange={setTo}
+              placeholder="Till"
+              excludeCity={from?.name}
+            />
 
             {/* Calender */}
             <div className="position-relative interactive w-100">
@@ -360,9 +370,9 @@ export default function DrivePage() {
               >
                 {date
                   ? date.toLocaleString("sv-SE", {
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  })
                   : "Avgång"}
               </Button>
 
