@@ -1,7 +1,7 @@
 import type UserTrip from "../interfaces/UserTrips";
 
-export default function useTripBookings() {
-  const bookTrip = async (tripId: string, userId: string, username: string) => {
+
+  export const bookTrip = async (tripId: string, userId: string, username: string) => {
     const payload = {
       tripRole: "Passenger",
       tripId: tripId,
@@ -24,7 +24,7 @@ export default function useTripBookings() {
     }
   };
 
-  const cancelTrip = async (tripId: string, userId: string) => {
+  export const cancelTrip = async (tripId: string, userId: string) => {
     try {
 
       const response = await fetch('/api/TripUsers');
@@ -53,7 +53,7 @@ export default function useTripBookings() {
     }
   };
 
-  const checkIfBooked = async (tripId: string, userId: string): Promise<boolean> => {
+  export const checkIfBooked = async (tripId: string, userId: string): Promise<boolean> => {
     try {
       const response = await fetch('/api/TripUsers');
       if (!response.ok) return false;
@@ -70,6 +70,3 @@ export default function useTripBookings() {
       return false;
     }
   };
-
-  return { bookTrip, cancelTrip, checkIfBooked };
-}
