@@ -85,7 +85,6 @@ export default function DrivePage() {
 
     setIsLoading(true);
 
-
     try {
       const response = await fetch("api/Trip", {
         method: "POST",
@@ -412,10 +411,15 @@ export default function DrivePage() {
                   onClickOutside={() => setOpen(false)}
                   onCalendarClose={() => setOpen(false)}
                   customInput={<span style={{ display: "none" }} />}
+                  minTime={
+                    date && date.toDateString() === new Date().toDateString()
+                      ? new Date()
+                      : new Date(0, 0, 0, 0, 0)
+                  }
+                  maxTime={new Date(0, 0, 0, 23, 59)}
                 />
               </div>
             </div>
-
 
             <SubmitButton
               isLoading={isLoading}
