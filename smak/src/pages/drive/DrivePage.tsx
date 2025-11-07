@@ -15,6 +15,7 @@ import SmakMapButton from "../../components/SmakMapButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type TripRequest from "../../interfaces/TripRequest";
+import InputFormText from "../../components/inputForms/InputFormText";
 
 export default function DrivePage() {
   const {
@@ -39,6 +40,7 @@ export default function DrivePage() {
   const [date, setDate] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
   const [cars, setCars] = useState<Car[]>([]);
+  const [tripInfo, setTripInfo] = useState("");
   const [carPayload, setCarPayload] = useState({
     id: "",
     brand: "",
@@ -78,9 +80,11 @@ export default function DrivePage() {
       arrivalTime: arrivalUTC,
       distance: Math.round(distance / 1000),
       seats: selectedVehicle.seats,
+      tripInfo: tripInfo || "",
     };
 
     setIsLoading(true);
+
 
     try {
       const response = await fetch("api/Trip", {
@@ -90,11 +94,16 @@ export default function DrivePage() {
         credentials: "include",
       });
 
+      console.log("Response status:", response.status);
+
       if (!response.ok) {
+        const errorText = await response.text();
+        console.log("Error response:", errorText);
         throw new Error("Inlogg misslyckades");
       }
 
       const data = await response.json();
+      console.log("Response data:", data);
       await Promise.all([data, new Promise((res) => setTimeout(res, 1000))]);
 
       setComingCount(comingCount + 1); // Update footer counters
@@ -128,6 +137,7 @@ export default function DrivePage() {
     setDuration(null);
     setDate(null);
     setOpen(false);
+    setTripInfo("");
   };
 
   const handleAddVehicle = () => {
@@ -352,6 +362,17 @@ export default function DrivePage() {
               icon="bi-flag-fill"
             />
 
+            <InputFormText
+              setFormProp={(e) => setTripInfo(e.target.value)}
+              className="interactive"
+              label="Reseinformation (valfritt)"
+              placeholder="Lägg till information om resan, t.ex. regler för medåkare"
+              isTextArea={true}
+              maxLength={500}
+              disabled={false}
+              value={tripInfo}
+            />
+
             {/* Calender */}
             <div className="position-relative interactive w-100">
               <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5 non-interactive" />
@@ -394,6 +415,7 @@ export default function DrivePage() {
                 />
               </div>
             </div>
+
 
             <SubmitButton
               isLoading={isLoading}
