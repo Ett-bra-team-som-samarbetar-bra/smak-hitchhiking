@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TripCardBig from "../../components/trip/TripCardBig";
 import SmakContact from "../../components/SmakContact";
 import CarModal from "../profile/CarModal";
@@ -14,23 +14,37 @@ export default function TripsCurrentPage() {
   const { currentTrip } = useOnTrip();
   const navigate = useNavigate();
 
-  if (!currentTrip) {
+  if (!currentTrip || !user) {
     return <p>Laddar..</p>;
   }
-  const passengers = useFetchPassengers(currentTrip?.id || "");
-  const car = useFetchCar(currentTrip?.carIdId);
+  const tripId = currentTrip?.id ?? "";
+  const carId = currentTrip?.carIdId ?? "";
+  const passengers = useFetchPassengers(tripId);
+  const car = useFetchCar(carId);
 
   const [showCarModal, setShowCarModal] = useState(false);
   const [carPayload, setCarPayload] = useState({
-    id: car?.id || "",
-    brand: car?.brand || "",
-    model: car?.model || "",
-    color: car?.color || "",
-    licensePlate: car?.licensePlate || "",
-    seats: car?.seats || 0,
+    id: "",
+    brand: "",
+    model: "",
+    color: "",
+    licensePlate: "",
+    seats: 0,
   });
-  if (!user || !currentTrip) return;
   const isDriver = user.id === currentTrip?.driver[0].id;
+
+  useEffect(() => {
+    if (car) {
+      setCarPayload({
+        id: car?.id || "",
+        brand: car?.brand || "",
+        model: car?.model || "",
+        color: car?.color || "",
+        licensePlate: car?.licensePlate || "",
+        seats: car?.seats || 0,
+      });
+    }
+  }, [car]);
 
   const handleRemovePassenger = async (passenger: any) => {
     try {

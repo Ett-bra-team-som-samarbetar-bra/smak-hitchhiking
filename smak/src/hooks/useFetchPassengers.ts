@@ -34,6 +34,6 @@ export default function useFetchPassengers(tripId: string) {
     }
 
     getPassengers();
-  });
+  }, [tripId]);
   return passengers;
 }
