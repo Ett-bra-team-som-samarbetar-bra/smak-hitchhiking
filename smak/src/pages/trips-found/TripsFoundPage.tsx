@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { getTripDateTime, groupTripsByDate } from "../../utils/DateUtils";
+import { groupTripsByDate } from "../../utils/DateUtils";
 
 import { TripGroupList } from "../../components/TripListRender";
 import useAllTrips from "../../hooks/useAllTrips";
@@ -18,10 +18,19 @@ export default function TripsFoundPage() {
   const twoDaysLater = new Date(date);
   twoDaysLater.setDate(date.getDate() + 1);
 
+  const now = new Date();
+
   const upcomingTrips = allTrips
     .filter((trip) => {
-      const tripDate = getTripDateTime(trip);
-      return tripDate >= date && tripDate <= twoDaysLater;
+      const tripDateTime = new Date(trip.departureTime);
+      const startBoundary = new Date(date);
+      const endBoundary = new Date(date);
+      endBoundary.setDate(date.getDate() + 1);
+      return (
+        tripDateTime >= startBoundary &&
+        tripDateTime <= endBoundary &&
+        tripDateTime >= now
+      );
     })
     .sort(
       (a, b) =>
@@ -31,5 +40,11 @@ export default function TripsFoundPage() {
 
   const groupedUpcomingTrips = groupTripsByDate(upcomingTrips);
 
-  return <TripGroupList groupedTrips={groupedUpcomingTrips} isBooked={false} cardButtonType="userBook" />;
+  return (
+    <TripGroupList
+      groupedTrips={groupedUpcomingTrips}
+      isBooked={false}
+      cardButtonType="userBook"
+    />
+  );
 }
