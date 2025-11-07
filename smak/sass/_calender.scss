@@ -24,6 +24,20 @@
   cursor: default !important;
 }
 
+.react-datepicker__time-list {
+  overflow-y: scroll !important;
+  scrollbar-width: none;
+}
+
+.react-datepicker__time-list::-webkit-scrollbar {
+  display: none;
+}
+
+.react-datepicker__time-list-item--selected {
+  background-color: var(--bs-primary) !important;
+  color: white !important;
+}
+
 .datepicker-popup {
   position: absolute;
   top: 100%;
