@@ -2,7 +2,7 @@ import { Col, Row } from "react-bootstrap";
 import { renderRatingStars } from "../../utils/Utils";
 import { useTripCount } from "../../context/TripCountProvider";
 import { getTripDateAndTime } from "../../utils/DateUtils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type TripCardProps from "../../interfaces/TripCardProps";
 import SmakCard from "../SmakCard";
@@ -15,6 +15,8 @@ import useProfileImage from "../../hooks/useProfileImage";
 import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
 import { useAuth } from "../../hooks/useAuth";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
+import type UserTrip from "../../interfaces/UserTrips";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -33,12 +35,12 @@ export default function TripCardBig(props: TripCardProps) {
     return <div> Laddar resa...</div>;
   }
 
-  const { startPosition, endPosition, seats, driver, distance } = trip;
+  const { startPosition, endPosition, seats, distance } = trip;
   const { date, startTime, endTime } = getTripDateAndTime(trip);
-
+  const { showAlert } = useSmakTopAlert();
   const { profileImage } = useProfileImage(trip.driver[0].id ?? null);
 
-  const cardUser = useFetchUser(driver[0].id ?? null);
+  const cardUser = useFetchUser(trip.driver[0].id ?? null);
   const vehicle = useFetchCar(trip.carIdId ?? null);
 
   const [showCarModal, setShowCarModal] = useState(false);
@@ -50,6 +52,38 @@ export default function TripCardBig(props: TripCardProps) {
     licensePlate: "",
     seats: 0,
   });
+  const [isTripBooked, setIsTripBooked] = useState(false);
+
+  // Check if this trip is already booked by the current user
+  useEffect(() => {
+    if (!user?.id || !trip?.id) return;
+
+    async function checkIfBooked() {
+      try {
+        const response = await fetch('/api/TripUsers');
+        if (!response.ok) return;
+
+        const tripUsers: UserTrip[] = await response.json();
+        const booking = tripUsers.find((tu) => {
+          const userId = tu.user?.[0]?.id;
+          const tripId = tu.tripId;
+          return userId === user!.id && tripId === trip.id;
+        });
+
+        setIsTripBooked(!!booking);
+      } catch (error) {
+        console.error("Failed to check booking status", error);
+      }
+    }
+
+    checkIfBooked();
+  }, [user?.id, trip?.id]);
+
+  // Determine the actual button type based on booking status
+  let actualButtonType = cardButtonType;
+  if (cardButtonType === "userBook" && isTripBooked) {
+    actualButtonType = "userCancel";
+  }
 
   const rating = cardUser?.rating;
   const firstName = cardUser?.firstName || "Okänd";
@@ -57,11 +91,11 @@ export default function TripCardBig(props: TripCardProps) {
   const vehicleInfo = vehicle
     ? isBooked
       ? `${vehicle.model} ${vehicle.licensePlate}`
-      : `${vehicle.model}`
+      : `${vehicle.brand} ${vehicle.model}`
     : "Okänd bil";
 
   let buttonText = "";
-  switch (cardButtonType) {
+  switch (actualButtonType) {
     // Passenger
     case "userBook":
       buttonText = "Boka";
@@ -82,13 +116,57 @@ export default function TripCardBig(props: TripCardProps) {
       buttonText = "";
       break;
   }
+  const bookTrip = async () => {
+    const payload = {
+      tripRole: "Passenger",
+      tripId: trip.id,
+      user: [{
+        id: user!.id,
+        username: user!.username
+      }],
+    };
+    const response = await fetch(`/api/TripUsers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) {
+      console.error("Failed to book trip");
+      throw new Error("Failed to book trip");
+    }
+  };
+
+
 
   // Update tripCount on footer badges
-  const handleOnButtonClick = () => {
+  const handleOnButtonClick = async () => {
     // Passenger
-    if (cardButtonType === "userBook") setComingCount(comingCount + 1);
-    else if (cardButtonType === "userCancel")
-      setComingCount(Math.max(comingCount - 1, 0));
+    if (actualButtonType === "userBook") {
+      try {
+        await bookTrip();
+        setComingCount(comingCount + 1);
+        setIsTripBooked(true);
+
+        showAlert({
+          message: "Resan har bokats!",
+          backgroundColor: "success",
+          textColor: "white",
+          duration: 3000,
+        });
+      } catch (error) {
+        showAlert({
+          message: "Ett fel uppstod vid bokning. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 3000,
+        });
+      }
+    }
+    else if (actualButtonType === "userCancel") {
+     
+    }
 
     // Driver
     if (cardButtonType === "driverStart")
@@ -111,12 +189,14 @@ export default function TripCardBig(props: TripCardProps) {
   };
 
   const handleUserClick = () => {
+
     if (cardUser?.id === user?.id) {
       navigate(`/profile`);
-    } else {
+    }
+    else {
       navigate(`/profile/${cardUser?.id}`, { state: { user: cardUser } });
     }
-  };
+  }
 
   return (
     <>
@@ -233,7 +313,7 @@ export default function TripCardBig(props: TripCardProps) {
         show={showCarModal}
         onClose={() => setShowCarModal(false)}
         payload={carPayload}
-        setPayload={() => {}}
+        setPayload={() => { }}
         isEdit={false}
         isOwnProfile={false}
       />
