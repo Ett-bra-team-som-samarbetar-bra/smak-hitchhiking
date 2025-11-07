@@ -16,7 +16,7 @@ import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
-import useTripBookings from "../../utils/TripBookings";
+import { bookTrip, cancelTrip, checkIfBooked } from "../../utils/TripBookings";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -39,7 +39,7 @@ export default function TripCardBig(props: TripCardProps) {
   const { date, startTime, endTime } = getTripDateAndTime(trip);
   const { showAlert } = useSmakTopAlert();
   const { profileImage } = useProfileImage(trip.driver[0].id ?? null);
-  const { bookTrip, cancelTrip, checkIfBooked } = useTripBookings();
+
 
   const cardUser = useFetchUser(trip.driver[0].id ?? null);
   const vehicle = useFetchCar(trip.carIdId ?? null);
@@ -57,7 +57,6 @@ export default function TripCardBig(props: TripCardProps) {
   const seatsLabel = vehicle
     ? (Number(vehicle.seats) === 1 ? "plats" : "platser")
     : "";
-
   // Check if this trip is already booked by the current user
   useEffect(() => {
     if (!user?.id || !trip?.id) return;
@@ -102,8 +101,6 @@ export default function TripCardBig(props: TripCardProps) {
       buttonText = "";
       break;
   }
-
-
 
   // Update tripCount on footer badges
   const handleOnButtonClick = async () => {
@@ -151,6 +148,27 @@ export default function TripCardBig(props: TripCardProps) {
         }
       }
     }
+    else if (cardButtonType === "userCancel") {
+      try {
+        await cancelTrip(trip.id, user!.id);
+        setComingCount(Math.max(comingCount - 1, 0));
+        setIsTripBooked(false);
+
+        showAlert({
+          message: "Resan har avbokats!",
+          backgroundColor: "success",
+          textColor: "white",
+          duration: 3000,
+        });
+      } catch (error) {
+        showAlert({
+          message: "Ett fel uppstod vid avbokning. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 3000,
+        });
+      }
+    }
 
     // Driver
     if (cardButtonType === "driverStart")
@@ -173,6 +191,7 @@ export default function TripCardBig(props: TripCardProps) {
   };
 
   const handleUserClick = () => {
+
     if (cardUser?.id === user?.id) {
       navigate(`/profile`);
     }
