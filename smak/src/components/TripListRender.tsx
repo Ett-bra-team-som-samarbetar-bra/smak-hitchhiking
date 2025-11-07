@@ -6,11 +6,13 @@ import type Trip from "../interfaces/Trips";
 interface TripGroupListProps {
   groupedTrips: Record<string, Trip[]>;
   isBooked?: boolean;
+  cardButtonType?: "userBook" | "userCancel" | "driverStart" | "driverDone" | "none";
 }
 
 export function TripGroupList({
   groupedTrips,
   isBooked = false,
+  cardButtonType = "none",
 }: TripGroupListProps) {
   const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
   const [ready, setReady] = React.useState(false);
@@ -48,6 +50,7 @@ export function TripGroupList({
                 <TripCardBig
                   key={cardKey}
                   trip={trip}
+                  cardButtonType={cardButtonType}
                   onBigTripCardClick={() => toggleCard(cardKey)}
                   isBooked={isBooked}
                 />
