@@ -66,7 +66,7 @@ export function TripGroupList({
           </div>
         ))
       ) : (
-        <h3 className="text-center m-0">Inga resor hittades</h3>
+        <h2 className="m-0">Inga resor hittades</h2>
       )}
     </div>
   );

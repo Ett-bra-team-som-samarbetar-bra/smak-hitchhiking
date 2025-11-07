@@ -89,8 +89,8 @@ export default function CarModal({
         disabled={!isOwnProfile}
       />
       <InputFormText
-        placeholder="Antal säten"
-        label="Antal säten"
+        placeholder="Antal platser"
+        label="Antal platser"
         isRequired={true}
         value={payload.seats ? payload.seats.toString() : ""}
         setFormProp={handleChange}
