@@ -343,17 +343,15 @@ export default function TripCardBig(props: TripCardProps) {
 
         {trip.tripInfo && (
           <>
-            <Row className="py-4">
-              <Col className="d-flex flex-column">
-                <div className="d-flex align-items-center justify-content-center fs-5 text-primary fw-semibold mb-2">
-                  <i className="bi bi-info-circle text-primary me-2"></i>
-                  <span>Information</span>
-                </div>
-                <span className="text-secondary fst-italic mt-1 fs-6">
-                  {trip.tripInfo}
-                </span>
-              </Col>
-            </Row>
+            {isBooked && (
+              <Row className="pb-4 pt-1">
+                <Col className="d-flex align-items-center">
+                  <span className="text-secondary text-center fst-italic">
+                    - {trip.tripInfo.trim()}
+                  </span>
+                </Col>
+              </Row>
+            )}
           </>
         )}
 
@@ -375,14 +373,14 @@ export default function TripCardBig(props: TripCardProps) {
             <i className="bi bi-info-circle fs-6 text-secondary"></i>
           </Col>
         </Row>
-      </SmakCard>
+      </SmakCard >
 
       <CarModal
         title="Fordon"
         show={showCarModal}
         onClose={() => setShowCarModal(false)}
         payload={carPayload}
-        setPayload={() => {}}
+        setPayload={() => { }}
         isEdit={false}
         isOwnProfile={false}
       />
