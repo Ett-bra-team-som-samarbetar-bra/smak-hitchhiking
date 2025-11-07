@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Users;
 using OrchardCore.Users.Models;
 using OrchardCore.Users.Services;
+using OrchardCore.Users.Indexes;
 using System.Text.Json.Nodes;
 using System.Security.Claims;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using YesSql;
 
 public static class AuthEndpoints
 {
@@ -194,6 +196,98 @@ public static class AuthEndpoints
             });
         });
 
+        app.MapGet("/api/auth/user/", async ([FromServices] ISession session, [FromServices] UserManager<IUser> userManager, [FromQuery] int page = 1, [FromQuery] int pageSize = 10) =>
+        {
+            if (page < 1) page = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+            var totalUsers = await session.Query<User, UserIndex>().CountAsync();
+
+            var users = await session.Query<User, UserIndex>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ListAsync();
+
+            var result = users.Select(u => new
+            {
+                id = u?.UserId,
+                username = u?.UserName,
+                email = u?.Email,
+                phoneNumber = u?.PhoneNumber,
+                firstName = u?.Properties?["FirstName"]?.ToString(),
+                lastName = u?.Properties?["LastName"]?.ToString(),
+                description = u?.Properties?["Description"]?.ToString(),
+                rating = u?.Properties?["Rating"]?.ToString(),
+                tripCount = u?.Properties?["TripCount"]?.ToString(),
+                preferences = u?.Properties?["Preferences"]?.AsArray()
+            });
+
+            return Results.Ok(new
+            {
+                page,
+                pageSize,
+                totalUsers,
+                totalPages = (int)Math.Ceiling((double)totalUsers / pageSize),
+                users = result
+            });
+        });
+
+        // Submit rating
+        app.MapPut("/api/auth/user/{userId}/rating", async (
+            string userId,
+            [FromBody] RatingRequest request,
+            [FromServices] UserManager<IUser> userManager) =>
+        {
+            var user = await userManager.FindByIdAsync(userId) as User;
+
+            if (user == null)
+            {
+                return Results.NotFound(new { error = "User not found" });
+            }
+
+            // Validate rating 
+            if (request.Rating < 1 || request.Rating > 5)
+            {
+                return Results.BadRequest(new { error = "Rating must be between 1 and 5" });
+            }
+
+            var props = user.Properties ?? new JsonObject();
+
+            // get rating and trip count
+            var currentRating = double.TryParse(props["Rating"]?.ToString(), out var rating) ? rating : 0;
+            var totalTrips = int.TryParse(props["TripCount"]?.ToString(), out var count) ? count : 0;
+            totalTrips++;
+
+            // Calculate new average rating 
+            var newRating = ((currentRating * (totalTrips - 1)) + request.Rating) / totalTrips;
+            var roundedRating = Math.Round(newRating, 1);
+
+            props["Rating"] = roundedRating.ToString("0.0");
+            props["TripCount"] = totalTrips;
+
+            user.Properties = props;
+
+            var result = await userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return Results.BadRequest(new
+                {
+                    error = "Failed to update user rating",
+                    details = result.Errors.Select(e => e.Description).ToList()
+                });
+            }
+
+            return Results.Ok(new
+            {
+                message = "Rating updated successfully",
+                id = user.UserId,
+                rating = roundedRating
+            });
+        })
+        .RequireAuthorization()
+        .DisableAntiforgery();
+
         // DELETE /api/auth/login - Logout
         app.MapDelete("/api/auth/login", async (
             [FromServices] SignInManager<IUser> signInManager) =>
@@ -261,6 +355,7 @@ public static class AuthEndpoints
     }
 }
 
+public record RatingRequest(int Rating);
 public record RegisterRequest(
     string Username,
     string Email,

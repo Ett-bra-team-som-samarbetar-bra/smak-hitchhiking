@@ -13,8 +13,11 @@ interface AuthProviderProps {
 
 const fakeUser: User = {
   id: "42",
+  rating: "5",
+  tripCount: "10",
   username: "Dev User",
   email: "dev@example.com",
+  roles: ["Administrator"],
 };
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -24,7 +27,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     if (config.fakeUserLoggedIn) {
       setUser(fakeUser);
-      console.log("Using fake user");
       return;
     }
 
@@ -123,7 +125,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(data);
     } catch (error) {
       setUser(null);
-      console.error("Failed to refresh user:", error);
     }
   };
 

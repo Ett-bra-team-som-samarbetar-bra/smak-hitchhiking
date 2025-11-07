@@ -92,9 +92,11 @@ export default function UserModal({
       <InputFormText
         placeholder="Telefonnummer"
         label="Telefonnummer"
+        maxLength={12}
+        minLength={6}
         value={payload.user.phoneNumber}
         setFormProp={handleChange}
-        typeName="phone"
+        typeName="phoneNumber"
         disabled={!isOwnProfile}
       />
 

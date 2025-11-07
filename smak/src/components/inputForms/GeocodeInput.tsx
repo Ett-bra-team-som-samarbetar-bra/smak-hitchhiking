@@ -5,18 +5,20 @@ interface GeocodeInputProps {
   value: GeocodeSelection | null;
   onChange: (value: GeocodeSelection | null) => void;
   placeholder: string;
+  excludeCity?: string;
+  icon: string;
 }
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-export default function GeocodeInput({
-  value,
-  onChange,
-  placeholder,
-}: GeocodeInputProps) {
+export default function GeocodeInput({ value, onChange, placeholder, excludeCity, icon }: GeocodeInputProps) {
   const [query, setQuery] = useState(value?.name || "");
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  useEffect(() => {
+    setQuery(value?.name || "");
+  }, [value]);
 
   useEffect(() => {
     if (!query || query.length < 2) {
@@ -28,7 +30,7 @@ export default function GeocodeInput({
       const res = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
           query
-        )}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&limit=2&country=SE`
+        )}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&limit=2&country=SE&types=place`
       );
       const data = await res.json();
       setSuggestions(data.features || []);
@@ -48,12 +50,17 @@ export default function GeocodeInput({
     onChange(selection);
   };
 
+  // Don't allow same city in both from and to
+  const filteredSuggestions = excludeCity
+    ? suggestions.filter((s) => s.text !== excludeCity)
+    : suggestions;
+
   return (
     <div className="position-relative mb-1 interactive" >
-      <i className={`bi bi-geo-alt-fill dynamic-map-input-icons fs-5`} />
+      <i className={`bi ${icon} dynamic-map-input-icons fs-5 non-interactive`} />
       <input
         type="text"
-        className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline"
+        className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline cursor-pointer"
         placeholder={placeholder}
         value={query}
         onChange={(e) => {
@@ -66,9 +73,9 @@ export default function GeocodeInput({
           }
         }}
         onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)} />
+        onBlur={() => setShowSuggestions(false)} />
 
-      {showSuggestions && suggestions.length > 0 && (
+      {showSuggestions && filteredSuggestions.length > 0 && (
         <ul
           className="list-group position-absolute w-100 mt-1 rounded-4"
           style={{
@@ -77,7 +84,7 @@ export default function GeocodeInput({
             overflowY: "auto",
           }}>
 
-          {suggestions.map((s) => (
+          {filteredSuggestions.map((s) => (
             <li
               key={s.id}
               className="list-group-item list-group-item-action bg-white cursor-pointer dynamic-map-city-dropdown"

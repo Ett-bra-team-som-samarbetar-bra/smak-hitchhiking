@@ -58,14 +58,14 @@
   }
 }
 
-.dynamic-map-center-icon {
-  padding-top: 1px;
+.dynamic-map-home-icon {
+  padding-top: 2px;
   padding-left: 1px;
 }
 
-.dynamic-map-swap-icon {
-  padding-top: 0px;
-  padding-left: 1px;
+.dynamic-map-cross-icon {
+  padding-top: 2px;
+  padding-left: 0px;
 }
 
 .dynamic-map-city-dropdown {
@@ -84,6 +84,7 @@
   height: 30px;
   width: 110px;
   background-color: #2E4C6B;
+  pointer-events: all;
 }
 
 .right-watermark {
@@ -91,9 +92,10 @@
   height: 20px;
   width: 290px;
   background-color: #2E4C6B;
+  pointer-events: all;
 
   @media (max-width: 640px) {
     height: 40px;
-    width: 50px;
+    width: 60px;
   }
 }

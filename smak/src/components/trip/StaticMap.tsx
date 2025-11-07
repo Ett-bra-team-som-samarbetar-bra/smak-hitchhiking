@@ -40,10 +40,11 @@ export default function StaticMap({ from, to, width, height, className = "" }: S
         <img
           src={imageUrl}
           alt="Karta"
-          className={`${className}`}
-        ></img>
+          className={className} />
       ) : (
-        <p> loading.....</p>
+        <div className={`${className} trip-card-loading-spinner`}>
+          <div className="spinner-border text-secondary m-0" role="status" />
+        </div>
       )}
     </>
   );

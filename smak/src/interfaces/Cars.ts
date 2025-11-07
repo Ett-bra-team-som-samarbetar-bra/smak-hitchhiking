@@ -1,6 +1,6 @@
 export default interface Car {
   id: string;
-  userId: string;
+  user: string;
   brand: string;
   model: string;
   color: string;

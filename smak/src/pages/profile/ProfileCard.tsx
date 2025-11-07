@@ -1,5 +1,6 @@
 import IconButton from "../../components/IconButton";
 import type User from "../../interfaces/User";
+import { renderRatingStars } from "../../utils/Utils";
 
 interface ProfileCardProps {
   user: User;
@@ -7,6 +8,8 @@ interface ProfileCardProps {
   isOwnProfile?: boolean;
   isAlreadyFriend?: boolean;
   onEdit?: () => void;
+  onAddFriend?: () => void;
+  onRemoveFriend?: () => void;
 }
 
 export default function ProfileCard({
@@ -15,10 +18,12 @@ export default function ProfileCard({
   isOwnProfile = true,
   isAlreadyFriend = false,
   onEdit,
+  onAddFriend,
+  onRemoveFriend,
 }: ProfileCardProps) {
   return (
     <div
-      className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-5 position-relative`}
+      className={`bg-white rounded-2 w-100 shadow mb-3 card-div text-center profile-card px-5 pb-3 position-relative`}
     >
       <div className="profile-image-container">
         <img
@@ -37,37 +42,28 @@ export default function ProfileCard({
           }
           onClick={() => {
             if (isOwnProfile && onEdit) onEdit();
-            else if (isAlreadyFriend) console.log("Remove friend");
-            else console.log("Add friend");
+            else if (isAlreadyFriend && onRemoveFriend) onRemoveFriend();
+            else if (onAddFriend) onAddFriend();
           }}
-          className={`${isOwnProfile ? "edit-icon" : "add-icon"}`}
+          bg="bg-primary"
+          className={`${isOwnProfile ? "edit-icon" : "add-icon"} text-white`}
         />
       </div>
 
-      <h2>
+      <h2 className="m-0">
         {user.firstName} {user.lastName}
       </h2>
 
-      <div className="d-flex justify-content-between mt-2 mb-4">
-        <div className="text-center">
-          <p className="mb-1 fw-bold">{user.tripCount}</p>
-          <p className="mb-0 text-black-50">Rutter</p>
-        </div>
+      <div className="text-center mb-3 ">{renderRatingStars(user.rating)}</div>
 
-        <div className="text-center">
-          <p className="mb-1 fw-bold">{user.rating}/5</p>
-          <p className="mb-0 text-black-50">Betyg</p>
-        </div>
-
-        <div className="text-center">
-          <p className="mb-1 fw-bold">{user.tripCount}</p>
-          <p className="mb-0 text-black-50">År</p>
-        </div>
+      <div className="mb-4">
+        <p className="text-center mb-1 text-secondary fst-italic">{user.description || ""}</p>
       </div>
 
-      <div className="d-inline-flex flex-row align-items-center justify-content-center gap-2 my-2 border-bottom border-black w-100">
-        <i className="bi bi-rocket-takeoff-fill"></i>
-        <p className="my-2">Jag gillar</p>
+      <div className="d-flex align-items-center mb-2">
+        <div className="flex-grow-1 border-bottom"></div>
+        <span className="mx-3 text-nowrap">Preferenser</span>
+        <div className="flex-grow-1 border-bottom"></div>
       </div>
 
       <div className="d-flex flex-column mt-2">

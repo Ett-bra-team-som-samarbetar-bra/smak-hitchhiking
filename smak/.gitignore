@@ -28,3 +28,4 @@ dev-dist
 !/backend/App_Data.seed/
 !/backend/App_Data.seed/**
 
+/backend/wwwroot/Default/is-cache

@@ -71,6 +71,10 @@ $success: #21866F;
   cursor: pointer;
 }
 
+.cursor-hand {
+  cursor: hand;
+}
+
 .placeholder-text::placeholder {
   color: var(--bs-secondary) !important;
   opacity: 0.8;
@@ -85,6 +89,11 @@ $success: #21866F;
     outline: none !important;
     box-shadow: none !important;
   }
+}
+
+.interactive {
+  pointer-events: auto;
+  user-select: auto;
 }
 
 .non-interactive {
@@ -132,9 +141,4 @@ $success: #21866F;
 
 .custom-accordion .accordion-collapse {
   border: none;
-}
-
-.interactive {
-  pointer-events: auto;
-  user-select: auto;
 }

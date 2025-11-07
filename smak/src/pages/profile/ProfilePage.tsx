@@ -1,31 +1,29 @@
 import { useState, useEffect } from "react";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { uploadMedia } from "../../components/fileUpload/MediaUploader";
+import type User from "../../interfaces/User";
+import type Car from "../../interfaces/Cars";
 import SmakButton from "../../components/SmakButton";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
-import { useParams } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
 import UserModal from "./UserModal";
-import type User from "../../interfaces/User";
-import { uploadMedia } from "../../components/fileUpload/MediaUploader";
 import useProfileImage from "../../hooks/useProfileImage";
-import type Car from "../../interfaces/Cars";
 
 export default function ProfilePage() {
   const { userId } = useParams();
-  const { user, refreshUser } = useAuth();
-
-  const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
-  const isOwnProfile = !userId;
-  const isAlreadyFriend = false;
-
-  const [profileUser, setProfileUser] = useState<User | null>(null);
-  const [cars, setCars] = useState<Car[]>([]);
-
+  const { user, refreshUser, logout } = useAuth();
+  const { showAlert } = useSmakTopAlert();
   const { profileImage, refreshProfileImage } = useProfileImage(
-    profileUser?.id || null
+    userId || user?.id || null
   );
 
+  const [isAlreadyFriend, setIsAlreadyFriend] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [profileUser, setProfileUser] = useState<User | null>(null);
+  const [cars, setCars] = useState<Car[]>([]);
   const [showUserModal, setShowUserModal] = useState(false);
   const [userPayload, setUserPayload] = useState<{ user: User } | null>(null);
   const [showCarModal, setShowCarModal] = useState(false);
@@ -38,6 +36,10 @@ export default function ProfilePage() {
     seats: 0,
   });
 
+  const navigate = useNavigate();
+  const preferences = ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"];
+  const isOwnProfile = !userId;
+  const isAdmin = user?.roles.includes("Administrator") || false;
 
   // Set the profile user based on whether it's own profile or someone else
   useEffect(() => {
@@ -51,7 +53,6 @@ export default function ProfilePage() {
           const fetchedUser = await response.json();
           setProfileUser(fetchedUser);
         } catch (error) {
-          console.error('Error fetching user:', error);
         }
       }
 
@@ -59,16 +60,42 @@ export default function ProfilePage() {
     }
   }, [userId, user, isOwnProfile]);
 
+  // check if friend
+  useEffect(() => {
+    if (!user?.id || !profileUser?.id || isOwnProfile) return;
+
+    async function checkFriendship() {
+      try {
+        const response = await fetch('/api/Contact');
+        if (!response.ok) throw new Error('Failed to fetch contacts');
+        const contacts = await response.json();
+
+        const isFriend = contacts.some((contact: any) =>
+          contact.user?.[0]?.id === user!.id &&
+          contact.contact?.[0]?.id === profileUser!.id
+        );
+
+        setIsAlreadyFriend(isFriend);
+      } catch (error) {
+      }
+    }
+
+    checkFriendship();
+  }, [user, profileUser, isOwnProfile]);
+
+
   useEffect(() => {
     if (!profileUser?.id) return;
 
     async function fetchCars() {
       try {
         const response = await fetch(`/api/Car`);
-        if (!response.ok) throw new Error('Failed to fetch cars');
+        if (!response.ok)
+          throw new Error('Failed to fetch cars');
+
         const allCars = await response.json();
         const userCars = allCars
-          .filter((car: any) => car.userId === profileUser!.id)
+          .filter((car: any) => car.user[0].id === profileUser!.id)
           .map((car: any) => ({
             id: car.id || '',
             brand: car.brand || '',
@@ -76,12 +103,17 @@ export default function ProfilePage() {
             color: car.color || '',
             licensePlate: car.licensePlate || '',
             seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-            userId: car.userId
+            user: car.user
           }));
 
         setCars(userCars);
       } catch (error) {
-        console.error('Error fetching cars:', error);
+        showAlert({
+          message: "Okänt fel.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 3000,
+        });
       }
     }
 
@@ -102,12 +134,11 @@ export default function ProfilePage() {
           rating: profileUser.rating,
           tripCount: profileUser.tripCount,
           preferences: profileUser.preferences,
+          roles: profileUser.roles,
         },
       });
     }
   }, [profileUser]);
-
-  const [isEdit, setIsEdit] = useState(false);
 
   function handleEditUser(user: Partial<User>) {
     setUserPayload({
@@ -119,9 +150,10 @@ export default function ProfilePage() {
         lastName: user.lastName || "",
         phoneNumber: user.phoneNumber || "",
         description: user.description || "",
-        rating: user.rating ?? 0,
-        tripCount: user.tripCount ?? 0,
+        rating: user.rating ?? "0",
+        tripCount: user.tripCount ?? "0",
         preferences: preferences || [],
+        roles: profileUser?.roles || [],
       },
     });
     setIsEdit(true);
@@ -139,23 +171,22 @@ export default function ProfilePage() {
         lastName: "",
         phoneNumber: "",
         description: "",
-        rating: 0,
-        tripCount: 0,
+        rating: "0",
+        tripCount: "0",
         preferences: [],
+        roles: [],
       },
     });
   }
 
   async function handleSaveUser(updatedUser: User, profileFile?: File | null) {
     {
-      console.log("Saving user:", updatedUser);
-
       const payloadToSend = {
         username: updatedUser.username,
         email: updatedUser.email,
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
-        phoneNumber: updatedUser.phoneNumber,
+        phone: updatedUser.phoneNumber,
         description: updatedUser.description,
         preferences: updatedUser.preferences,
       };
@@ -174,10 +205,8 @@ export default function ProfilePage() {
         }
 
         const savedUser = await response.json();
-        console.log("User saved successfully:", savedUser);
 
         if (profileFile) {
-          console.log("Uploading profile image file:", profileFile);
           await uploadMedia(profileFile);
           refreshProfileImage();
         }
@@ -187,12 +216,20 @@ export default function ProfilePage() {
         setUserPayload({ user: savedUser });
         setShowUserModal(false);
       } catch (error) {
-        console.error("Error saving user:", error);
+        showAlert({
+          message: "Kunde inte spara ändringarna. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
       }
     }
   }
 
   // Car stuff
+  const carTitle = isOwnProfile
+    ? (isEdit ? "Redigera fordon" : "Lägg till fordon")
+    : "Fordon";
 
   function handleAddCar() {
     setCarPayload({ id: "", brand: "", model: "", color: "", licensePlate: "", seats: 0 });
@@ -219,25 +256,24 @@ export default function ProfilePage() {
   }
 
   async function handleSaveCar(car: typeof carPayload) {
-    console.log("Saving car payload:", car);
-
     if (!user?.id) {
-      console.error("Cannot save car: user ID is missing");
       return;
     }
 
     const isCreating = !isEdit;
 
     const payload = {
+      title: `${user.lastName} - ${car.brand} ${car.model}`,
       brand: car.brand,
       model: car.model,
       color: car.color,
       licensePlate: car.licensePlate,
       seats: Number(car.seats),
-      userId: user.id,
+      user: [{
+        id: user.id,
+        username: user.username
+      }],
     };
-
-    console.log("Payload being sent to API:", payload);
 
     const url = isCreating ? '/api/Car' : `/api/Car/${car.id}`;
 
@@ -249,14 +285,13 @@ export default function ProfilePage() {
       });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Failed to save car: ${errText}`);
+        throw new Error("Failed to save car");
       }
 
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((car: any) => car.userId === user.id)
+        .filter((car: any) => car.user[0].id === user.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
@@ -264,25 +299,33 @@ export default function ProfilePage() {
           color: car.color || '',
           licensePlate: car.licensePlate || '',
           seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-          userId: car.userId
+          userId: car.user
         }));
-      console.log('Updated cars after save:', updatedCars);
+
       setCars(updatedCars);
       handleCloseModal();
+
     } catch (error) {
-      console.error('Error saving car:', error);
+      showAlert({
+        message: "Kunde inte spara bil. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
 
   async function handleDeleteCar(car: typeof carPayload) {
     try {
       const deleteResponse = await fetch(`/api/Car/${car.id}`, { method: 'DELETE' });
-      if (!deleteResponse.ok) throw new Error('Failed to delete car');
+
+      if (!deleteResponse.ok)
+        throw new Error('Failed to delete car');
 
       const allCarsResponse = await fetch(`/api/Car`);
       const allCars = await allCarsResponse.json();
       const updatedCars = allCars
-        .filter((c: any) => c.userId === user?.id)
+        .filter((c: any) => c.user[0].id === user?.id)
         .map((car: any) => ({
           id: car.id || '',
           brand: car.brand || '',
@@ -290,14 +333,116 @@ export default function ProfilePage() {
           color: car.color || '',
           licensePlate: car.licensePlate || '',
           seats: typeof car.seats === 'number' ? car.seats : parseInt(car.seats) || 0,
-          userId: car.userId
+          userId: car.user
         }));
+
       setCars(updatedCars);
       handleCloseModal();
+
     } catch (error) {
-      console.error('Error deleting car:', error);
+      showAlert({
+        message: "Kunde inte ta bort bil. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
     }
   }
+
+  /* friendship stuff */
+
+  async function handleAddFriend() {
+    if (!user?.id || !profileUser?.id) return;
+
+    try {
+      const payload = {
+        title: `${user.firstName} ${user.lastName} - ${profileUser.firstName} ${profileUser.lastName}`,
+        user: [{
+          id: user.id,
+          username: user.username
+        }],
+        contact: [{
+          id: profileUser.id,
+          username: profileUser.username
+        }]
+      };
+
+      const response = await fetch('/api/Contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        setIsAlreadyFriend(true);
+        showAlert({
+          message: "Kontakt tillagd!",
+          backgroundColor: "success",
+          textColor: "white",
+          duration: 3000,
+        });
+      } else {
+        showAlert({
+          message: "Kunde inte lägga till kontakt. Försök igen.",
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      showAlert({
+        message: "Okänt fel. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
+    }
+  }
+
+  async function handleRemoveFriend() {
+    if (!user?.id || !profileUser?.id) return;
+
+    try {
+      const contactsResponse = await fetch('/api/Contact');
+      const contacts = await contactsResponse.json();
+
+      const contact = contacts.find((c: any) =>
+        c.user?.[0]?.id === user.id &&
+        c.contact?.[0]?.id === profileUser.id
+      );
+
+      if (contact) {
+        const response = await fetch(`/api/Contact/${contact.id}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          setIsAlreadyFriend(false);
+          showAlert({
+            message: "Kontakt borttagen!",
+            backgroundColor: "success",
+            textColor: "white",
+            duration: 3000,
+          });
+        }
+      }
+    } catch (error) {
+      showAlert({
+        message: "Okänt fel. Försök igen.",
+        backgroundColor: "danger",
+        textColor: "white",
+        duration: 5000,
+      });
+    }
+  }
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const handleAdminClicked = () => {
+    navigate("/admin");
+  };
 
   return (
     <>
@@ -307,6 +452,8 @@ export default function ProfilePage() {
           profileImage={profileImage}
           isOwnProfile={isOwnProfile}
           isAlreadyFriend={isAlreadyFriend}
+          onAddFriend={handleAddFriend}
+          onRemoveFriend={handleRemoveFriend}
           onEdit={() =>
             handleEditUser({
               id: profileUser.id,
@@ -323,7 +470,7 @@ export default function ProfilePage() {
           }
         />
       )}
-      <div className="d-flex flex-column gap-3">
+      <div className="d-flex flex-column gap-3 mt-4">
         <h2 className="m-0">Fordon</h2>
 
         {cars.length === 0 ? (
@@ -345,7 +492,7 @@ export default function ProfilePage() {
           />
         )}
         <CarModal
-          title={isEdit ? "Redigera fordon" : "Lägg till fordon"}
+          title={carTitle}
           show={showCarModal}
           onClose={handleCloseModal}
           payload={carPayload}
@@ -355,9 +502,25 @@ export default function ProfilePage() {
           onSave={() => handleSaveCar(carPayload)}
           onDelete={() => handleDeleteCar(carPayload)}
         />
+
         {isOwnProfile && (
-          <SmakButton className="my-2" onClick={handleAddCar}>
+          <SmakButton className="mt-2" onClick={handleAddCar}>
             Lägg till fordon
+          </SmakButton>
+        )}
+
+        {isOwnProfile && isAdmin && (
+          <SmakButton onClick={handleAdminClicked}>
+            Admin
+          </SmakButton>
+        )}
+
+        {isOwnProfile && (
+          <SmakButton
+            color="secondary"
+            className="mb-2"
+            onClick={handleLogout}>
+            Logga ut
           </SmakButton>
         )}
       </div>

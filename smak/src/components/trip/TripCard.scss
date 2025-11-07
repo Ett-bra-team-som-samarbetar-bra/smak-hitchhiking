@@ -37,15 +37,24 @@
 
 .trip-card-map-image {
   height: 244px;
+  max-width: 750px;
+  background: #F3F2F8;
   object-fit: cover;
   object-position: center;
   clip-path: inset(20px 0 20px 0);
   margin-top: -20px;
   margin-bottom: -20px;
+  display: block;
+}
+
+.trip-card-loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .trip-card-profil-image-container {
-  top: 126px;
+  top: 146px;
   right: 1rem;
 }
 
@@ -53,6 +62,7 @@
   width: 100px;
   height: 100px;
   object-fit: cover;
+  background-color: white;
 }
 
 .trip-card-time-width {
@@ -72,5 +82,5 @@
 }
 
 .trip-card-button-width {
-  width: 100px;
+  width: 110px;
 }

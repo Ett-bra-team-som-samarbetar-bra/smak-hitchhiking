@@ -1,20 +1,40 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import TripCardBig from "./trip/TripCardBig";
 import TripCardSmall from "./trip/TripCardSmall";
-
-// todo: real types etc
-interface TripType {
-  date: string;
-  [key: string]: any;
-}
+import type Trip from "../interfaces/Trips";
 
 interface TripGroupListProps {
-  groupedTrips: { [date: string]: TripType[]; };
+  groupedTrips: Record<string, Trip[]>;
+  isBooked?: boolean;
+  cardButtonType?:
+    | "userBook"
+    | "userCancel"
+    | "driverStart"
+    | "driverDone"
+    | "none";
+  onTripCancelled?: (tripId: string) => void;
 }
 
-export function TripGroupList({ groupedTrips }: TripGroupListProps) {
+export function TripGroupList({
+  groupedTrips,
+  isBooked = false,
+  cardButtonType = "none",
+  onTripCancelled,
+}: TripGroupListProps) {
+  const [selectedIndex, setSelectedIndex] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
-  const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 75);
+    return () => clearTimeout(timer);
+  }, [groupedTrips]);
+
+  const handleTripCancelled = (tripId: string) => {
+    onTripCancelled?.(tripId);
+  };
+
+  const hasTrips = Object.keys(groupedTrips).length > 0;
+
   const toggleCard = (index: string) => {
     if (selectedIndex === index) {
       setSelectedIndex(null);
@@ -23,34 +43,45 @@ export function TripGroupList({ groupedTrips }: TripGroupListProps) {
     }
   };
 
+  if (!ready) {
+    return <div />;
+  }
+
   return (
     <div className="d-flex flex-column gap-4">
-      {Object.entries(groupedTrips).map(([date, trips]) => (
-        <div key={date} className="d-flex flex-column gap-3">
-          <h3 className="m-0">
-            {new Date(date).toLocaleDateString("sv-SE")}
-          </h3>
-          {trips.map((trip, index) => {
-            const cardKey = `${date}-${index}`;
-            const isSelected = selectedIndex === cardKey;
+      {hasTrips ? (
+        Object.entries(groupedTrips).map(([date, trips]) => (
+          <div key={date} className="d-flex flex-column gap-3">
+            <h3 className="m-0">
+              {new Date(date).toLocaleDateString("sv-SE")}
+            </h3>
+            {trips.map((trip) => {
+              const cardKey = `${date}-${trip.id}`;
+              const isSelected = selectedIndex === cardKey;
 
-            return isSelected ? (
-              <TripCardBig
-                key={cardKey}
-                {...trip}
-                onBigTripCardClick={() => toggleCard(cardKey)}
-              />
-
-            ) : (
-              <TripCardSmall
-                key={cardKey}
-                {...trip}
-                onSmallTripCardClick={() => toggleCard(cardKey)}
-              />
-            );
-          })}
-        </div>
-      ))}
+              return isSelected ? (
+                <TripCardBig
+                  key={cardKey}
+                  trip={trip}
+                  cardButtonType={cardButtonType}
+                  onBigTripCardClick={() => toggleCard(cardKey)}
+                  onTripCancelled={handleTripCancelled}
+                  isBooked={isBooked}
+                />
+              ) : (
+                <TripCardSmall
+                  key={cardKey}
+                  trip={trip}
+                  onSmallTripCardClick={() => toggleCard(cardKey)}
+                  isBooked={isBooked}
+                />
+              );
+            })}
+          </div>
+        ))
+      ) : (
+        <h2 className="m-0">Inga resor hittades</h2>
+      )}
     </div>
   );
 }

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./hooks/useAuth";
-import DynamicMapProvider, { useDynamicMap } from "./context/DynamicMapProvider";
+import { TripCountProvider, useTripCount } from "./context/TripCountProvider";
+import { SmakTopAlertProvider } from "./context/SmakTopAlertProvider";
+import { getTripDateTime } from "./utils/DateUtils";
+import DynamicMapProvider, {
+  useDynamicMap,
+} from "./context/DynamicMapProvider";
 import AuthProvider from "./context/AuthProvider";
 import Main from "./partials/Main";
 import Header from "./partials/Header";
@@ -8,17 +13,45 @@ import Footer from "./partials/Footer";
 import DesktopPage from "./pages/desktop/DesktopPage";
 import config from "./config/Config";
 import DynamicMap from "./partials/DynamicMap";
+import OnTripProvider from "./context/OnTripProvider";
+import useAllTrips from "./hooks/useAllTrips";
+import useUserTrips from "./hooks/useUserTrips";
 
 function AppContent() {
   const { user } = useAuth();
   const { setIsLoginPage } = useDynamicMap();
+  const { setHistoryCount, setComingCount } = useTripCount();
+
   const [isPwa, setIsPwa] = useState(false);
   const [showHeaderFooter, setShowHeaderFooter] = useState(false);
+
   const isLoggedIn = !!user;
   const mapActivePaths = ["/", "/drive"];
   const shouldShowMap = mapActivePaths.includes(location.pathname);
+  const allTrips = useAllTrips();
+  const userTrips = useUserTrips(user?.id ?? "", allTrips);
 
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+  // Set trip counters globally
+  useEffect(() => {
+    if (!isLoggedIn) return;
+
+    // History
+    const pastTrips = userTrips.filter(
+      (trip) =>
+        trip.arrivalTime &&
+        new Date(trip.arrivalTime).getTime() < Date.now()
+    );
+    setHistoryCount(pastTrips.length);
+
+    // Coming
+    const today = new Date();
+    const upcomingTrips = userTrips.filter(
+      (trip) => getTripDateTime(trip) > today
+    );
+    setComingCount(upcomingTrips.length);
+  }, [user, userTrips, setHistoryCount, setComingCount]);
 
   // DynamicMap
   useEffect(() => {
@@ -46,7 +79,10 @@ function AppContent() {
   // Header/footer animation
   useEffect(() => {
     if (isLoggedIn) {
-      setTimeout(() => setShowHeaderFooter(true), config.headerFooterAnimationDelay);
+      setTimeout(
+        () => setShowHeaderFooter(true),
+        config.headerFooterAnimationDelay
+      );
     } else {
       setShowHeaderFooter(false);
     }
@@ -54,21 +90,29 @@ function AppContent() {
 
   // Desktop landing page
   if (!isPwa && !config.hideDesktopPage) {
-    return <DesktopPage />
+    return <DesktopPage />;
   }
 
   // PWA
   return (
     <>
-      <div className={`header-container ${showHeaderFooter ? "header-visible" : "header-hidden"}`}>
+      <div
+        className={`header-container ${showHeaderFooter ? "header-visible" : "header-hidden"
+          }`}
+      >
         <Header />
       </div>
       <Main />
-      <div className={`footer-container ${showHeaderFooter ? "footer-visible" : "footer-hidden"}`}>
+      <div
+        className={`footer-container ${showHeaderFooter ? "footer-visible" : "footer-hidden"
+          }`}
+      >
         <Footer />
       </div>
-
-      <DynamicMap className={`dynamic-map-container ${shouldShowMap ? "" : "dynamic-map-hidden"}`} />
+      <DynamicMap
+        className={`dynamic-map-container ${shouldShowMap ? "" : "dynamic-map-hidden"
+          }`}
+      />
     </>
   );
 }
@@ -76,9 +120,15 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <DynamicMapProvider>
-        <AppContent />
-      </DynamicMapProvider>
+      <SmakTopAlertProvider>
+        <DynamicMapProvider>
+          <TripCountProvider>
+            <OnTripProvider>
+              <AppContent />
+            </OnTripProvider>
+          </TripCountProvider>
+        </DynamicMapProvider>
+      </SmakTopAlertProvider>
     </AuthProvider>
   );
 }
