@@ -6,8 +6,8 @@ export default interface User {
   lastName?: string;
   phoneNumber?: string;
   description?: string;
-  rating?: number;
-  tripCount?: number;
+  rating: string;
+  tripCount?: string;
   preferences?: string[];
   roles: string[];
 }

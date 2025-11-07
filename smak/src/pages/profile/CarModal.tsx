@@ -106,7 +106,8 @@ export default function CarModal({
               onClick={onSave}
               color="primary"
             >
-              {isEdit ? "Redigera bil" : "Spara bil"}
+              {/* {isEdit ? "Redigera bil" : "Spara bil"} */}
+              Spara bil
             </SmakButton>
 
             {isEdit && (

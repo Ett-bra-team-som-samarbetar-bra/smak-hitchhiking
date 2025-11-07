@@ -42,7 +42,7 @@ export default function TripsDonePage() {
         const allUsers = [parsedDriver, ...[]];
         const othersOnTrip = allUsers.filter((u) => u.id !== currentUserId);
         setAllParticipants(othersOnTrip);
-      } catch (error) {}
+      } catch (error) { }
     };
     fetchTripParticipants();
   }, [driverId, currentUserId]);
@@ -75,7 +75,7 @@ export default function TripsDonePage() {
       );
 
       setIsRated(true);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   if (isRated) {
@@ -134,7 +134,7 @@ export default function TripsDonePage() {
                 id: user.id,
                 firstName: user.firstName || "",
                 lastName: user.lastName || "",
-                rating: user.rating || 0,
+                rating: user.rating || "0",
                 description: user.description || "",
               }}
               isDriver={false}

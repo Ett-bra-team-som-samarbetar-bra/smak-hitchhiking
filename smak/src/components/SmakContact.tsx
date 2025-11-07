@@ -18,7 +18,7 @@ export default function SmakContact({
     id: string;
     firstName: string;
     lastName: string;
-    rating: number;
+    rating: string;
     description: string;
   };
   className?: string;

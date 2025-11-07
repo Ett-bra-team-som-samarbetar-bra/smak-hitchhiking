@@ -7,5 +7,7 @@ export interface RegisterPayload {
     lastName: string;
     phone: string;
     description: string;
+    rating: string;
+    tripCount: string;
     preferences: string[];
 }
