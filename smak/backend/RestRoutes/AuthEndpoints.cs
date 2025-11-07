@@ -263,6 +263,7 @@ public static class AuthEndpoints
             var roundedRating = Math.Round(newRating, 1);
 
             props["Rating"] = roundedRating.ToString("0.0");
+            props["TripCount"] = totalTrips;
 
             user.Properties = props;
 
