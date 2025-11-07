@@ -26,7 +26,7 @@ export default function TripsCurrentPage() {
     seats: 3,
   });
   if (!user || !currentTrip) return;
-  const isDriver = user.id === currentTrip?.driverId[0].id;
+  const isDriver = user.id === currentTrip?.driver[0].id;
 
   const handleAcceptRequest = (passenger: any) => {
     setPassengers([...passengers, passenger]);

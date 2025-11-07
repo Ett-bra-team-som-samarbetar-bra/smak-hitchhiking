@@ -29,16 +29,16 @@ export default function TripCardBig(props: TripCardProps) {
     isBooked,
   } = props;
 
-  if (!trip || !trip.driverId?.length) {
+  if (!trip || !trip.driver?.length) {
     return <div> Laddar resa...</div>;
   }
 
-  const { startPosition, endPosition, seats, driverId, distance } = trip;
+  const { startPosition, endPosition, seats, driver, distance } = trip;
   const { date, startTime, endTime } = getTripDateAndTime(trip);
 
-  const { profileImage } = useProfileImage(trip.driverId[0].id ?? null);
+  const { profileImage } = useProfileImage(trip.driver[0].id ?? null);
 
-  const cardUser = useFetchUser(driverId[0].id ?? null);
+  const cardUser = useFetchUser(driver[0].id ?? null);
   const vehicle = useFetchCar(trip.carIdId ?? null);
 
   const [showCarModal, setShowCarModal] = useState(false);
@@ -111,15 +111,12 @@ export default function TripCardBig(props: TripCardProps) {
   };
 
   const handleUserClick = () => {
-
-    if( cardUser?.id === user?.id) 
-    {
+    if (cardUser?.id === user?.id) {
       navigate(`/profile`);
-    }
-      else{
+    } else {
       navigate(`/profile/${cardUser?.id}`, { state: { user: cardUser } });
     }
-  }
+  };
 
   return (
     <>

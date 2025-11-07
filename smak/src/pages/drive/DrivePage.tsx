@@ -14,7 +14,7 @@ import CarModal from "../profile/CarModal";
 import SmakMapButton from "../../components/SmakMapButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import type Trip from "../../interfaces/Trips";
+import type TripRequest from "../../interfaces/TripRequest";
 
 export default function DrivePage() {
   const {
@@ -47,7 +47,6 @@ export default function DrivePage() {
     licensePlate: "",
     seats: 0,
   });
-  const [tripPayload, setTripPayload] = useState<Trip | null>(null);
 
   if (!user) return;
 
@@ -65,31 +64,24 @@ export default function DrivePage() {
       });
       return;
     }
-    /*(alias) default interface Trip {
-    id: string;
-    driverId: [{
-        id: string;
-        username: string;
-    }];
-    carIdId: string;
-    startPosition: string;
-    endPosition: string;
-    departureTime: Date;
-    arrivalTime: Date;
-    distance: number;
-    seats: number;
-}
-import Trip*/
-    setTripPayload({
-      driverId: [{ id: user?.id, username: user?.username }],
-      carIdId: carPayload.id,
+
+    const localDeparture = new Date(date);
+
+    const utcDeparture = new Date(
+      localDeparture.getTime() - localDeparture.getTimezoneOffset() * 60000
+    );
+    const utcArrival = new Date(utcDeparture.getTime() + duration * 1000);
+
+    const payload: TripRequest = {
+      driver: [{ id: user?.id, username: user?.username }],
+      carIdId: selectedVehicle.id,
       startPosition: from.name,
       endPosition: to.name,
-      departureTime: date,
-      arrivalTime: new Date(date.getTime() + duration * 1000),
+      departureTime: utcDeparture.toISOString(),
+      arrivalTime: utcArrival.toISOString(),
       distance: distance / 1000,
-      seats: carPayload.seats,
-    });
+      seats: selectedVehicle.seats,
+    };
 
     setIsLoading(true);
 
@@ -105,7 +97,7 @@ import Trip*/
       const response = await fetch("api/Trip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tripPayload),
+        body: JSON.stringify(payload),
         credentials: "include",
       });
 
@@ -366,7 +358,12 @@ import Trip*/
                 className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"
                 onClick={() => setOpen(true)}
               >
-                {date ? date.toLocaleDateString() : "Avgång"}
+                {date
+                  ? date.toLocaleString("sv-SE", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })
+                  : "Avgång"}
               </Button>
 
               <div className="datepicker-popup">
@@ -378,16 +375,19 @@ import Trip*/
                   popperPlacement="top"
                   showIcon={false}
                   selected={date}
+                  onChange={(d) => setDate(d)}
                   minDate={new Date()}
                   maxDate={addDays(new Date(), 14)}
-                  disabledKeyboardNavigation={true}
+                  disabledKeyboardNavigation
                   showPopperArrow={false}
-                  showTimeInput={false}
-                  autoComplete={"off"}
-                  onChange={(d) => {
-                    setDate(d);
-                  }}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  timeCaption="Tid"
+                  dateFormat="yyyy-MM-dd HH:mm"
+                  autoComplete="off"
                   onClickOutside={() => setOpen(false)}
+                  onCalendarClose={() => setOpen(false)}
                   customInput={<span style={{ display: "none" }} />}
                 />
               </div>

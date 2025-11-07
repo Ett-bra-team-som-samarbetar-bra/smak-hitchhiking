@@ -1,5 +1,5 @@
 export default interface UserTrip {
-  tripIdId: string;
+  tripId: string;
   tripRole: string;
-  userId: [{ id: string; username: string }];
+  user: [{ id: string; username: string }];
 }

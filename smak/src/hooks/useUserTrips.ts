@@ -15,17 +15,20 @@ export default function useUserTrips(userId: string, allTrips: Trip[]) {
         const data: UserTrip[] = await result.json();
 
         const userTripIds = data
-          .filter((tu) => tu.userId[0].id === userId)
-          .map((tu) => tu.tripIdId);
+          .filter((tu) => tu?.user[0]?.id === userId)
+          .map((tu) => tu?.tripId)
+          .filter(Boolean);
 
         const filteredTrips = allTrips.filter(
           (trip) =>
-            trip.driverId[0].id === userId || userTripIds.includes(trip.id)
+            trip?.driver?.[0]?.id === userId || userTripIds.includes(trip?.id)
         );
 
         setUserTrips(filteredTrips);
+        console.log(filteredTrips);
       } catch (error) {
         console.log("Fel vid hämtande av resor", error);
+        setUserTrips([]);
       }
     }
 
