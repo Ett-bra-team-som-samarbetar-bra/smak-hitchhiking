@@ -79,7 +79,7 @@ export default function DrivePage() {
       endPosition: to.name,
       departureTime: utcDeparture.toISOString(),
       arrivalTime: utcArrival.toISOString(),
-      distance: distance / 1000,
+      distance: Math.round(distance / 1000),
       seats: selectedVehicle.seats,
     };
 
