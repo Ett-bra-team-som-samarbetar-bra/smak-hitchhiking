@@ -1,56 +1,44 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 import TripCardBig from "../../components/trip/TripCardBig";
 import SmakContact from "../../components/SmakContact";
 import type User from "../../interfaces/User";
 import DividerLine from "../../components/DividerLine";
 import { useAuth } from "../../hooks/useAuth";
-import useAllTrips from "../../hooks/useAllTrips";
+import type Trip from "../../interfaces/Trips";
+import useFetchPassengers from "../../hooks/useFetchPassengers";
+import useFetchUser from "../../hooks/useFetchUser";
 
 export default function TripsDonePage() {
   const { user } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
-  const allTrips = useAllTrips();
+
+  const completedTrip = (location.state as { completedTrip?: Trip })
+    ?.completedTrip;
+
+  if (!completedTrip) {
+    return <p>Laddar...</p>;
+  }
+  const driver = useFetchUser(completedTrip.driver[0].id);
+  const passengers = useFetchPassengers(completedTrip?.id);
+  const currentUserId = user!.id;
+
+  const participants: User[] = useMemo(() => {
+    // passengers may be undefined while loading
+    const all = [driver, ...(passengers ?? [])].filter(Boolean) as User[];
+
+    // filter out the current user
+    return all.filter((u) => u.id !== currentUserId);
+  }, [driver, passengers, currentUserId]);
+
   const [isRated, setIsRated] = useState(false);
   const [selectedRating, setSelectedRating] = useState<number>(0);
-  const [driver, setDriver] = useState<User | null>(null);
-  const [passengers, setPassengers] = useState<User[]>([]);
-  const [allParticipants, setAllParticipants] = useState<User[]>([]);
-
-  const firstTrip = allTrips[0];
-  const currentUserId = user!.id;
-  const driverId = "4brsd0w5hsny30gm8ctd1kf1n9"; // TODO: get from trip data
-
-  useEffect(() => {
-    const fetchTripParticipants = async () => {
-      try {
-        // Fetch driver
-        const driverResponse = await fetch(`/api/auth/user/${driverId}`);
-        const driverData = await driverResponse.json();
-        const parsedDriver = {
-          ...driverData,
-          rating: parseFloat(driverData.rating?.replace(",", ".")) || 0,
-          tripCount: parseInt(driverData.tripCount) || 0,
-        };
-        setDriver(parsedDriver);
-
-        // TODO: Fetch passengers from trip API
-        // For now, passengers is empty
-        setPassengers([]);
-
-        // All participants except current user
-        const allUsers = [parsedDriver, ...[]];
-        const othersOnTrip = allUsers.filter((u) => u.id !== currentUserId);
-        setAllParticipants(othersOnTrip);
-      } catch (error) { }
-    };
-    fetchTripParticipants();
-  }, [driverId, currentUserId]);
 
   if (!user)
     return <p className="text-center text-muted">Ingen användare inloggad.</p>;
 
-  if (!allTrips || allTrips.length === 0)
+  if (!completedTrip)
     return <p className="text-center text-muted">Inga resor hittades.</p>;
 
   const handleUserClick = (user: User) => {
@@ -58,14 +46,14 @@ export default function TripsDonePage() {
   };
 
   const handleRatingSubmit = async (newRating: number) => {
-    if (allParticipants.length === 0) return;
+    if (passengers.length === 0) return;
 
     setSelectedRating(newRating);
 
     try {
       // Rate all except current user
       await Promise.all(
-        allParticipants.map((user) =>
+        participants.map((user) =>
           fetch(`/api/auth/user/${user.id}/rating`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -119,7 +107,7 @@ export default function TripsDonePage() {
 
       <h3>Förare</h3>
       <TripCardBig
-        trip={firstTrip}
+        trip={completedTrip}
         onUserClick={() => handleUserClick(driver)}
       />
 

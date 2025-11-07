@@ -16,7 +16,7 @@ import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
 import { useAuth } from "../../hooks/useAuth";
 import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
-import type UserTrip from "../../interfaces/UserTrips";
+import useTripBookings from "../../utils/TripBookings";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -39,6 +39,7 @@ export default function TripCardBig(props: TripCardProps) {
   const { date, startTime, endTime } = getTripDateAndTime(trip);
   const { showAlert } = useSmakTopAlert();
   const { profileImage } = useProfileImage(trip.driver[0].id ?? null);
+  const { bookTrip, cancelTrip, checkIfBooked } = useTripBookings();
 
   const cardUser = useFetchUser(trip.driver[0].id ?? null);
   const vehicle = useFetchCar(trip.carIdId ?? null);
@@ -61,32 +62,14 @@ export default function TripCardBig(props: TripCardProps) {
   useEffect(() => {
     if (!user?.id || !trip?.id) return;
 
-    async function checkIfBooked() {
-      try {
-        const response = await fetch('/api/TripUsers');
-        if (!response.ok) return;
-
-        const tripUsers: UserTrip[] = await response.json();
-        const booking = tripUsers.find((tu) => {
-          const userId = tu.user?.[0]?.id;
-          const tripId = tu.tripId;
-          return userId === user!.id && tripId === trip.id;
-        });
-
-        setIsTripBooked(!!booking);
-      } catch (error) {
-        console.error("Failed to check booking status", error);
-      }
+    async function checkBookingStatus() {
+      const isBooked = await checkIfBooked(trip.id, user!.id);
+      setIsTripBooked(isBooked);
     }
 
-    checkIfBooked();
-  }, [user?.id, trip?.id]);
+    checkBookingStatus();
+  }, [user?.id, trip?.id, checkIfBooked]);
 
-  // Determine the actual button type based on booking status
-  let actualButtonType = cardButtonType;
-  if (cardButtonType === "userBook" && isTripBooked) {
-    actualButtonType = "userCancel";
-  }
 
   const rating = cardUser?.rating;
   const firstName = cardUser?.firstName || "Okänd";
@@ -98,10 +81,10 @@ export default function TripCardBig(props: TripCardProps) {
     : "Okänd bil";
 
   let buttonText = "";
-  switch (actualButtonType) {
+  switch (cardButtonType) {
     // Passenger
     case "userBook":
-      buttonText = "Boka";
+      buttonText = isTripBooked ? "Avboka" : "Boka";
       break;
     case "userCancel":
       buttonText = "Avboka";
@@ -119,53 +102,54 @@ export default function TripCardBig(props: TripCardProps) {
       buttonText = "";
       break;
   }
-  const bookTrip = async () => {
-    const payload = {
-      tripRole: "Passenger",
-      tripId: trip.id,
-      user: [{
-        id: user!.id,
-        username: user!.username
-      }],
-    };
-    const response = await fetch(`/api/TripUsers`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    if (!response.ok) {
-      console.error("Failed to book trip");
-      throw new Error("Failed to book trip");
-    }
-  };
+
+
 
   // Update tripCount on footer badges
   const handleOnButtonClick = async () => {
     // Passenger
-    if (actualButtonType === "userBook") {
-      try {
-        await bookTrip();
-        setComingCount(comingCount + 1);
-        setIsTripBooked(true);
+    if (cardButtonType === "userBook") {
+      if (isTripBooked) {
+        try {
+          await cancelTrip(trip.id, user!.id);
+          setComingCount(Math.max(comingCount - 1, 0));
+          setIsTripBooked(false);
 
-        showAlert({
-          message: "Resan har bokats!",
-          backgroundColor: "success",
-          textColor: "white",
-          duration: 3000,
-        });
-      } catch (error) {
-        showAlert({
-          message: "Ett fel uppstod vid bokning. Försök igen.",
-          backgroundColor: "danger",
-          textColor: "white",
-          duration: 3000,
-        });
+          showAlert({
+            message: "Resan har avbokats!",
+            backgroundColor: "success",
+            textColor: "white",
+            duration: 3000,
+          });
+        } catch (error) {
+          showAlert({
+            message: "Ett fel uppstod vid avbokning. Försök igen.",
+            backgroundColor: "danger",
+            textColor: "white",
+            duration: 3000,
+          });
+        }
+      } else {
+        try {
+          await bookTrip(trip.id, user!.id, user!.username);
+          setComingCount(comingCount + 1);
+          setIsTripBooked(true);
+
+          showAlert({
+            message: "Resan har bokats!",
+            backgroundColor: "success",
+            textColor: "white",
+            duration: 3000,
+          });
+        } catch (error) {
+          showAlert({
+            message: "Ett fel uppstod vid bokning. Försök igen.",
+            backgroundColor: "danger",
+            textColor: "white",
+            duration: 3000,
+          });
+        }
       }
-    }
-    else if (actualButtonType === "userCancel") {
     }
 
     // Driver
