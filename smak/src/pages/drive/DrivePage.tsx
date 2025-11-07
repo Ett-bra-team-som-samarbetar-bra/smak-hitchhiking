@@ -69,6 +69,7 @@ export default function DrivePage() {
     const arrivalUTC = new Date(date.getTime() + duration * 1000).toISOString();
 
     const payload: TripRequest = {
+      title: `${user.firstName} ${user.lastName} - ${from.name} till ${to.name}`,
       driver: [{ id: user?.id, username: user?.username }],
       carIdId: selectedVehicle.id,
       startPosition: from.name,
@@ -190,6 +191,7 @@ export default function DrivePage() {
     }
 
     const payload = {
+      title: `${user.lastName} - ${car.brand} ${car.model}`,
       brand: car.brand,
       model: car.model,
       color: car.color,
