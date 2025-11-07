@@ -12,7 +12,7 @@ export default function useCoordinates(city: string) {
         const resFrom = await fetch(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
             city
-          )}.json?access_token=${MAPBOX_TOKEN}`
+          )}.json?access_token=${MAPBOX_TOKEN}&country=SE&types=place`
         );
         const data = await resFrom.json();
         const coords = data.features?.[0]?.geometry.coordinates ?? null;

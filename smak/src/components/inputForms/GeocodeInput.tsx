@@ -29,7 +29,7 @@ export default function GeocodeInput({ value, onChange, placeholder, excludeCity
       const res = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
           query
-        )}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&limit=2&country=SE`
+        )}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&limit=2&country=SE&types=place`
       );
       const data = await res.json();
       setSuggestions(data.features || []);
