@@ -331,6 +331,22 @@ export default function TripCardBig(props: TripCardProps) {
           </div>
         </div>
 
+        {trip.tripInfo && (
+          <>
+            <Row className="py-4">
+              <Col className="d-flex flex-column">
+                <div className="d-flex align-items-center justify-content-center fs-5 text-primary fw-semibold mb-2">
+                  <i className="bi bi-info-circle text-primary me-2"></i>
+                  <span >Information</span>
+                </div>
+                <span className="text-secondary fst-italic mt-1 fs-6">
+                  {trip.tripInfo}
+                </span>
+              </Col>
+            </Row>
+          </>
+        )}
+
         <DividerLine variant="info" />
 
         <Row className="py-2 cursor-pointer" onClick={handleCarClick}>

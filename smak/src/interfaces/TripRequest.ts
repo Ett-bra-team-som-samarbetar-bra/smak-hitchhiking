@@ -8,4 +8,5 @@ export default interface TripRequest {
   arrivalTime: string;
   distance: number;
   seats: number;
+  tripInfo?: string;
 }

@@ -1,6 +1,7 @@
 namespace RestRoutes;
 
 using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Metadata;
 using YesSql.Services;
 
 public static class FieldValidator
@@ -10,6 +11,17 @@ public static class FieldValidator
         IContentManager contentManager,
         YesSql.ISession session)
     {
+        if (contentType.Equals("Trip", StringComparison.OrdinalIgnoreCase))
+        {
+            var tripFields = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "id", "title", "driver", "driverId", "arrivalTime", "distance", 
+                "carId", "carIdId", "startPosition", "endPosition", "departureTime", 
+                "seats", "tripInfo"
+            };
+            return tripFields;
+        }
+
         // Try to get existing items first
         var cleanObjects = await GetRoutes.FetchCleanContent(contentType, session, populate: false);
 
@@ -35,6 +47,13 @@ public static class FieldValidator
         await session.SaveChangesAsync();
 
         return validFields;
+    }
+
+    private static string ToCamelCase(string str)
+    {
+        if (string.IsNullOrEmpty(str) || char.IsLower(str[0]))
+            return str;
+        return char.ToLower(str[0]) + str.Substring(1);
     }
 
     public static (bool isValid, List<string> invalidFields) ValidateFields(
