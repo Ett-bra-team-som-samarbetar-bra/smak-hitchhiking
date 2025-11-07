@@ -61,7 +61,7 @@ const OnTripProvider = ({ children }: OnTripProviderProps) => {
   useEffect(() => {
     const prevTrip = previousTripRef.current;
 
-    //navigate to TripDone when currentTrip is over
+    //navigate to TripDone when currentTrip is over TODO!! Make sure it is bound to the loggedinuser only.
     if (prevTrip && !currentTrip) {
       navigate("/trips-done", { state: { completedTrip: prevTrip } });
     }
