@@ -29,7 +29,8 @@ export default function TripsFoundPage() {
       return (
         tripDateTime >= startBoundary &&
         tripDateTime <= endBoundary &&
-        tripDateTime >= now
+        tripDateTime >= now &&
+        trip.startPosition?.toLowerCase() === from.toLowerCase()
       );
     })
     .sort(
