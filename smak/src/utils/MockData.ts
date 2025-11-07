@@ -39,8 +39,8 @@ export function getMockUsers() {
       lastName: "Glassman",
       profileImage: "/images/harold.png",
       description: "En passionerad gubbe som älskar bilar babes och båtar.",
-      rating: 4,
-      trips: 12,
+      rating: "4",
+      trips: "12",
       activeYears: "1.5",
       preferences: ["Rökfri", "Inga pälsdjur", "Gillar musik", "Pratglad"]
     },
@@ -50,8 +50,8 @@ export function getMockUsers() {
       lastName: "Ipsumsson",
       profileImage: "/images/development/user2.png",
       description: "En resglad person som älskar att upptäcka nya platser och kulturer.",
-      rating: 1,
-      trips: 5,
+      rating: "4",
+      trips: "12",
       activeYears: "1",
       preferences: ["Rökfri", "Inga pälsdjur", "Pratglad", "Gillar glass"]
     },
@@ -61,8 +61,8 @@ export function getMockUsers() {
       lastName: "Stark",
       profileImage: "/images/harold.png",
       description: "En äventyrlig själ som alltid är redo för nästa resa.",
-      rating: 4,
-      trips: 8,
+      rating: "4",
+      trips: "12",
       activeYears: "2",
       preferences: ["Rökfri", "Gillar musik"]
     },
@@ -72,8 +72,8 @@ export function getMockUsers() {
       lastName: "Snake",
       profileImage: "/images/development/user2.png",
       description: "En naturälskare som finner ro i skogens lugn och fjällens majestät.",
-      rating: 5,
-      trips: 20,
+      rating: "4",
+      trips: "12",
       activeYears: "3",
       preferences: ["Inga pälsdjur", "Pratglad", "Gillar musik", "Rökfri"]
     },

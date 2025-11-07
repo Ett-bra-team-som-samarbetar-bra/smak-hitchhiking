@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function renderRatingStars(rating: number | string | undefined): React.ReactElement[] {
+export function renderRatingStars(rating: string | undefined): React.ReactElement[] {
   const stars = [];
   const numericRating = typeof rating === 'string' ? parseFloat(rating) : (rating || 0);
 

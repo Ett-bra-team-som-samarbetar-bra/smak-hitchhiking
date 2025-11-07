@@ -23,11 +23,11 @@ export default function JoggusPage() {
 
   const user = {
     id: "1",
+    rating: "5",
     firstName: "Jocke",
     lastName: "Kek",
     profileImage: "/images/development/user2.png",
-    description: "En trevlig kille som gillar långa promenader på stranden och att koda hela natten.",
-    rating: 4,
+    description: "En trevlig kille som gillar långa promenader på stranden och att koda hela natten."
   };
 
 

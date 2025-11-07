@@ -89,8 +89,8 @@ export default function CarModal({
         disabled={!isOwnProfile}
       />
       <InputFormText
-        placeholder="Antal säten"
-        label="Antal säten"
+        placeholder="Antal platser"
+        label="Antal platser"
         isRequired={true}
         value={payload.seats ? payload.seats.toString() : ""}
         setFormProp={handleChange}
@@ -106,7 +106,8 @@ export default function CarModal({
               onClick={onSave}
               color="primary"
             >
-              {isEdit ? "Redigera bil" : "Spara bil"}
+              {/* {isEdit ? "Redigera bil" : "Spara bil"} */}
+              Spara bil
             </SmakButton>
 
             {isEdit && (

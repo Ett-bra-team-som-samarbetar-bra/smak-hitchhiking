@@ -13,6 +13,8 @@ interface AuthProviderProps {
 
 const fakeUser: User = {
   id: "42",
+  rating: "5",
+  tripCount: "10",
   username: "Dev User",
   email: "dev@example.com",
   roles: ["Administrator"],

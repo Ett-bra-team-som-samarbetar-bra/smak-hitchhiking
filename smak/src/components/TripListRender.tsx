@@ -6,11 +6,13 @@ import type Trip from "../interfaces/Trips";
 interface TripGroupListProps {
   groupedTrips: Record<string, Trip[]>;
   isBooked?: boolean;
+  cardButtonType?: "userBook" | "userCancel" | "driverStart" | "driverDone" | "none";
 }
 
 export function TripGroupList({
   groupedTrips,
   isBooked = false,
+  cardButtonType = "none",
 }: TripGroupListProps) {
   const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
   const [ready, setReady] = React.useState(false);
@@ -48,6 +50,7 @@ export function TripGroupList({
                 <TripCardBig
                   key={cardKey}
                   trip={trip}
+                  cardButtonType={cardButtonType}
                   onBigTripCardClick={() => toggleCard(cardKey)}
                   isBooked={isBooked}
                 />
@@ -63,7 +66,7 @@ export function TripGroupList({
           </div>
         ))
       ) : (
-        <h3 className="text-center m-0">Inga resor hittades</h3>
+        <h2 className="m-0">Inga resor hittades</h2>
       )}
     </div>
   );

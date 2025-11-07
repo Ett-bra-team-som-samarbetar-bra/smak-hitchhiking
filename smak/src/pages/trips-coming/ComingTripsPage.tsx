@@ -30,5 +30,5 @@ export default function ComingTripsPage() {
     setComingCount(upcomingTrips.length);
   }, [upcomingTrips]);
 
-  return <TripGroupList groupedTrips={groupedUpcomingTrips} isBooked={true} />;
+  return <TripGroupList groupedTrips={groupedUpcomingTrips} isBooked={true} cardButtonType="userCancel" />;
 }

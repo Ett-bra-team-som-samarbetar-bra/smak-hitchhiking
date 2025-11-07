@@ -30,6 +30,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     lastName: "",
     phone: "",
     description: "",
+    rating: "5",
+    tripCount: "0",
     preferences: [],
   });
   const [preferencesState, setPreferencesState] = useState<string[]>(
@@ -54,6 +56,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       lastName: "",
       phone: "",
       description: "",
+      rating: "5",
+      tripCount: "0",
       preferences: [],
     });
     setPreferencesState(preferenceOptions.map(() => "Ja"));

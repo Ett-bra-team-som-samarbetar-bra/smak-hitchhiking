@@ -101,7 +101,7 @@ export default function TripsCurrentPage() {
                       id: user.id,
                       firstName: user.firstName || "",
                       lastName: user.lastName || "",
-                      rating: user.rating || 0,
+                      rating: user.rating || "",
                       description: user.description || "",
                     }}
                     isDriver={isDriver}

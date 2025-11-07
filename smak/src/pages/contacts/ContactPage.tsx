@@ -70,7 +70,7 @@ export default function ContactPage() {
               id: contact.id,
               firstName: contact.firstName || "",
               lastName: contact.lastName || "",
-              rating: contact.rating || 0,
+              rating: contact.rating || "0",
               description: contact.description || ""
             }}
             onClick={() => handleUserClick(contact)}

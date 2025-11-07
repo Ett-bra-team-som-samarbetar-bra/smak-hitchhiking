@@ -28,6 +28,5 @@ export default function IconButton({
       onClick={handleClick}
       className={`bi ${icon} ${size} ${color} ${bg} rounded-circle border-0 ${variant} d-flex justify-content-center align-items-center ${className}`}
     />
-
   );
 }

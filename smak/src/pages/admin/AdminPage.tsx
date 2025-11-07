@@ -80,7 +80,7 @@ export default function AdminPage() {
               id: user.id,
               firstName: user.firstName || user.username,
               lastName: user.lastName || "",
-              rating: user.rating || 0,
+              rating: user.rating || "0",
               description: user.description || "",
             }}
             onClick={() => handleUserClick(user)}

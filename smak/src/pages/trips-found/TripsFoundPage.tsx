@@ -31,5 +31,5 @@ export default function TripsFoundPage() {
 
   const groupedUpcomingTrips = groupTripsByDate(upcomingTrips);
 
-  return <TripGroupList groupedTrips={groupedUpcomingTrips} isBooked={false} />;
+  return <TripGroupList groupedTrips={groupedUpcomingTrips} isBooked={false} cardButtonType="userBook" />;
 }

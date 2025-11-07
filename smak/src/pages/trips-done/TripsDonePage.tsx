@@ -63,7 +63,7 @@ export default function TripsDonePage() {
       );
 
       setIsRated(true);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   if (isRated) {
@@ -122,7 +122,7 @@ export default function TripsDonePage() {
                 id: user.id,
                 firstName: user.firstName || "",
                 lastName: user.lastName || "",
-                rating: user.rating || 0,
+                rating: user.rating || "0",
                 description: user.description || "",
               }}
               isDriver={false}
