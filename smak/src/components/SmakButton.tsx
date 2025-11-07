@@ -8,6 +8,7 @@ interface SmakButtonProps {
   color?: string;
   rounded?: string;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
 export default function SmakButton({
@@ -16,10 +17,11 @@ export default function SmakButton({
   className = "",
   color = "primary",
   rounded = "rounded-5",
+  type = "button"
 }: SmakButtonProps) {
   return (
     <Button
-      type="button"
+      type={type}
       className={`${className} btn btn-${color} py-2 ${rounded} w-100`}
       onClick={onClick}
     >

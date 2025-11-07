@@ -53,6 +53,9 @@ export default function TripCardBig(props: TripCardProps) {
     seats: 0,
   });
   const [isTripBooked, setIsTripBooked] = useState(false);
+  const seatsLabel = vehicle
+    ? (Number(vehicle.seats) === 1 ? "plats" : "platser")
+    : "";
 
   // Check if this trip is already booked by the current user
   useEffect(() => {
@@ -138,8 +141,6 @@ export default function TripCardBig(props: TripCardProps) {
     }
   };
 
-
-
   // Update tripCount on footer badges
   const handleOnButtonClick = async () => {
     // Passenger
@@ -165,7 +166,6 @@ export default function TripCardBig(props: TripCardProps) {
       }
     }
     else if (actualButtonType === "userCancel") {
-     
     }
 
     // Driver
@@ -189,7 +189,6 @@ export default function TripCardBig(props: TripCardProps) {
   };
 
   const handleUserClick = () => {
-
     if (cardUser?.id === user?.id) {
       navigate(`/profile`);
     }
@@ -298,7 +297,7 @@ export default function TripCardBig(props: TripCardProps) {
             <i className="bi bi-car-front-fill me-2 text-black"></i>
             <span className="text-black fw-semibold">
               {vehicleInfo}
-              <span className="text-secondary fw-normal"> - {seats} säten</span>
+              <span className="text-secondary fw-normal"> - {seats} {seatsLabel}</span>
             </span>
           </Col>
 

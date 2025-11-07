@@ -285,8 +285,7 @@ export default function ProfilePage() {
       });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Failed to save car: ${errText}`);
+        throw new Error("Failed to save car");
       }
 
       const allCarsResponse = await fetch(`/api/Car`);
@@ -383,8 +382,6 @@ export default function ProfilePage() {
           duration: 3000,
         });
       } else {
-        const error = await response.json();
-        console.error('Error adding friend:', error);
         showAlert({
           message: "Kunde inte lägga till kontakt. Försök igen.",
           backgroundColor: "danger",
@@ -393,7 +390,6 @@ export default function ProfilePage() {
         });
       }
     } catch (error) {
-      console.error('Error adding friend:', error);
       showAlert({
         message: "Okänt fel. Försök igen.",
         backgroundColor: "danger",
@@ -431,7 +427,6 @@ export default function ProfilePage() {
         }
       }
     } catch (error) {
-      console.error('Error removing friend:', error);
       showAlert({
         message: "Okänt fel. Försök igen.",
         backgroundColor: "danger",
