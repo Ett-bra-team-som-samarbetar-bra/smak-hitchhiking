@@ -99,6 +99,21 @@ export default function DrivePage() {
       return;
     }
 
+    // Validate date is not in the past
+    if (
+      date &&
+      date.toDateString() === new Date().toDateString() &&
+      date.getTime() < new Date().getTime()
+    ) {
+      showAlert({
+        message: "Du får inte välja en tid som redan har passerat.",
+        backgroundColor: "warning",
+        textColor: "white",
+        duration: 3000,
+      });
+      return;
+    }
+
     const departureUTC = date.toISOString();
     const arrivalUTC = new Date(date.getTime() + duration * 1000).toISOString();
 
@@ -451,9 +466,9 @@ export default function DrivePage() {
               >
                 {date
                   ? date.toLocaleString("sv-SE", {
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  })
                   : "Avgång"}
               </Button>
 
@@ -473,7 +488,7 @@ export default function DrivePage() {
                   showPopperArrow={false}
                   showTimeSelect
                   timeFormat="HH:mm"
-                  timeIntervals={1}
+                  timeIntervals={60}
                   timeCaption="Tid"
                   dateFormat="yyyy-MM-dd HH:mm"
                   autoComplete="off"
