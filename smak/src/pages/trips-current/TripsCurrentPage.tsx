@@ -98,9 +98,7 @@ export default function TripsCurrentPage() {
 
         <Accordion.Item eventKey="1">
           <Accordion.Header className="py-1">
-            <span className="fs-5 fw-semibold">
-              {isDriver ? "Passagerare" : "Övriga passagerare"}
-            </span>
+            <span className="fs-5 fw-semibold">Passagerare</span>
             <i className="bi bi-caret-down-fill ms-2"></i>
           </Accordion.Header>
           <Accordion.Body>
