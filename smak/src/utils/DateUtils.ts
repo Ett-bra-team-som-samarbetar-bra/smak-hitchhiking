@@ -4,11 +4,19 @@ import type Trip from "../interfaces/Trips";
 export function groupTripsByDate(trips: Trip[]) {
   const groupedTrips: Record<string, Trip[]> = {};
   for (const trip of trips) {
-    const date = trip.departureTime.toISOString().split("T")[0];
-    if (!groupedTrips[date]) {
-      groupedTrips[date] = [];
+    const departure = new Date(trip.departureTime);
+
+    // Use local date (Swedish locale-friendly)
+    const localDate = departure.toLocaleDateString("sv-SE", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+
+    if (!groupedTrips[localDate]) {
+      groupedTrips[localDate] = [];
     }
-    groupedTrips[date].push(trip);
+    groupedTrips[localDate].push(trip);
   }
 
   return groupedTrips;

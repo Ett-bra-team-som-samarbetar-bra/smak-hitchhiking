@@ -65,20 +65,16 @@ export default function DrivePage() {
       return;
     }
 
-    const localDeparture = new Date(date);
-
-    const utcDeparture = new Date(
-      localDeparture.getTime() - localDeparture.getTimezoneOffset() * 60000
-    );
-    const utcArrival = new Date(utcDeparture.getTime() + duration * 1000);
+    const departureUTC = date.toISOString();
+    const arrivalUTC = new Date(date.getTime() + duration * 1000).toISOString();
 
     const payload: TripRequest = {
       driver: [{ id: user?.id, username: user?.username }],
       carIdId: selectedVehicle.id,
       startPosition: from.name,
       endPosition: to.name,
-      departureTime: utcDeparture.toISOString(),
-      arrivalTime: utcArrival.toISOString(),
+      departureTime: departureUTC,
+      arrivalTime: arrivalUTC,
       distance: Math.round(distance / 1000),
       seats: selectedVehicle.seats,
     };
@@ -86,14 +82,6 @@ export default function DrivePage() {
     setIsLoading(true);
 
     try {
-      // TODO fetch post
-      console.log(
-        `Distans: ${Math.round(distance / 1000)}km \nTidsestimat: ${(
-          duration /
-          60 /
-          60
-        ).toFixed(1)}h`
-      );
       const response = await fetch("api/Trip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
