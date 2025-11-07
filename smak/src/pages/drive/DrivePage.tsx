@@ -140,16 +140,12 @@ export default function DrivePage() {
         credentials: "include",
       });
 
-      console.log("Response status:", response.status);
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.log("Error response:", errorText);
         throw new Error("Inlogg misslyckades");
       }
 
       const data = await response.json();
-      console.log("Response data:", data);
       await Promise.all([data, new Promise((res) => setTimeout(res, 1000))]);
 
       setComingCount(comingCount + 1); // Update footer counters

@@ -25,9 +25,7 @@ export default function useUserTrips(userId: string, allTrips: Trip[]) {
         );
 
         setUserTrips(filteredTrips);
-        console.log(filteredTrips);
       } catch (error) {
-        console.log("Fel vid hämtande av resor", error);
         setUserTrips([]);
       }
     }

@@ -17,7 +17,6 @@ export default function useFetchUser(userId: string) {
         const data = await response.json();
         setFetchedUser(data);
       } catch (error) {
-        console.log("Kunde ej hitta användare", error);
         setFetchedUser(null);
       }
     };

@@ -17,7 +17,6 @@ export default function useAllTrips() {
         }));
         setAllTrips(trips);
       } catch (error) {
-        console.log("Fel vid hämtande av resor", error);
       }
     }
 

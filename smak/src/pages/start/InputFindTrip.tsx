@@ -46,17 +46,8 @@ export default function InputFindTrip() {
     }
 
     setIsLoading(true);
-
     try {
-      // TODO fetch post
-      console.log(
-        `Distans: ${Math.round(distance / 1000)}km \nTidsestimat: ${(
-          duration /
-          60 /
-          60
-        ).toFixed(1)}h`
-      );
-      await new Promise((resolve) => setTimeout(resolve, 1400));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       clearInputs();
       navigate(

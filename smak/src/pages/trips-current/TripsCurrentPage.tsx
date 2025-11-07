@@ -55,7 +55,6 @@ export default function TripsCurrentPage() {
         console.log("the fuck bro", passenger);
       }
     } catch {
-      console.log("the fuck bro");
     }
   };
 

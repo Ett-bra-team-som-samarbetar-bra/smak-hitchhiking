@@ -17,7 +17,6 @@ export default function useFetchCar(carId: string) {
         const data = await result.json();
         setCar(data);
       } catch (error) {
-        console.log(error);
         setCar(null);
       }
     };
