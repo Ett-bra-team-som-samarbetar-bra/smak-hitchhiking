@@ -256,11 +256,7 @@ public static class AuthEndpoints
             // get rating and trip count
             var currentRating = double.TryParse(props["Rating"]?.ToString(), out var rating) ? rating : 0;
             var totalTrips = int.TryParse(props["TripCount"]?.ToString(), out var count) ? count : 0;
-
-            if (totalTrips <= 0)
-            {
-                return Results.BadRequest(new { error = "Trip count must be greater than 0 before rating." });
-            }
+            totalTrips++;
 
             // Calculate new average rating 
             var newRating = ((currentRating * (totalTrips - 1)) + request.Rating) / totalTrips;

@@ -19,7 +19,7 @@ export default function useFetchPassengers(tripId: string) {
         if (!result.ok) throw new Error("Fel vid hämtande av resor");
         const tripUsers: UserTrip[] = await result.json();
 
-        const userResult = await fetch("/api/auth/user?pageSize=9999");
+        const userResult = await fetch("/api/auth/user?pageSize=99");
         if (!userResult.ok) throw new Error("Fel vid hämtande av användare");
         const userData = await userResult.json();
         const users: User[] = userData.users;
