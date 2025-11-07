@@ -380,7 +380,7 @@ export default function DrivePage() {
                   showPopperArrow={false}
                   showTimeSelect
                   timeFormat="HH:mm"
-                  timeIntervals={15}
+                  timeIntervals={60}
                   timeCaption="Tid"
                   dateFormat="yyyy-MM-dd HH:mm"
                   autoComplete="off"
