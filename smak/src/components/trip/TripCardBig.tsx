@@ -28,6 +28,7 @@ export default function TripCardBig(props: TripCardProps) {
     cardButtonType = "none",
     onButtonClick,
     onBigTripCardClick,
+    onTripCancelled,
     isBooked,
   } = props;
 
@@ -166,6 +167,10 @@ export default function TripCardBig(props: TripCardProps) {
           await deleteTrip(trip.id);
           setComingCount(Math.max(comingCount - 1, 0));
 
+          if (onTripCancelled) {
+            onTripCancelled(trip.id);
+          }
+
           showAlert({
             message: "Resan har tagits bort!",
             backgroundColor: "success",
@@ -186,6 +191,10 @@ export default function TripCardBig(props: TripCardProps) {
           await cancelTrip(trip.id, user!.id);
           setComingCount(Math.max(comingCount - 1, 0));
           setIsTripBooked(false);
+
+          if (onTripCancelled) {
+            onTripCancelled(trip.id);
+          }
 
           showAlert({
             message: "Resan har avbokats!",

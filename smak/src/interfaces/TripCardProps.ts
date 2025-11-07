@@ -14,5 +14,6 @@ export default interface TripCardProps {
   onUserClick?: () => void;
   onCarClick?: () => void;
   onButtonClick?: () => void;
+  onTripCancelled?: (tripId: string) => void;
   isBooked?: boolean;
 }
