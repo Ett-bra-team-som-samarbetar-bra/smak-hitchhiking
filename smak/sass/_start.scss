@@ -42,3 +42,10 @@
 .set-width-login-modals {
     max-width: 900px;
 }
+
+.auto-resize-textarea {
+    resize: none;
+    overflow: hidden;
+    min-height: 40px;
+    max-height: 200px;
+}

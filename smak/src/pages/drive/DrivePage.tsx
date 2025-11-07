@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDynamicMap } from "../../context/DynamicMapProvider";
 import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 import { useAuth } from "../../hooks/useAuth";
@@ -35,6 +35,7 @@ export default function DrivePage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showVehicleDropdown, setShowVehicleDropdown] = useState(false);
+  const [showTripInfoDropdown, setShowTripInfoDropdown] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Car | null>(null);
   const [showCarModal, setShowCarModal] = useState(false);
   const [date, setDate] = useState<Date | null>(null);
@@ -50,6 +51,37 @@ export default function DrivePage() {
     seats: 0,
   });
 
+  // Trips info dropdownMenu magic
+  const tripInfoTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const tripInfoDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (showTripInfoDropdown && tripInfoTextareaRef.current) {
+      tripInfoTextareaRef.current.focus();
+    }
+  }, [showTripInfoDropdown]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        tripInfoDropdownRef.current &&
+        !tripInfoDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowTripInfoDropdown(false);
+      }
+    }
+    if (showTripInfoDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showTripInfoDropdown]);
+
+
+  // Back to normal code
   if (!user) return;
 
   registerLocale("sv", sv);
@@ -275,6 +307,7 @@ export default function DrivePage() {
     <div className="position-relative h-100 z-index-fix non-interactive">
       <div className="dynamic-map-ontop-content px-3 d-flex flex-column">
         <div className="d-flex flex-column">
+
           {/* Buttons */}
           <SmakMapButton
             onClick={centerMapOnLocations}
@@ -287,63 +320,110 @@ export default function DrivePage() {
             iconClassName="fs-2 dynamic-map-cross-icon"
           />
 
-          {/* Form */}
           <form onSubmit={handleSubmit}>
-            <div className="position-relative mb-1 interactive">
-              <i className="bi bi-car-front-fill dynamic-map-input-icons fs-5 non-interactive" />
-              <input
-                type="text"
-                className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline cursor-pointer"
-                placeholder="Välj fordon"
-                value={
-                  selectedVehicle
-                    ? `${selectedVehicle.brand} ${selectedVehicle.model}`
-                    : "Välj fordon"
-                }
-                readOnly
-                onClick={() => setShowVehicleDropdown(true)}
-                onBlur={() => setShowVehicleDropdown(false)}
-                autoComplete="off"
-              />
+            <div className="d-flex flex-row w-100 gap-1">
 
-              {showVehicleDropdown && (
-                <ul
-                  className="list-group position-absolute w-100 mt-1 rounded-4"
-                  style={{
-                    zIndex: 1050,
-                    maxHeight: "200px",
-                    overflowY: "auto",
-                  }}
-                >
-                  {cars.length > 0 &&
-                    cars.map((car, idx) => (
-                      <li
-                        key={car.id || idx}
-                        className="list-group-item list-group-item-action bg-white cursor-pointer dynamic-map-city-dropdown"
-                        onMouseDown={() => {
-                          setSelectedVehicle(car);
-                          setShowVehicleDropdown(false);
-                        }}
-                      >
-                        <span className="me-2 text-secondary">{idx + 1}.</span>
-                        {car.brand} {car.model}
-                      </li>
-                    ))}
-                  <li
-                    className="list-group-item list-group-item-action bg-white cursor-pointer d-flex align-items-center"
-                    onMouseDown={() => {
-                      handleAddVehicle();
-                      setShowVehicleDropdown(false);
+              {/* Vehicle */}
+              <div className="w-50 position-relative mb-1 interactive">
+                <i className="bi bi-car-front-fill dynamic-map-input-icons fs-5 non-interactive" />
+                <input
+                  type="text"
+                  className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline cursor-pointer"
+                  placeholder="Välj fordon"
+                  value={
+                    selectedVehicle
+                      ? `${selectedVehicle.brand}`
+                      : "Välj fordon"
+                  }
+                  readOnly
+                  onClick={() => setShowVehicleDropdown(true)}
+                  onBlur={() => setShowVehicleDropdown(false)}
+                  autoComplete="off"
+                />
+
+                {showVehicleDropdown && (
+                  <ul
+                    className="list-group position-absolute mt-1 rounded-4"
+                    style={{
+                      zIndex: 1050,
+                      maxHeight: "200px",
+                      overflowY: "auto",
+                      width: "202%",
+                      maxWidth: "420px",
+                      left: 0,
                     }}
                   >
-                    <i
-                      className="bi bi-plus-circle-fill text-primary"
-                      style={{ marginRight: "0.5rem", marginLeft: "-3px" }}
-                    ></i>
-                    Lägg till fordon
-                  </li>
-                </ul>
-              )}
+                    {cars.length > 0 &&
+                      cars.map((car, idx) => (
+                        <li
+                          key={car.id || idx}
+                          className="list-group-item list-group-item-action bg-white cursor-pointer dynamic-map-city-dropdown"
+                          onMouseDown={() => {
+                            setSelectedVehicle(car);
+                            setShowVehicleDropdown(false);
+                          }}
+                        >
+                          <span className="me-2 text-secondary">{idx + 1}.</span>
+                          {car.brand} {car.model}
+                        </li>
+                      ))}
+                    <li
+                      className="list-group-item list-group-item-action bg-white cursor-pointer d-flex align-items-center"
+                      onMouseDown={() => {
+                        handleAddVehicle();
+                        setShowVehicleDropdown(false);
+                      }}
+                    >
+                      <i
+                        className="bi bi-plus-circle-fill text-primary"
+                        style={{ marginRight: "0.5rem", marginLeft: "-3px" }}
+                      ></i>
+                      Lägg till fordon
+                    </li>
+                  </ul>
+                )}
+              </div>
+
+              {/* Trip info */}
+              <div className="w-50 position-relative mb-1 interactive">
+                <i className="bi bi-map-fill dynamic-map-input-icons fs-5 non-interactive" />
+                <input
+                  type="text"
+                  className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline cursor-pointer"
+                  placeholder=""
+                  value={tripInfo ? tripInfo.substring(0, 12) + (tripInfo.length > 12 ? "..." : "") : "Information"}
+                  readOnly
+                  onClick={() => setShowTripInfoDropdown(true)}
+                  autoComplete="off"
+                />
+
+                {showTripInfoDropdown && (
+                  <div
+                    ref={tripInfoDropdownRef}
+                    className="list-group position-absolute mt-1 rounded-4 bg-white p-2"
+                    style={{
+                      zIndex: 1050,
+                      maxHeight: "400px",
+                      width: "202%",
+                      maxWidth: "420px",
+                      left: "-102%",
+                    }}
+                  >
+                    <InputFormText
+                      setFormProp={(e) => setTripInfo(e.target.value)}
+                      className="rounded-3 border-1 border-light border overflow-hidden"
+                      formClassName="focus-no-outline"
+                      marginBottom={false}
+                      placeholder="Valfri information om resan"
+                      isTextArea={true}
+                      maxLength={80}
+                      disabled={false}
+                      value={tripInfo}
+                      inputRef={tripInfoTextareaRef}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             <GeocodeInput
@@ -360,17 +440,6 @@ export default function DrivePage() {
               placeholder="Till"
               excludeCity={from?.name}
               icon="bi-flag-fill"
-            />
-
-            <InputFormText
-              setFormProp={(e) => setTripInfo(e.target.value)}
-              className="interactive"
-              label="Reseinformation (valfritt)"
-              placeholder="Lägg till information om resan, t.ex. regler för medåkare"
-              isTextArea={true}
-              maxLength={500}
-              disabled={false}
-              value={tripInfo}
             />
 
             {/* Calender */}
@@ -426,7 +495,7 @@ export default function DrivePage() {
             </SubmitButton>
           </form>
         </div>
-      </div>
+      </div >
 
       <CarModal
         title="Lägg till fordon"
@@ -438,6 +507,6 @@ export default function DrivePage() {
         isOwnProfile={true}
         onSave={() => handleSaveCar(carPayload)}
       />
-    </div>
+    </div >
   );
 }
