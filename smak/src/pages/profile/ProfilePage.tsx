@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { uploadMedia } from "../../components/fileUpload/MediaUploader";
+import type User from "../../interfaces/User";
+import type Car from "../../interfaces/Cars";
 import SmakButton from "../../components/SmakButton";
 import CarCard from "./CarCard";
 import ProfileCard from "./ProfileCard";
 import CarModal from "./CarModal";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { uploadMedia } from "../../components/fileUpload/MediaUploader";
 import UserModal from "./UserModal";
-import type User from "../../interfaces/User";
 import useProfileImage from "../../hooks/useProfileImage";
-import type Car from "../../interfaces/Cars";
-import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
 
 export default function ProfilePage() {
   const { userId } = useParams();

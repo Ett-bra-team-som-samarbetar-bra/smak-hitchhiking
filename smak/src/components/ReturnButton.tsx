@@ -8,7 +8,10 @@ export default function ReturnButton() {
   // onClick animation
   const handleGoBack = () => {
     setClicked(true);
-    navigate(-1);
+
+    if (window.history.length > 1) {
+      navigate(-1);
+    }
     setTimeout(() => setClicked(false), 150);
   };
 
