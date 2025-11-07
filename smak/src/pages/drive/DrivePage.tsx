@@ -280,7 +280,7 @@ export default function DrivePage() {
           {/* Form */}
           <form onSubmit={handleSubmit}>
             <div className="position-relative mb-1 interactive">
-              <i className="bi bi-car-front-fill dynamic-map-input-icons fs-5" />
+              <i className="bi bi-car-front-fill dynamic-map-input-icons fs-5 non-interactive" />
               <input
                 type="text"
                 className="form-control bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field focus-no-outline cursor-pointer"
@@ -341,6 +341,7 @@ export default function DrivePage() {
               onChange={setFrom}
               placeholder="Från"
               excludeCity={to?.name}
+              icon="bi-pin-fill"
             />
 
             <GeocodeInput
@@ -348,11 +349,12 @@ export default function DrivePage() {
               onChange={setTo}
               placeholder="Till"
               excludeCity={from?.name}
+              icon="bi-flag-fill"
             />
 
             {/* Calender */}
             <div className="position-relative interactive w-100">
-              <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5" />
+              <i className="bi bi-calendar-fill dynamic-map-input-icons fs-5 non-interactive" />
               <Button
                 type="button"
                 className="btn bg-primary text-white border-0 rounded-5 py-2 dynamic-map-input-field w-100 text-start focus-no-outline"

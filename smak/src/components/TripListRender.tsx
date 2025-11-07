@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TripCardBig from "./trip/TripCardBig";
 import TripCardSmall from "./trip/TripCardSmall";
 import type Trip from "../interfaces/Trips";
@@ -14,13 +14,18 @@ export function TripGroupList({
   isBooked = false,
   cardButtonType = "none",
 }: TripGroupListProps) {
-  const [selectedIndex, setSelectedIndex] = React.useState<string | null>(null);
-  const [ready, setReady] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => setReady(true), 75);
     return () => clearTimeout(timer);
   }, [groupedTrips]);
+
+
+  const handleTripCancelled = (tripId: string) => {
+    console.log("Trip cancelled:", tripId); // right id for removing trip for rerender
+  };
 
   const hasTrips = Object.keys(groupedTrips).length > 0;
 
@@ -52,6 +57,7 @@ export function TripGroupList({
                   trip={trip}
                   cardButtonType={cardButtonType}
                   onBigTripCardClick={() => toggleCard(cardKey)}
+                  onTripCancelled={handleTripCancelled}
                   isBooked={isBooked}
                 />
               ) : (
