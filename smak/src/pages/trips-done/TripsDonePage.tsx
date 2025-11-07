@@ -46,7 +46,7 @@ export default function TripsDonePage() {
   };
 
   const handleRatingSubmit = async (newRating: number) => {
-    if (passengers.length === 0) return;
+    if (participants.length === 0) return;
 
     setSelectedRating(newRating);
 
@@ -63,7 +63,7 @@ export default function TripsDonePage() {
       );
 
       setIsRated(true);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   if (isRated) {
