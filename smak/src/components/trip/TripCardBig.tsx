@@ -6,7 +6,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
-import { bookTrip, cancelTrip, checkIfBooked, deleteTrip } from "../../utils/TripBookings";
+import {
+  bookTrip,
+  cancelTrip,
+  checkIfBooked,
+  deleteTrip,
+} from "../../utils/TripBookings";
 import type TripCardProps from "../../interfaces/TripCardProps";
 import SmakCard from "../SmakCard";
 import DividerLine from "../DividerLine";
@@ -17,6 +22,7 @@ import useFetchCar from "../../hooks/useFetchCar";
 import useProfileImage from "../../hooks/useProfileImage";
 import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
+import useFetchPassengers from "../../hooks/useFetchPassengers";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -31,6 +37,8 @@ export default function TripCardBig(props: TripCardProps) {
     onTripCancelled,
     isBooked,
   } = props;
+
+  const passengers = useFetchPassengers(trip.id);
 
   if (!trip || !trip.driver?.length) {
     return <div> Laddar resa...</div>;
@@ -55,7 +63,9 @@ export default function TripCardBig(props: TripCardProps) {
   });
   const [isTripBooked, setIsTripBooked] = useState(false);
   const seatsLabel = vehicle
-    ? (Number(vehicle.seats) === 1 ? "plats" : "platser")
+    ? Number(vehicle.seats) === 1
+      ? "plats"
+      : "platser"
     : "";
   // Check if this trip is already booked by the current user
   useEffect(() => {
@@ -67,7 +77,9 @@ export default function TripCardBig(props: TripCardProps) {
     }
 
     checkBookingStatus();
-  }, [user?.id, trip?.id, checkIfBooked]);
+  }, [user?.id, trip?.id]);
+
+  const isTripFull = passengers.length >= trip.seats;
 
   const rating = cardUser?.rating;
   const firstName = cardUser?.firstName || "Okänd";
@@ -85,7 +97,7 @@ export default function TripCardBig(props: TripCardProps) {
   switch (cardButtonType) {
     // Passenger
     case "userBook":
-      buttonText = isTripBooked ? "Avboka" : "Boka";
+      buttonText = isTripBooked ? "Avboka" : isTripFull ? "Fullbokad" : "Boka";
       break;
     case "userCancel":
       buttonText = isDriver ? "Ta bort" : "Avboka";
@@ -104,7 +116,6 @@ export default function TripCardBig(props: TripCardProps) {
 
   // Update tripCount on footer badges
   const handleOnButtonClick = async () => {
-
     // Driver cannot book own trip
     if (isDriver && cardButtonType === "userBook") {
       showAlert({
@@ -159,8 +170,7 @@ export default function TripCardBig(props: TripCardProps) {
           });
         }
       }
-    }
-    else if (cardButtonType === "userCancel") {
+    } else if (cardButtonType === "userCancel") {
       if (isDriver) {
         // Driver deleting the trip
         try {
@@ -229,14 +239,12 @@ export default function TripCardBig(props: TripCardProps) {
   };
 
   const handleUserClick = () => {
-
     if (cardUser?.id === user?.id) {
       navigate(`/profile`);
-    }
-    else {
+    } else {
       navigate(`/profile/${cardUser?.id}`, { state: { user: cardUser } });
     }
-  }
+  };
 
   return (
     <>
@@ -279,6 +287,7 @@ export default function TripCardBig(props: TripCardProps) {
                   <TripCardButton
                     label={buttonText}
                     onClick={handleOnButtonClick}
+                    disabled={isTripFull && !isTripBooked}
                   ></TripCardButton>
                 )}
               </div>
@@ -326,6 +335,7 @@ export default function TripCardBig(props: TripCardProps) {
               <TripCardButton
                 label={buttonText}
                 onClick={handleOnButtonClick}
+                disabled={isTripFull && !isTripBooked}
               ></TripCardButton>
             )}
           </div>
@@ -337,7 +347,7 @@ export default function TripCardBig(props: TripCardProps) {
               <Col className="d-flex flex-column">
                 <div className="d-flex align-items-center justify-content-center fs-5 text-primary fw-semibold mb-2">
                   <i className="bi bi-info-circle text-primary me-2"></i>
-                  <span >Information</span>
+                  <span>Information</span>
                 </div>
                 <span className="text-secondary fst-italic mt-1 fs-6">
                   {trip.tripInfo}
@@ -354,7 +364,10 @@ export default function TripCardBig(props: TripCardProps) {
             <i className="bi bi-car-front-fill me-2 text-black"></i>
             <span className="text-black fw-semibold">
               {vehicleInfo}
-              <span className="text-secondary fw-normal"> - {seats} {seatsLabel}</span>
+              <span className="text-secondary fw-normal">
+                {" "}
+                - {seats} {seatsLabel}
+              </span>
             </span>
           </Col>
 
@@ -369,7 +382,7 @@ export default function TripCardBig(props: TripCardProps) {
         show={showCarModal}
         onClose={() => setShowCarModal(false)}
         payload={carPayload}
-        setPayload={() => { }}
+        setPayload={() => {}}
         isEdit={false}
         isOwnProfile={false}
       />
