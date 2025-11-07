@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TripCardBig from "./trip/TripCardBig";
 import TripCardSmall from "./trip/TripCardSmall";
 import type Trip from "../interfaces/Trips";
@@ -6,13 +6,20 @@ import type Trip from "../interfaces/Trips";
 interface TripGroupListProps {
   groupedTrips: Record<string, Trip[]>;
   isBooked?: boolean;
-  cardButtonType?: "userBook" | "userCancel" | "driverStart" | "driverDone" | "none";
+  cardButtonType?:
+    | "userBook"
+    | "userCancel"
+    | "driverStart"
+    | "driverDone"
+    | "none";
+  onTripCancelled?: (tripId: string) => void;
 }
 
 export function TripGroupList({
   groupedTrips,
   isBooked = false,
   cardButtonType = "none",
+  onTripCancelled,
 }: TripGroupListProps) {
   const [selectedIndex, setSelectedIndex] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
@@ -22,9 +29,8 @@ export function TripGroupList({
     return () => clearTimeout(timer);
   }, [groupedTrips]);
 
-
   const handleTripCancelled = (tripId: string) => {
-    console.log("Trip cancelled:", tripId); // right id for removing trip for rerender
+    onTripCancelled?.(tripId);
   };
 
   const hasTrips = Object.keys(groupedTrips).length > 0;
@@ -46,7 +52,9 @@ export function TripGroupList({
       {hasTrips ? (
         Object.entries(groupedTrips).map(([date, trips]) => (
           <div key={date} className="d-flex flex-column gap-3">
-            <h3 className="m-0">{new Date(date).toLocaleDateString("sv-SE")}</h3>
+            <h3 className="m-0">
+              {new Date(date).toLocaleDateString("sv-SE")}
+            </h3>
             {trips.map((trip) => {
               const cardKey = `${date}-${trip.id}`;
               const isSelected = selectedIndex === cardKey;
