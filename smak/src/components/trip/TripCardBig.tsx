@@ -4,6 +4,9 @@ import { useTripCount } from "../../context/TripCountProvider";
 import { getTripDateAndTime } from "../../utils/DateUtils";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
+import { bookTrip, cancelTrip, checkIfBooked, deleteTrip } from "../../utils/TripBookings";
 import type TripCardProps from "../../interfaces/TripCardProps";
 import SmakCard from "../SmakCard";
 import DividerLine from "../DividerLine";
@@ -14,9 +17,6 @@ import useFetchCar from "../../hooks/useFetchCar";
 import useProfileImage from "../../hooks/useProfileImage";
 import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
-import { useAuth } from "../../hooks/useAuth";
-import { useSmakTopAlert } from "../../context/SmakTopAlertProvider";
-import { bookTrip, cancelTrip, checkIfBooked, deleteTrip } from "../../utils/TripBookings";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -203,11 +203,6 @@ export default function TripCardBig(props: TripCardProps) {
         }
       }
     }
-
-    // Driver
-    if (cardButtonType === "driverStart")
-      setComingCount(Math.max(comingCount - 1, 0));
-    // TODO also remove this trip from /coming-trips
 
     if (onButtonClick) onButtonClick();
   };
