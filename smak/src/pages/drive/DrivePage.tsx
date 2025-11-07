@@ -360,9 +360,9 @@ export default function DrivePage() {
               >
                 {date
                   ? date.toLocaleString("sv-SE", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                  })
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })
                   : "Avgång"}
               </Button>
 
@@ -382,7 +382,7 @@ export default function DrivePage() {
                   showPopperArrow={false}
                   showTimeSelect
                   timeFormat="HH:mm"
-                  timeIntervals={60}
+                  timeIntervals={1}
                   timeCaption="Tid"
                   dateFormat="yyyy-MM-dd HH:mm"
                   autoComplete="off"

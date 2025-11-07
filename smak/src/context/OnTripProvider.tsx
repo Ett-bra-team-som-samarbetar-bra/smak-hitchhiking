@@ -19,10 +19,9 @@ const OnTripProvider = ({ children }: OnTripProviderProps) => {
   const userTrips = useUserTrips(user?.id || "", allTrips);
 
   const [currentTrip, setCurrentTrip] = useState<Trip | null>(null);
-
   const previousTripRef = useRef<Trip | null>(null);
-  const trackingInitialized = useRef(false);
 
+  // Detect if trip is ongoing based on time
   const computeTripStatus = useCallback(() => {
     if (!user || !userTrips.length) {
       setCurrentTrip(null);
@@ -41,51 +40,50 @@ const OnTripProvider = ({ children }: OnTripProviderProps) => {
     setCurrentTrip(active || null);
   }, [user, userTrips]);
 
+  // Check once per minute for active trip
   useEffect(() => {
     if (!user) {
       setCurrentTrip(null);
-      trackingInitialized.current = false;
       return;
     }
 
-    let active = true;
-    const updateStatus = () => {
-      if (active) computeTripStatus();
-    };
+    computeTripStatus(); // run immediately
 
-    updateStatus();
     const interval = setInterval(computeTripStatus, 60 * 1000);
-    return () => {
-      active = false;
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, [computeTripStatus, user]);
 
+  // Navigate when trip is over
   useEffect(() => {
-    const prevTrip = previousTripRef.current;
+    if (!currentTrip) return;
 
-    if (trackingInitialized.current && prevTrip && !currentTrip && user) {
-      navigate("/trips-done", { state: { completedTrip: prevTrip } });
-    }
+    const checkIfTripEnded = () => {
+      const now = new Date();
+      const arrival = new Date(currentTrip.arrivalTime);
+      if (now > arrival) {
+        navigate("/trips-done", { state: { completedTrip: currentTrip } });
+        previousTripRef.current = null;
+        setCurrentTrip(null);
+      }
+    };
 
-    previousTripRef.current = currentTrip;
+    const interval = setInterval(checkIfTripEnded, 15 * 1000); // check every 15s
+    return () => clearInterval(interval);
+  }, [currentTrip, navigate]);
 
-    if (!trackingInitialized.current && (currentTrip || userTrips.length)) {
-      trackingInitialized.current = true;
-    }
-  }, [currentTrip, navigate, user, userTrips]);
-
+  // Reset with user logout
   useEffect(() => {
     previousTripRef.current = null;
     setCurrentTrip(null);
-    trackingInitialized.current = false;
   }, [user?.id]);
 
+  // 🔹 5. Provide context value
   const value: OnTripContextType = {
     onTrip: !!currentTrip,
     currentTrip,
     refreshTripStatus: computeTripStatus,
   };
+
   return (
     <OnTripContext.Provider value={value}>{children}</OnTripContext.Provider>
   );
