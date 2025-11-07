@@ -1,8 +1,8 @@
 import { Row, Col } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
-import routes from "../routes";
 import { useTripCount } from "../context/TripCountProvider";
 import useOnTrip from "../hooks/useOnTrip";
+import routes from "../routes";
 
 export default function Footer() {
   const { historyCount, comingCount } = useTripCount();
