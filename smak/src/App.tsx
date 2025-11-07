@@ -35,7 +35,7 @@ function AppContent() {
 
   // Set trip counters globally
   useEffect(() => {
-    if (!user) return;
+    if (!isLoggedIn) return;
 
     // History
     const pastTrips = userTrips.filter(
