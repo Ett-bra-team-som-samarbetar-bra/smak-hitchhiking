@@ -17,9 +17,11 @@ const OnTripProvider = ({ children }: OnTripProviderProps) => {
   const navigate = useNavigate();
   const allTrips = useAllTrips();
   const userTrips = useUserTrips(user?.id || "", allTrips);
+
   const [currentTrip, setCurrentTrip] = useState<Trip | null>(null);
 
   const previousTripRef = useRef<Trip | null>(null);
+  const trackingInitialized = useRef(false);
 
   const computeTripStatus = useCallback(() => {
     if (!user || !userTrips.length) {
@@ -42,6 +44,7 @@ const OnTripProvider = ({ children }: OnTripProviderProps) => {
   useEffect(() => {
     if (!user) {
       setCurrentTrip(null);
+      trackingInitialized.current = false;
       return;
     }
 
@@ -61,13 +64,22 @@ const OnTripProvider = ({ children }: OnTripProviderProps) => {
   useEffect(() => {
     const prevTrip = previousTripRef.current;
 
-    //navigate to TripDone when currentTrip is over TODO!! Make sure it is bound to the loggedinuser only.
-    if (prevTrip && !currentTrip) {
+    if (trackingInitialized.current && prevTrip && !currentTrip && user) {
       navigate("/trips-done", { state: { completedTrip: prevTrip } });
     }
 
     previousTripRef.current = currentTrip;
-  }, [currentTrip, navigate]);
+
+    if (!trackingInitialized.current && (currentTrip || userTrips.length)) {
+      trackingInitialized.current = true;
+    }
+  }, [currentTrip, navigate, user, userTrips]);
+
+  useEffect(() => {
+    previousTripRef.current = null;
+    setCurrentTrip(null);
+    trackingInitialized.current = false;
+  }, [user?.id]);
 
   const value: OnTripContextType = {
     onTrip: !!currentTrip,
