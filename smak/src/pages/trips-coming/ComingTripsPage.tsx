@@ -40,7 +40,7 @@ export default function ComingTripsPage() {
     setComingCount(upcomingTrips.length);
   }, [upcomingTrips]);
 
-  // ✅ Callback that removes a trip
+  // Callback that removes a trip
   const handleTripCancelled = (tripId: string) => {
     setLocalTrips((prev) => prev.filter((t) => t.id !== tripId));
   };
