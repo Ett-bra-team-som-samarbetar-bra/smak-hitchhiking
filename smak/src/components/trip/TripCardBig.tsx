@@ -23,6 +23,8 @@ import useProfileImage from "../../hooks/useProfileImage";
 import CarModal from "../../pages/profile/CarModal";
 import "../../components/trip/TripCard.scss";
 import useFetchPassengers from "../../hooks/useFetchPassengers";
+import PassengersModal from "./PassengersModal";
+import type User from "../../interfaces/User";
 
 export default function TripCardBig(props: TripCardProps) {
   const { comingCount, setComingCount } = useTripCount();
@@ -62,6 +64,7 @@ export default function TripCardBig(props: TripCardProps) {
     seats: 0,
   });
   const [isTripBooked, setIsTripBooked] = useState(false);
+  const [showPassengersModal, setShowPassengersModal] = useState(false);
   const seatsLabel = vehicle
     ? Number(vehicle.seats) === 1
       ? "plats"
@@ -238,13 +241,24 @@ export default function TripCardBig(props: TripCardProps) {
     setShowCarModal(true);
   };
 
-  const handleUserClick = () => {
-    if (cardUser?.id === user?.id) {
+  const handleUserClick = (clickedUser?: User) => {
+    const targetUser = clickedUser || cardUser;
+    if (targetUser?.id === user?.id) {
       navigate(`/profile`);
     } else {
-      navigate(`/profile/${cardUser?.id}`, { state: { user: cardUser } });
+      navigate(`/profile/${targetUser?.id}`, { state: { user: targetUser } });
     }
+    setShowPassengersModal(false);
   };
+
+  let peopleToShow: User[] = [];
+  if (isDriver) {
+    peopleToShow = passengers;
+  } else if (cardUser) {
+    peopleToShow = [cardUser];
+  } else {
+    peopleToShow = [];
+  }
 
   return (
     <>
@@ -264,7 +278,7 @@ export default function TripCardBig(props: TripCardProps) {
           <div className="position-absolute trip-card-profil-image-container">
             <div className="d-flex justify-content-center">
               <img
-                onClick={handleUserClick}
+                onClick={() => handleUserClick(cardUser!)}
                 src={profileImage}
                 alt="Profil"
                 className="rounded-2 trip-card-profil-image rounded-circle cursor-pointer"
@@ -357,6 +371,29 @@ export default function TripCardBig(props: TripCardProps) {
 
         <DividerLine variant="info" />
 
+        {(isBooked || isDriver) && (
+          <>
+            <Row className="py-2 cursor-pointer" onClick={() => setShowPassengersModal(true)}>
+              <Col xs={10} className="d-flex align-items-center">
+                <i className="bi bi-people-fill me-2 text-black"></i>
+                <span className="text-black fw-semibold">
+                  {isDriver ? "Passagerare" : "Förare"}
+                  <span className="text-secondary fw-normal">
+                    {" "}
+                    - {passengers.length} av {seats}
+                  </span>
+                </span>
+              </Col>
+
+              <Col xs={2} className="d-flex justify-content-end align-items-center">
+                <i className="bi bi-info-circle fs-6 text-secondary"></i>
+              </Col>
+            </Row>
+
+            <DividerLine variant="info" />
+          </>
+        )}
+
         <Row className="py-2 cursor-pointer" onClick={handleCarClick}>
           <Col xs={10} className="d-flex align-items-center">
             <i className="bi bi-car-front-fill me-2 text-black"></i>
@@ -373,7 +410,7 @@ export default function TripCardBig(props: TripCardProps) {
             <i className="bi bi-info-circle fs-6 text-secondary"></i>
           </Col>
         </Row>
-      </SmakCard >
+      </SmakCard>
 
       <CarModal
         title="Fordon"
@@ -383,6 +420,15 @@ export default function TripCardBig(props: TripCardProps) {
         setPayload={() => { }}
         isEdit={false}
         isOwnProfile={false}
+      />
+
+      <PassengersModal
+        show={showPassengersModal}
+        onClose={() => setShowPassengersModal(false)}
+        passengers={peopleToShow}
+        title={isDriver ? "Passagerare" : "Förare"}
+        onUserClick={handleUserClick}
+
       />
     </>
   );
