@@ -46,18 +46,6 @@ export default function TripsCurrentPage() {
     }
   }, [car]);
 
-  const handleRemovePassenger = async (passenger: any) => {
-    try {
-      const result = await fetch("api/TripUser/", {
-        method: "DELETE",
-      });
-      if (!result.ok) {
-        console.log("the fuck bro", passenger);
-      }
-    } catch {
-    }
-  };
-
   /* car stuff */
 
   const handleCarClick = () => {
@@ -118,9 +106,7 @@ export default function TripsCurrentPage() {
                     isDriver={isDriver}
                     isAddedToTrip={true}
                     onClick={() => handleUserClick(user)}
-                    onRemove={
-                      isDriver ? () => handleRemovePassenger(user) : undefined
-                    }
+                
                   />
                 ))}
               </div>
