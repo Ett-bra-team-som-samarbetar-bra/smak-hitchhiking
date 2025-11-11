@@ -1,5 +1,5 @@
 const config = {
-  // Debug (all false = production mode)
+  // Debug (all false = prod mode)
   hideDesktopPage: false, // true = hide desktop page
   showDebugPages: false, // true = show debug page in header
   fakeUserLoggedIn: false, // true = start app as logged in fake user
