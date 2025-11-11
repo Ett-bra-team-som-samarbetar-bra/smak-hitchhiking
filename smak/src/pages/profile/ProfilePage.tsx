@@ -212,16 +212,25 @@ export default function ProfilePage() {
         }
 
         await refreshUser();
-
         setUserPayload({ user: savedUser });
         setShowUserModal(false);
+
+
+        // todo
       } catch (error) {
         showAlert({
+          message: `${error instanceof Error ? error.message : String(error)}`,
+          backgroundColor: "danger",
+          textColor: "white",
+          duration: 8000,
+        });
+
+        /* showAlert({
           message: "Kunde inte spara ändringarna. Försök igen.",
           backgroundColor: "danger",
           textColor: "white",
           duration: 5000,
-        });
+        }); */
       }
     }
   }
