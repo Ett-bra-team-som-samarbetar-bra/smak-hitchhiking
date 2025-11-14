@@ -12,6 +12,7 @@ import InputFormPassword from "../../components/inputForms/InputFormPassword";
 import SmakCard from "../../components/SmakCard";
 import SmakButton from "../../components/SmakButton";
 import InputFormPreferences from "../../components/inputForms/InputFormPreferences";
+import { validatePassword } from "../../utils/passwordValidation";
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -64,17 +65,29 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   }
 
   function setRegisterProp(event: React.ChangeEvent) {
-    let { name, value }: { name: string, value: string | File | null } = event.target as HTMLInputElement;
+    let { name, value }: { name: string; value: string | File | null } =
+      event.target as HTMLInputElement;
     setRegisterPayload({ ...registerPayload, [name]: value });
   }
 
   async function handleRegister(event: React.FormEvent) {
     event.preventDefault();
+    const passwordCheck = validatePassword(registerPayload.password);
+    if (!passwordCheck.isValid) {
+      showAlert({
+        message: "Lösenordet uppfyller inte kraven.",
+        backgroundColor: "danger",
+        textColor: "white",
+      });
+      return;
+    }
     setIsLoading(true);
 
     // Map ja/nej to actual preference values
     const mappedPreferences = preferencesState.map((val, i) =>
-      val === "Ja" ? preferenceOptions[i].options[0] : preferenceOptions[i].options[1]
+      val === "Ja"
+        ? preferenceOptions[i].options[0]
+        : preferenceOptions[i].options[1]
     );
 
     try {
@@ -90,15 +103,14 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           duration: 7000,
         });
       }, 500);
-
     } catch (error) {
       showAlert({
-        message: error instanceof Error ? error.message : "Ett okänt fel uppstod.",
+        message:
+          error instanceof Error ? error.message : "Ett okänt fel uppstod.",
         backgroundColor: "danger",
         textColor: "white",
         duration: 7000,
       });
-
     } finally {
       setIsLoading(false);
     }
@@ -108,8 +120,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     <SmakSlideInModal
       className="slide-in-modal-content-scroll "
       isOpen={isOpen}
-      onClose={onClose}>
-
+      onClose={onClose}
+    >
       <Row className="non-interactive pt-4 mx-1">
         <div className="d-flex align-items-center flex-column justify-content-center">
           <i className="login-header-icon" />
@@ -125,14 +137,15 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             label={"E-postadress"}
             placeholder="Ange din e-postadress"
             value={registerPayload.email}
-            setFormProp={setRegisterProp} />
+            setFormProp={setRegisterProp}
+          />
 
           <InputFormPassword
             value={registerPayload.password}
             setFormProp={setRegisterProp}
             label={"Lösenord"}
-            placeholder={"Ange ditt lösenord"} >
-          </InputFormPassword>
+            placeholder={"Ange ditt lösenord"}
+          ></InputFormPassword>
 
           <InputFormText
             placeholder="Ange ditt förnamn"
@@ -140,7 +153,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             value={registerPayload.firstName}
             setFormProp={setRegisterProp}
             isRequired={true}
-            typeName="firstName" />
+            typeName="firstName"
+          />
 
           <InputFormText
             placeholder="Ange ditt efternamn"
@@ -148,7 +162,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             value={registerPayload.lastName}
             setFormProp={setRegisterProp}
             isRequired={true}
-            typeName="lastName" />
+            typeName="lastName"
+          />
 
           <InputFormText
             placeholder="Ange ditt telefonnummer"
@@ -158,7 +173,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             isRequired={true}
             value={registerPayload.phone}
             setFormProp={setRegisterProp}
-            typeName="phone" />
+            typeName="phone"
+          />
 
           <InputFormText
             label="Beskrivning"
@@ -168,20 +184,23 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             isRequired={true}
             value={registerPayload.description}
             setFormProp={setRegisterProp}
-            typeName="description" />
+            typeName="description"
+          />
 
           <InputFormPreferences
             className="mt-4 pt-1 mb-2"
             preferences={preferenceOptions}
             selectedValues={preferencesState}
-            setPreferences={handlePreferencesChange} />
+            setPreferences={handlePreferencesChange}
+          />
 
           <hr className="mt-4" />
 
           <SubmitButton
             isLoading={isLoading}
             className="mt-3"
-            color={"primary"}>
+            color={"primary"}
+          >
             Skapa konto
           </SubmitButton>
         </form>
@@ -192,7 +211,8 @@ export default function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           onClick={() => {
             onClose();
             resetForm();
-          }}>
+          }}
+        >
           Avbryt
         </SmakButton>
       </SmakCard>
